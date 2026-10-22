@@ -63,6 +63,7 @@ struct GardenView: View {
     @State private var showSettings = false
     @State private var showShop = false
     @State private var showBook = false
+    @State private var showReading = false
     @State private var showLocationQuestion = false
     @State private var coinNote: CoinNote?
     @State private var noteID = 0
@@ -81,6 +82,14 @@ struct GardenView: View {
     @State private var entryNoteID = 0
     /// The short action sounds (see `ToolSounds`). Played only while Settings has them on.
     @State private var sounds = ToolSounds()
+    /// Birds, crickets and rain (see `AmbientSounds`). Armed with the music, and set by the weather and time of day.
+    @State private var ambient = AmbientSounds()
+    /// The time the side chores were last checked against their cooldowns. Moves on every minute.
+    @State private var clock = Date()
+#if DEBUG
+    /// The debug drawer, toggled with Command-Shift-D.
+    @State private var showDebug = false
+#endif
     /// True while the once-a-day summary card is up.
     @State private var showSummary = false
     /// Seed types whose tile is pulsing because their count just went up.
@@ -129,6 +138,14 @@ struct GardenView: View {
     func armMusic() {
         musicArmed = true
         if settings.musicEnabled { music.start() }
+        if settings.ambientEnabled { ambient.setEnabled(true) }
+    }
+
+    /// Sets the ambience to what the weather and time of day call for.
+    func updateAmbient() {
+        let mood = weather.mood(theme: settings.sceneTheme.gardenTheme)
+        ambient.setMix(AmbientMix.resolve(phase: mood.phase, condition: mood.condition,
+                                          temperatureC: weather.report?.current.temperatureC, theme: mood.theme))
     }
 
     func rescheduleReminder(delay: Duration = .zero) async {
@@ -154,24 +171,49 @@ struct GardenView: View {
         ZStack {
             // Fills the whole window, including under the (hidden) title bar.
             SceneBackground(palette: palette).ignoresSafeArea()
-            VStack(spacing: 12) {
-                header(style)
-                // The scene is the hero: it takes all the height the chrome does not need and the
-                // GardenSceneView keeps its 4:3 frame inside that space.
+            // The scene is the whole window: it covers the container (cropped a little on the sides or the top and
+            // bottom) and the controls float over it.
+            GeometryReader { geo in
+                let size = SceneFraming.coverSize(in: geo.size)
                 gardenScene
-                toolBar(style)
-#if DEBUG
-                DebugPanel(store: store, onSpawn: spawnDebugVisitor)
-                    .padding(10)
-                    .panel(style)
-#endif
+                    .frame(width: size.width, height: size.height)
+                    .position(x: geo.size.width / 2, y: geo.size.height / 2)
+            }
+            .clipped()
+            .ignoresSafeArea()
+            // Empty parts of this layer let presses through to the scene.
+            VStack(spacing: 8) {
+                header(style)
+                ZStack {
+                    entryToastLayer
+                    awayLayer
+                }
+                HStack { plantCardLayer; Spacer(minLength: 0) }
+                Spacer(minLength: 0)
+                bottomBar(style)
             }
             // Top inset clears the traffic lights, which sit over the hidden title bar.
             .padding(.top, 34)
-            .padding(.horizontal, 20)
-            .padding(.bottom, 16)
+            .padding(.horizontal, 16)
+            .padding(.bottom, 14)
+            summaryLayer
+#if DEBUG
+            if showDebug {
+                DebugPanel(store: store, onSpawn: spawnDebugVisitor)
+                    .padding(10)
+                    .frame(width: 380)
+                    .panel(style)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
+                    .padding(.top, 96)
+                    .padding(.trailing, 16)
+            }
+            Button("Debug") { showDebug.toggle() }
+                .keyboardShortcut("d", modifiers: [.command, .shift])
+                .frame(width: 0, height: 0)
+                .opacity(0)
+#endif
         }
-        .frame(minWidth: 640, minHeight: 720)
+        .frame(minWidth: 720, minHeight: 540)
         .task {
             await tick()
             showSummaryIfDue()
@@ -182,6 +224,7 @@ struct GardenView: View {
             if !settings.hasAskedLocation { showLocationQuestion = true }
             music.setVolume(settings.musicVolume)
             music.setMood(weather.mood(theme: settings.sceneTheme.gardenTheme))
+            updateAmbient()
         }
         .alert("Use your location for local weather?", isPresented: $showLocationQuestion) {
             Button("Use my location") { answerLocationQuestion(useLocation: true) }
@@ -201,13 +244,16 @@ struct GardenView: View {
             store.save()
         }
         // Time moves on while the window sits still: catch the garden up, and re-read the mood, every minute.
-        .onReceive(Self.minuteTimer) { _ in
+        .onReceive(Self.minuteTimer) { now in
             Task { await tick() }
             music.setMood(weather.mood(theme: settings.sceneTheme.gardenTheme))
+            updateAmbient()
+            clock = now
         }
         // Every couple of seconds: drop visitors that have left, and take an early roll if one is due.
         .onReceive(Self.visitorTickTimer) { now in
             pruneVisitors(at: now)
+            pruneRipples(at: now)
             if earlyRollsLeft > 0, now >= nextEarlyRoll, visitorsCanArrive {
                 earlyRollsLeft -= 1
                 nextEarlyRoll = now.addingTimeInterval(VisitorController.earlyRollSeconds)
@@ -243,8 +289,15 @@ struct GardenView: View {
         .onChange(of: weather.report) { _, _ in
             Task { await rescheduleReminder() }
             music.setMood(weather.mood(theme: settings.sceneTheme.gardenTheme))
+            updateAmbient()
         }
-        .onChange(of: settings.sceneTheme) { _, theme in music.setMood(weather.mood(theme: theme.gardenTheme)) }
+        .onChange(of: settings.sceneTheme) { _, theme in
+            music.setMood(weather.mood(theme: theme.gardenTheme))
+            updateAmbient()
+        }
+        .onChange(of: settings.ambientEnabled) { _, on in
+            if on { updateAmbient(); if musicArmed { ambient.setEnabled(true) } } else { ambient.setEnabled(false) }
+        }
         .onChange(of: settings.musicEnabled) { _, on in
             if on { armMusic() } else { music.stop() }
         }
@@ -268,62 +321,65 @@ struct GardenView: View {
         .sheet(isPresented: $showBook) {
             GardenBookView(store: store, palette: palette)
         }
+        .sheet(isPresented: $showReading) {
+            ReadingChairView(palette: palette)
+        }
     }
 
+    /// Two small panels along the top, so the scene shows between them: the garden's name and weather on the left,
+    /// the coins and the sound, book and settings buttons on the right.
     private func header(_ style: ScenePanelStyle) -> some View {
-        HStack {
+        HStack(alignment: .top) {
             VStack(alignment: .leading, spacing: 1) {
-                Text("Dharma Garden").font(.title.bold())
+                Text("Dharma Garden").font(.headline)
                 WeatherLine(weather: weather)
             }
-            Spacer()
-            HStack(spacing: 5) {
-                Image(systemName: "circle.fill").foregroundStyle(.orange)
-                Text("\(store.garden.coins)").font(.title3.bold().monospacedDigit())
+            .padding(.horizontal, 12)
+            .padding(.vertical, 7)
+            .panel(style)
+            Spacer(minLength: 8)
+            HStack(spacing: 8) {
+                HStack(spacing: 5) {
+                    Image(systemName: "circle.fill").foregroundStyle(.orange)
+                    Text("\(store.garden.coins)").font(.title3.bold().monospacedDigit())
+                }
+                .overlay(alignment: .leading) {
+                    if let note = coinNote { CoinFloat(amount: note.amount).id(note.id).offset(x: -44) }
+                }
+                .padding(.trailing, 4)
+                headerButton(settings.musicEnabled ? "speaker.wave.2.fill" : "speaker.slash.fill",
+                             help: settings.musicEnabled ? "Mute garden sounds" : "Play garden sounds") {
+                    let on = !settings.musicEnabled
+                    settings.musicEnabled = on
+                    settings.ambientEnabled = on
+                }
+                headerButton("book.fill", help: "Garden book",
+                             label: hasClaimableMilestone ? "Garden book, milestone ready to claim" : "Garden book",
+                             dot: hasClaimableMilestone) { showBook = true }
+                headerButton("gearshape.fill", help: "Settings") { showSettings = true }
             }
-            .overlay(alignment: .leading) {
-                if let note = coinNote { CoinFloat(amount: note.amount).id(note.id).offset(x: -44) }
-            }
-            Button { settings.musicEnabled.toggle() } label: {
-                Image(systemName: settings.musicEnabled ? "speaker.wave.2.fill" : "speaker.slash.fill")
-                    .font(.system(size: 14, weight: .semibold))
-                    .foregroundStyle(.primary)
-                    .frame(width: 28, height: 28)
-                    .contentShape(Rectangle())
-            }
-            .buttonStyle(.plain)
-            .help(settings.musicEnabled ? "Mute garden music" : "Play garden music")
-            .accessibilityLabel(settings.musicEnabled ? "Mute garden music" : "Play garden music")
-            Button { showBook = true } label: {
-                Image(systemName: "book.fill")
-                    .font(.system(size: 14, weight: .semibold))
-                    .foregroundStyle(.primary)
-                    .frame(width: 28, height: 28)
-                    .contentShape(Rectangle())
-                    .overlay(alignment: .topTrailing) {
-                        // A dot while a milestone can be claimed in the book.
-                        if hasClaimableMilestone {
-                            Circle().fill(Color.orange).frame(width: 8, height: 8).offset(x: 1, y: -1)
-                        }
-                    }
-            }
-            .buttonStyle(.plain)
-            .help("Garden book")
-            .accessibilityLabel(hasClaimableMilestone ? "Garden book, milestone ready to claim" : "Garden book")
-            Button { showSettings = true } label: {
-                Image(systemName: "gearshape.fill")
-                    .font(.system(size: 15, weight: .semibold))
-                    .foregroundStyle(.primary)
-                    .frame(width: 28, height: 28)
-                    .contentShape(Rectangle())
-            }
-            .buttonStyle(.plain)
-            .help("Settings")
-            .accessibilityLabel("Settings")
+            .padding(.horizontal, 12)
+            .padding(.vertical, 6)
+            .panel(style)
         }
-        .padding(.horizontal, 14)
-        .padding(.vertical, 8)
-        .panel(style)
+    }
+
+    private func headerButton(_ symbol: String, help: String, label: String? = nil, dot: Bool = false,
+                              action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Image(systemName: symbol)
+                .font(.system(size: 14, weight: .semibold))
+                .foregroundStyle(.primary)
+                .frame(width: 28, height: 28)
+                .contentShape(Rectangle())
+                .overlay(alignment: .topTrailing) {
+                    // A dot while something is waiting (a milestone to claim in the book).
+                    if dot { Circle().fill(Color.orange).frame(width: 8, height: 8).offset(x: 1, y: -1) }
+                }
+        }
+        .buttonStyle(.plain)
+        .help(help)
+        .accessibilityLabel(label ?? help)
     }
 
     /// The tools on one row, with a scrollable tray of the seed packets the player owns. Keys 1 to 7 pick a tool
@@ -340,18 +396,30 @@ struct GardenView: View {
                          selected: tool == .seasol, style) { tool = .seasol }
                 toolTile("Fertiliser", "leaf.arrow.circlepath", key: "6", cost: Tuning.fertiliserCost, coins: coins,
                          selected: tool == .fertiliser, style) { tool = .fertiliser }
-                toolTile("Shop", "bag.fill", key: "7", selected: false, style) { showShop = true }
+                toolTile("Shop", "bag.fill", key: "7", alert: !hasSeeds, selected: false, style) { showShop = true }
             }
-            seedTray(style)
         }
         .padding(7)
         .panel(style)
     }
 
+    private var hasSeeds: Bool { FlowerType.allCases.contains { store.garden.seedCount($0) > 0 } }
+
+    /// The controls along the bottom: the chip for what needs doing, the seed packets (only when there are some),
+    /// and the tools. Centred and no wider than 720 pt, so a big window does not stretch it.
+    private func bottomBar(_ style: ScenePanelStyle) -> some View {
+        VStack(spacing: 8) {
+            adviceLayer
+            if hasSeeds { seedTray(style) }
+            toolBar(style)
+        }
+        .frame(maxWidth: 720)
+    }
+
     /// Equal-width tiles, so every label fits without truncation at 640 pt. A tile with a `cost` shows it as a badge
     /// and dims, and cannot be picked, while `coins` fall short (an already-picked tool stays pickable).
     private func toolTile(_ title: String, _ icon: String, key: KeyEquivalent, cost: Int? = nil, coins: Int = 0,
-                          selected: Bool, _ style: ScenePanelStyle, action: @escaping () -> Void) -> some View {
+                          alert: Bool = false, selected: Bool, _ style: ScenePanelStyle, action: @escaping () -> Void) -> some View {
         let text: Color = selected ? .white : .primary
         let affordable = cost.map { coins >= $0 } ?? true
         return Button(action: action) {
@@ -389,6 +457,10 @@ struct GardenView: View {
                         .offset(x: 3, y: -4)
                 }
             }
+            .overlay(alignment: .topTrailing) {
+                // A pulsing dot nudges the player to the shop when there is nothing left to sow.
+                if alert { PulsingDot().offset(x: -6, y: 6) }
+            }
             .opacity(affordable || selected ? 1 : 0.45)
             .contentShape(Rectangle())
         }
@@ -403,23 +475,16 @@ struct GardenView: View {
     /// Seed types with at least one packet, as tiles in a horizontal scroll. Selecting one arms the plant tool.
     private func seedTray(_ style: ScenePanelStyle) -> some View {
         let owned = FlowerType.allCases.filter { store.garden.seedCount($0) > 0 }
-        return VStack(alignment: .leading, spacing: 4) {
-            Text("Seeds").font(.caption.bold()).foregroundStyle(.secondary)
-            if owned.isEmpty {
-                Text("No seeds left. Visit the Shop to buy more.")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                    .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
-            } else {
-                ScrollView(.horizontal) {
-                    HStack(spacing: 6) {
-                        ForEach(owned, id: \.self) { seedTile($0, style) }
-                    }
-                    .padding(.vertical, 2)
-                }
+        return ScrollView(.horizontal) {
+            HStack(spacing: 6) {
+                ForEach(owned, id: \.self) { seedTile($0, style) }
             }
+            .padding(.vertical, 2)
+            .padding(.horizontal, 2)
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
+        .scrollIndicators(.hidden)
+        .padding(5)
+        .panel(style)
     }
 
     private func seedTile(_ f: FlowerType, _ style: ScenePanelStyle) -> some View {
@@ -436,7 +501,7 @@ struct GardenView: View {
                     .lineLimit(2)
                     .minimumScaleFactor(0.8)
             }
-            .frame(width: 96, height: 64)
+            .frame(width: 84, height: 60)
             .background(
                 RoundedRectangle(cornerRadius: 8, style: .continuous)
                     .fill(selected ? style.selectedFill : style.idleFill)
@@ -459,7 +524,7 @@ struct GardenView: View {
         .accessibilityAddTraits(selected ? .isSelected : [])
     }
 
-    /// The garden scene with the visitors on it and the "New entry" toast along its top.
+    /// The garden scene with the visitors on it. It is sized and placed by `body`.
     private var gardenScene: some View {
         GardenSceneView(garden: store.garden, palette: palette,
                         selectedPoint: selectedPoint, hoverPoint: hoverPoint,
@@ -469,23 +534,67 @@ struct GardenView: View {
                         onHover: { hoverPoint = $0 },
                         wind: windLevel, driftEnabled: settings.gentleDrift,
                         style: settings.sceneStyle, theme: settings.sceneTheme,
-                        visitors: visitors, onSpotVisitor: spotVisitor)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .overlay(alignment: .top) { entryToastLayer }
-            .overlay(alignment: .topLeading) { plantCardLayer }
-            .overlay(alignment: .bottom) { adviceLayer }
-            .overlay { summaryLayer }
+                        visitors: visitors, onSpotVisitor: spotVisitor,
+                        onSitInChair: { armMusic(); showReading = true })
     }
 
-    /// The chip for the most pressing job. Hidden while the daily summary is up, which already lists the jobs.
+    /// The chip for the most pressing job. When nothing needs doing it offers a side chore instead (feed the birds,
+    /// deadhead, turn the compost). Hidden while the daily summary is up, which already lists the jobs.
     @ViewBuilder private var adviceLayer: some View {
         let tips = GardenAdvice.tips(for: store.garden)
+        let chores = availableChores
         if !showSummary, let first = tips.first {
             AdviceChip(advice: first, more: tips.count - 1, style: ScenePanelStyle(palette: palette)) {
                 follow(first)
             }
-            .padding(.bottom, 8)
             .transition(.opacity)
+        } else if !showSummary, let chore = chores.first {
+            ChoreChip(chore: chore, more: chores.count - 1, style: ScenePanelStyle(palette: palette)) {
+                doChore(chore)
+            }
+            .transition(.opacity)
+        }
+    }
+
+    /// The side chores that are off cooldown and would do something now.
+    private var availableChores: [SideChore] {
+        SideChore.available(garden: store.garden, readyAt: settings.choreReadyAt, now: clock, visitorCount: visitors.count)
+    }
+
+    /// Does a side chore, shows it, and starts its cooldown.
+    private func doChore(_ chore: SideChore) {
+        let now = Date()
+        switch chore {
+        case .feedBirds:
+            var paid = false
+            store.apply { paid = GardenEngine.feedBirds(in: &$0) }
+            guard paid else { return }
+            flashCoins(-chore.cost)
+            let bird = [VisitorSpecies.magpieLark, .willieWagtail, .cockatoo].randomElement() ?? .magpieLark
+            visitors.append(roller.spawn(bird, garden: store.garden, now: now))
+            playSound(.feed)
+        case .deadhead:
+            let fading = store.garden.plants.filter { !$0.isDead && $0.lifeStage == .fading }.map(\.position)
+            store.apply { _ = GardenEngine.deadhead(in: &$0) }
+            fading.forEach { addRipple($0, .plant) }
+            playSound(.pull)
+        case .compost:
+            let fed = store.garden.plants.filter { !$0.isDead }.map(\.position)
+            store.apply { _ = GardenEngine.compost(in: &$0) }
+            fed.forEach { addRipple($0, .fertilise) }
+            playSound(.feed)
+        }
+        var ready = settings.choreReadyAt
+        ready[chore.rawValue] = now.addingTimeInterval(chore.cooldown)
+        settings.choreReadyAt = ready
+        clock = now
+    }
+
+    /// The "While you were away" card, under the header. Waits while the daily summary is up.
+    @ViewBuilder private var awayLayer: some View {
+        if !showSummary, let summary = store.awaySummary {
+            AwayCard(summary: summary, style: ScenePanelStyle(palette: palette)) { store.awaySummary = nil }
+                .transition(.opacity)
         }
     }
 
@@ -693,6 +802,13 @@ struct GardenView: View {
         earlyRollsLeft = 0
     }
 
+    /// Drops feedback rings that have finished, so the scene can fall back to 30 fps and the list stays short.
+    private func pruneRipples(at now: Date) {
+        if ripples.contains(where: { now.timeIntervalSince($0.startedAt) > rippleKeepSeconds }) {
+            ripples.removeAll { now.timeIntervalSince($0.startedAt) > rippleKeepSeconds }
+        }
+    }
+
     /// Removes visitors that have left. Only writes when one has gone, so the scene is not redrawn for nothing.
     private func pruneVisitors(at now: Date) {
         if visitors.contains(where: { $0.isGone(at: now) }) {
@@ -778,7 +894,20 @@ struct WeatherLine: View {
                 Text("Checking the weather…").foregroundStyle(.secondary)
             }
         }
-        .font(.callout)
+        .font(.caption)
+    }
+}
+
+/// A small orange dot that breathes, to draw the eye to a button.
+struct PulsingDot: View {
+    @State private var big = false
+
+    var body: some View {
+        Circle().fill(Color.orange)
+            .frame(width: 9, height: 9)
+            .scaleEffect(big ? 1.35 : 0.9)
+            .onAppear { withAnimation(.easeInOut(duration: 0.9).repeatForever(autoreverses: true)) { big = true } }
+            .accessibilityHidden(true)
     }
 }
 

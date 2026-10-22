@@ -89,3 +89,82 @@ struct DailySummaryCard: View {
         .accessibilityElement(children: .contain)
     }
 }
+
+
+extension SideChore {
+    var symbol: String {
+        switch self {
+        case .feedBirds: "bird.fill"
+        case .deadhead: "scissors"
+        case .compost: "leaf.arrow.circlepath"
+        }
+    }
+}
+
+/// A chip along the bottom of the scene for when nothing needs doing: a small side chore to do. Tapping does it.
+struct ChoreChip: View {
+    let chore: SideChore
+    /// How many more chores are on offer after this one.
+    let more: Int
+    let style: ScenePanelStyle
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            HStack(spacing: 7) {
+                Image(systemName: chore.symbol).font(.system(size: 12, weight: .semibold))
+                Text(chore.title).font(.callout.bold())
+                if chore.cost > 0 {
+                    Text("\(chore.cost)")
+                        .font(.caption2.bold().monospacedDigit())
+                        .foregroundStyle(.black)
+                        .padding(.horizontal, 5)
+                        .padding(.vertical, 1)
+                        .background(Capsule().fill(Color.orange))
+                }
+                if more > 0 {
+                    Text("+\(more)").font(.caption2.bold().monospacedDigit()).foregroundStyle(.secondary)
+                }
+            }
+            .padding(.horizontal, 12)
+            .padding(.vertical, 7)
+            .panel(style)
+            .contentShape(Capsule())
+        }
+        .buttonStyle(.plain)
+        .help(chore.detail)
+        .accessibilityLabel(chore.cost > 0 ? "\(chore.title), \(chore.cost) coin" : chore.title)
+        .accessibilityHint(chore.detail)
+    }
+}
+
+/// "While you were away": what grew, faded or appeared in the time the garden ran without the player.
+/// It fades out by itself after a while, or on a tap.
+struct AwayCard: View {
+    let summary: AwaySummary
+    let style: ScenePanelStyle
+    let onDone: () -> Void
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text("Welcome back").font(.headline)
+            Text("You were away for \(summary.awayText)").font(.caption).foregroundStyle(.secondary)
+            ForEach(summary.lines, id: \.self) { line in
+                Label(line, systemImage: "leaf.fill").font(.callout)
+            }
+        }
+        .padding(.horizontal, 14)
+        .padding(.vertical, 10)
+        .frame(minWidth: 220, alignment: .leading)
+        .panel(style)
+        .shadow(color: .black.opacity(0.2), radius: 10, y: 4)
+        .contentShape(Rectangle())
+        .onTapGesture(perform: onDone)
+        .task {
+            try? await Task.sleep(for: .seconds(14))
+            onDone()
+        }
+        .accessibilityElement(children: .combine)
+        .accessibilityHint("Tap to dismiss")
+    }
+}

@@ -139,8 +139,8 @@ public final class AmbientSynth: @unchecked Sendable {
             return lp2 - hp
         }
         let n1 = nextNoise(), n2 = nextNoise()
-        l += channel(n1, &rainLP1.0, &rainLP2.0, &rainHP.0) * level * gust * 1.1
-        r += channel(n2, &rainLP1.1, &rainLP2.1, &rainHP.1) * level * gust * 1.1
+        l += channel(n1, &rainLP1.0, &rainLP2.0, &rainHP.0) * level * gust * 0.55
+        r += channel(n2, &rainLP1.1, &rainLP2.1, &rainHP.1) * level * gust * 0.55
     }
 
     private func addCrickets(_ l: inout Float, _ r: inout Float, level: Float, step: Double) {

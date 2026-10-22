@@ -100,6 +100,19 @@ final class ToolSounds {
         }
     }
 
+    /// A short rounded "pop": a sine that drops quickly in pitch, like a stem snapping free.
+    private static func pop(_ out: inout [Float], at start: Double, from: Double, to: Double, length: Double, gain: Float) {
+        let first = Int(start * sampleRate)
+        let count = Int(length * sampleRate)
+        var phase = 0.0
+        for i in 0..<count where first + i < out.count {
+            let p = Double(i) / Double(count)
+            phase += 2 * .pi * (from + (to - from) * p) / sampleRate
+            let env = Float(min(1, p / 0.08)) * Float(pow(1 - p, 2))
+            out[first + i] += Float(sin(phase)) * env * gain
+        }
+    }
+
     /// Noise through a two-stage low-pass whose cutoff moves from `from` to `to`, with a smooth rise and fall.
     private static func noiseBurst(_ out: inout [Float], at start: Double, length: Double, from: Double, to: Double,
                                    gain: Float, attack: Double = 0.02, noise: inout Noise) {
@@ -147,8 +160,10 @@ final class ToolSounds {
             // A weed coming out of the ground: a short rip that rises then stops.
             noiseBurst(&out, at: 0, length: 0.3, from: 300, to: 1100, gain: 1.0, attack: 0.08, noise: &noise)
         case .pick:
-            pluck(&out, at: 0, freq: 523, decay: 0.12, gain: 0.3)
-            pluck(&out, at: 0.08, freq: 659, decay: 0.14, gain: 0.25)
+            // The pop of the stem coming free, then the bloom landing in the basket.
+            pop(&out, at: 0, from: 520, to: 190, length: 0.07, gain: 0.5)
+            pluck(&out, at: 0.07, freq: 523, decay: 0.12, gain: 0.3)
+            pluck(&out, at: 0.15, freq: 659, decay: 0.14, gain: 0.25)
         case .plant:
             pluck(&out, at: 0, freq: 110, decay: 0.1, gain: 0.5)
             noiseBurst(&out, at: 0, length: 0.12, from: 600, to: 250, gain: 0.7, attack: 0.02, noise: &noise)

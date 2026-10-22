@@ -14,7 +14,6 @@ final class AmbientSounds {
 
     private let engine = AVAudioEngine()
     private var synth: AmbientSynth?
-    private var scratch: UnsafeMutablePointer<Float>?
     private var mix = AmbientMix.silent
     private var wantsSound = false
     private var pauseTask: Task<Void, Never>?
@@ -27,8 +26,6 @@ final class AmbientSounds {
             MainActor.assumeIsolated { self?.configurationChanged() }
         }
     }
-
-    deinit { scratch?.deallocate() }
 
     /// Starts (fading in) or stops (fading out) the ambience. Safe to call repeatedly.
     func setEnabled(_ on: Bool) {
@@ -116,7 +113,6 @@ final class AmbientSounds {
         engine.connect(reverb, to: engine.mainMixerNode, format: format)
         engine.prepare()
         self.synth = synth
-        self.scratch = scratch
         return true
     }
 }

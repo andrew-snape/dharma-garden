@@ -9,51 +9,55 @@
 /* Begin PBXBuildFile section */
 		01D30F0D19B17E74A904F334 /* ThemePreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 066DA3A9071863E5C9DD3544 /* ThemePreview.swift */; };
 		0EC15AC8677DFAF8655433A8 /* WeedsCore in Frameworks */ = {isa = PBXBuildFile; productRef = D49A6544422175F6B00570EA /* WeedsCore */; };
+		171B847C869394706D95B536 /* GameCenterService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D229FD3E3466E299755AB14A /* GameCenterService.swift */; };
+		1BDDC0ED75C0D297AE4259C4 /* GardenGuidance.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D3B066586663AAFB000FB7 /* GardenGuidance.swift */; };
 		1CC6BF2CC1FD97FFFF85F853 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CE8723765A8AED5B3311090 /* Theme.swift */; };
+		1DC17537450D971DC407C8AB /* PlantCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 264E400C24F1B7CEB0633E50 /* PlantCard.swift */; };
 		21FC4CF44E78A323F0EE5F93 /* WeatherService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADEE66902B8EFC18123C9C5 /* WeatherService.swift */; };
 		3A6B53DC16F81DD57CD836E2 /* GardenBookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F9E7880DD87F070FBCE442 /* GardenBookView.swift */; };
 		50DDCCABD40363F1A51AE08F /* GardenStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F46A0FC64D7B62EF318F0FD /* GardenStore.swift */; };
 		6786AAF6D1380A0D9063CAD6 /* WeedsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18F667FD0B635CF092C0A25 /* WeedsApp.swift */; };
 		6F57641D02FC8B221D4BBE9E /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1D3EA5D85EEC313610E334 /* SettingsView.swift */; };
-		742646B8308A1CC00003BC9D /* PlantCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742646B7308A1CC00003BC9D /* PlantCard.swift */; };
-		742646BA308A1FC60003BC9D /* ToolSounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742646B9308A1FC60003BC9D /* ToolSounds.swift */; };
-		742646BC308A1FD30003BC9D /* GardenGuidance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742646BB308A1FD30003BC9D /* GardenGuidance.swift */; };
-		742646BE308A20810003BC9D /* GameCenterService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742646BD308A20810003BC9D /* GameCenterService.swift */; };
 		7E0D0205C2783073BCD03B00 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B16BFDD293B42677979B4ABD /* Assets.xcassets */; };
 		85A71BBC64395A87BEF75770 /* VisitorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4FBA78C17E7C9CC07265B9F /* VisitorController.swift */; };
 		94E2F26083D9DF8B35136CE2 /* ShopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5A44D90A300729FE68AFD5D /* ShopView.swift */; };
 		AA7C368033CAFADE1CEAFE05 /* GardenMusic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C35337C222AC4A10208B0DF /* GardenMusic.swift */; };
 		B4904A815C6E1BC2077465D7 /* GardenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67346D82DFE879085E02946 /* GardenView.swift */; };
+		B88E376F245351A337676493 /* AmbientSounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215C9799F8E464FE8DEE26A2 /* AmbientSounds.swift */; };
+		C1B9904289A5FC7345CB044D /* ReadingChairView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BF136E13AE6DDB5E5B9B7B8 /* ReadingChairView.swift */; };
 		C278C14BDF1B05A3D9441140 /* WeedsArt in Frameworks */ = {isa = PBXBuildFile; productRef = 44388489CA595C3570F19D84 /* WeedsArt */; };
 		DFCC72A264A411A38EF14576 /* DebugPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B1C7F5900DC59AA42B7FFD /* DebugPanel.swift */; };
 		E09F23E9ECD784704A2F928D /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC6326F6CC8D6AD5F7FBD3B /* AppSettings.swift */; };
 		E2C6719588CC6A2C90C01C8D /* ReminderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27270849A67E501401C4FF1F /* ReminderService.swift */; };
+		EE635E8F81ED9FF5A831D347 /* ToolSounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668A57F2A3F304EB8C7D9C75 /* ToolSounds.swift */; };
 		F044EF8E8E45BDAFCE3BE536 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FD60C31283DA7DA6190128E /* LocationService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		066DA3A9071863E5C9DD3544 /* ThemePreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemePreview.swift; sourceTree = "<group>"; };
 		0F46A0FC64D7B62EF318F0FD /* GardenStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GardenStore.swift; sourceTree = "<group>"; };
+		215C9799F8E464FE8DEE26A2 /* AmbientSounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmbientSounds.swift; sourceTree = "<group>"; };
+		264E400C24F1B7CEB0633E50 /* PlantCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantCard.swift; sourceTree = "<group>"; };
 		27270849A67E501401C4FF1F /* ReminderService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderService.swift; sourceTree = "<group>"; };
-		353A816A49AC275D05C50C54 /* WeedsCore */ = {isa = PBXFileReference; lastKnownFileType = folder; path = WeedsCore; sourceTree = SOURCE_ROOT; };
+		353A816A49AC275D05C50C54 /* WeedsCore */ = {isa = PBXFileReference; lastKnownFileType = folder; name = WeedsCore; path = WeedsCore; sourceTree = SOURCE_ROOT; };
 		3CE8723765A8AED5B3311090 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		5D1D3EA5D85EEC313610E334 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		5FD60C31283DA7DA6190128E /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
-		742646B7308A1CC00003BC9D /* PlantCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantCard.swift; sourceTree = "<group>"; };
-		742646B9308A1FC60003BC9D /* ToolSounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolSounds.swift; sourceTree = "<group>"; };
-		742646BB308A1FD30003BC9D /* GardenGuidance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GardenGuidance.swift; sourceTree = "<group>"; };
-		742646BD308A20810003BC9D /* GameCenterService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCenterService.swift; sourceTree = "<group>"; };
+		668A57F2A3F304EB8C7D9C75 /* ToolSounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolSounds.swift; sourceTree = "<group>"; };
 		7AA108AE6C6AC36575DB78F3 /* Weeds.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Weeds.entitlements; sourceTree = "<group>"; };
+		7BF136E13AE6DDB5E5B9B7B8 /* ReadingChairView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingChairView.swift; sourceTree = "<group>"; };
 		7C35337C222AC4A10208B0DF /* GardenMusic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GardenMusic.swift; sourceTree = "<group>"; };
 		8ADEE66902B8EFC18123C9C5 /* WeatherService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherService.swift; sourceTree = "<group>"; };
 		8FD5564BD2ED70819AC0AAA0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		A5D3B066586663AAFB000FB7 /* GardenGuidance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GardenGuidance.swift; sourceTree = "<group>"; };
 		B16BFDD293B42677979B4ABD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B18F667FD0B635CF092C0A25 /* WeedsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeedsApp.swift; sourceTree = "<group>"; };
 		B67346D82DFE879085E02946 /* GardenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GardenView.swift; sourceTree = "<group>"; };
 		D0B1C7F5900DC59AA42B7FFD /* DebugPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugPanel.swift; sourceTree = "<group>"; };
+		D229FD3E3466E299755AB14A /* GameCenterService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCenterService.swift; sourceTree = "<group>"; };
 		E2F9E7880DD87F070FBCE442 /* GardenBookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GardenBookView.swift; sourceTree = "<group>"; };
 		E4FBA78C17E7C9CC07265B9F /* VisitorController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorController.swift; sourceTree = "<group>"; };
-		F15A3BCE746E6BA317849A77 /* Garden.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Garden.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F15A3BCE746E6BA317849A77 /* Weeds.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Weeds.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F5A44D90A300729FE68AFD5D /* ShopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopView.swift; sourceTree = "<group>"; };
 		FDC6326F6CC8D6AD5F7FBD3B /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -82,7 +86,7 @@
 		6DA1B34877C4200718980176 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F15A3BCE746E6BA317849A77 /* Garden.app */,
+				F15A3BCE746E6BA317849A77 /* Weeds.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -99,28 +103,30 @@
 		B55A37BFE34E51D43A6FCC16 /* App */ = {
 			isa = PBXGroup;
 			children = (
+				215C9799F8E464FE8DEE26A2 /* AmbientSounds.swift */,
 				FDC6326F6CC8D6AD5F7FBD3B /* AppSettings.swift */,
 				B16BFDD293B42677979B4ABD /* Assets.xcassets */,
 				D0B1C7F5900DC59AA42B7FFD /* DebugPanel.swift */,
+				D229FD3E3466E299755AB14A /* GameCenterService.swift */,
 				E2F9E7880DD87F070FBCE442 /* GardenBookView.swift */,
+				A5D3B066586663AAFB000FB7 /* GardenGuidance.swift */,
 				7C35337C222AC4A10208B0DF /* GardenMusic.swift */,
 				0F46A0FC64D7B62EF318F0FD /* GardenStore.swift */,
 				B67346D82DFE879085E02946 /* GardenView.swift */,
 				8FD5564BD2ED70819AC0AAA0 /* Info.plist */,
 				5FD60C31283DA7DA6190128E /* LocationService.swift */,
+				264E400C24F1B7CEB0633E50 /* PlantCard.swift */,
+				7BF136E13AE6DDB5E5B9B7B8 /* ReadingChairView.swift */,
 				27270849A67E501401C4FF1F /* ReminderService.swift */,
 				5D1D3EA5D85EEC313610E334 /* SettingsView.swift */,
 				F5A44D90A300729FE68AFD5D /* ShopView.swift */,
 				3CE8723765A8AED5B3311090 /* Theme.swift */,
 				066DA3A9071863E5C9DD3544 /* ThemePreview.swift */,
+				668A57F2A3F304EB8C7D9C75 /* ToolSounds.swift */,
 				E4FBA78C17E7C9CC07265B9F /* VisitorController.swift */,
 				8ADEE66902B8EFC18123C9C5 /* WeatherService.swift */,
 				7AA108AE6C6AC36575DB78F3 /* Weeds.entitlements */,
 				B18F667FD0B635CF092C0A25 /* WeedsApp.swift */,
-				742646B7308A1CC00003BC9D /* PlantCard.swift */,
-				742646B9308A1FC60003BC9D /* ToolSounds.swift */,
-				742646BB308A1FD30003BC9D /* GardenGuidance.swift */,
-				742646BD308A20810003BC9D /* GameCenterService.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -146,7 +152,7 @@
 				44388489CA595C3570F19D84 /* WeedsArt */,
 			);
 			productName = Weeds;
-			productReference = F15A3BCE746E6BA317849A77 /* Garden.app */;
+			productReference = F15A3BCE746E6BA317849A77 /* Weeds.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -156,7 +162,9 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastUpgradeCheck = 2710;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+				};
 			};
 			buildConfigurationList = 6C12A24DCCBC95E789F6BC3E /* Build configuration list for PBXProject "Weeds" */;
 			developmentRegion = en;
@@ -196,22 +204,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B88E376F245351A337676493 /* AmbientSounds.swift in Sources */,
 				E09F23E9ECD784704A2F928D /* AppSettings.swift in Sources */,
 				DFCC72A264A411A38EF14576 /* DebugPanel.swift in Sources */,
-				742646BE308A20810003BC9D /* GameCenterService.swift in Sources */,
+				171B847C869394706D95B536 /* GameCenterService.swift in Sources */,
 				3A6B53DC16F81DD57CD836E2 /* GardenBookView.swift in Sources */,
-				742646B8308A1CC00003BC9D /* PlantCard.swift in Sources */,
-				742646BA308A1FC60003BC9D /* ToolSounds.swift in Sources */,
+				1BDDC0ED75C0D297AE4259C4 /* GardenGuidance.swift in Sources */,
 				AA7C368033CAFADE1CEAFE05 /* GardenMusic.swift in Sources */,
-				742646BC308A1FD30003BC9D /* GardenGuidance.swift in Sources */,
 				50DDCCABD40363F1A51AE08F /* GardenStore.swift in Sources */,
 				B4904A815C6E1BC2077465D7 /* GardenView.swift in Sources */,
 				F044EF8E8E45BDAFCE3BE536 /* LocationService.swift in Sources */,
+				1DC17537450D971DC407C8AB /* PlantCard.swift in Sources */,
+				C1B9904289A5FC7345CB044D /* ReadingChairView.swift in Sources */,
 				E2C6719588CC6A2C90C01C8D /* ReminderService.swift in Sources */,
 				6F57641D02FC8B221D4BBE9E /* SettingsView.swift in Sources */,
 				94E2F26083D9DF8B35136CE2 /* ShopView.swift in Sources */,
 				1CC6BF2CC1FD97FFFF85F853 /* Theme.swift in Sources */,
 				01D30F0D19B17E74A904F334 /* ThemePreview.swift in Sources */,
+				EE635E8F81ED9FF5A831D347 /* ToolSounds.swift in Sources */,
 				85A71BBC64395A87BEF75770 /* VisitorController.swift in Sources */,
 				21FC4CF44E78A323F0EE5F93 /* WeatherService.swift in Sources */,
 				6786AAF6D1380A0D9063CAD6 /* WeedsApp.swift in Sources */,
@@ -225,7 +235,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -256,11 +265,9 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -281,7 +288,6 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
-				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -295,19 +301,7 @@
 				CODE_SIGN_ENTITLEMENTS = App/Weeds.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEAD_CODE_STRIPPING = YES;
-				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
-				ENABLE_INCOMING_NETWORK_CONNECTIONS = NO;
-				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
-				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = NO;
-				ENABLE_RESOURCE_ACCESS_BLUETOOTH = NO;
-				ENABLE_RESOURCE_ACCESS_CALENDARS = NO;
-				ENABLE_RESOURCE_ACCESS_CAMERA = NO;
-				ENABLE_RESOURCE_ACCESS_CONTACTS = NO;
-				ENABLE_RESOURCE_ACCESS_LOCATION = NO;
-				ENABLE_RESOURCE_ACCESS_PRINTING = NO;
-				ENABLE_RESOURCE_ACCESS_USB = NO;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = App/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -327,7 +321,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -358,11 +351,9 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -376,7 +367,6 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
-				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
@@ -390,19 +380,7 @@
 				CODE_SIGN_ENTITLEMENTS = App/Weeds.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEAD_CODE_STRIPPING = YES;
-				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
-				ENABLE_INCOMING_NETWORK_CONNECTIONS = NO;
-				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
-				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = NO;
-				ENABLE_RESOURCE_ACCESS_BLUETOOTH = NO;
-				ENABLE_RESOURCE_ACCESS_CALENDARS = NO;
-				ENABLE_RESOURCE_ACCESS_CAMERA = NO;
-				ENABLE_RESOURCE_ACCESS_CONTACTS = NO;
-				ENABLE_RESOURCE_ACCESS_LOCATION = NO;
-				ENABLE_RESOURCE_ACCESS_PRINTING = NO;
-				ENABLE_RESOURCE_ACCESS_USB = NO;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = App/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -428,7 +406,7 @@
 				D85A304C0F902DCC14052E10 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		6C12A24DCCBC95E789F6BC3E /* Build configuration list for PBXProject "Weeds" */ = {
 			isa = XCConfigurationList;
@@ -437,7 +415,7 @@
 				C451DA9C04DAED5A1B0350B6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 

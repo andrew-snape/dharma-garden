@@ -8,7 +8,7 @@ struct DebugPanel: View {
     @ObservedObject var store: GardenStore
     /// Puts a visitor of the chosen species on the patch (the garden view owns the visitor list).
     var onSpawn: (VisitorSpecies) -> Void
-    @State private var expanded = false
+    @State private var expanded = true
     @State private var autoWater = true
     @State private var confirmReset = false
 
