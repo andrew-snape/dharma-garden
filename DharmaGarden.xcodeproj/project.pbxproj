@@ -7,140 +7,143 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		01D30F0D19B17E74A904F334 /* ThemePreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 066DA3A9071863E5C9DD3544 /* ThemePreview.swift */; };
-		0EC15AC8677DFAF8655433A8 /* DharmaGardenCore in Frameworks */ = {isa = PBXBuildFile; productRef = D49A6544422175F6B00570EA /* DharmaGardenCore */; };
-		171B847C869394706D95B536 /* GameCenterService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D229FD3E3466E299755AB14A /* GameCenterService.swift */; };
-		1BDDC0ED75C0D297AE4259C4 /* GardenGuidance.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D3B066586663AAFB000FB7 /* GardenGuidance.swift */; };
-		1CC6BF2CC1FD97FFFF85F853 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CE8723765A8AED5B3311090 /* Theme.swift */; };
-		1DC17537450D971DC407C8AB /* PlantCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 264E400C24F1B7CEB0633E50 /* PlantCard.swift */; };
-		21FC4CF44E78A323F0EE5F93 /* WeatherService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADEE66902B8EFC18123C9C5 /* WeatherService.swift */; };
-		3A6B53DC16F81DD57CD836E2 /* GardenBookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F9E7880DD87F070FBCE442 /* GardenBookView.swift */; };
-		50DDCCABD40363F1A51AE08F /* GardenStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F46A0FC64D7B62EF318F0FD /* GardenStore.swift */; };
-		6786AAF6D1380A0D9063CAD6 /* DharmaGardenApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18F667FD0B635CF092C0A25 /* DharmaGardenApp.swift */; };
-		6F57641D02FC8B221D4BBE9E /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1D3EA5D85EEC313610E334 /* SettingsView.swift */; };
-		7E0D0205C2783073BCD03B00 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B16BFDD293B42677979B4ABD /* Assets.xcassets */; };
-		85A71BBC64395A87BEF75770 /* VisitorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4FBA78C17E7C9CC07265B9F /* VisitorController.swift */; };
-		94E2F26083D9DF8B35136CE2 /* ShopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5A44D90A300729FE68AFD5D /* ShopView.swift */; };
-		AA7C368033CAFADE1CEAFE05 /* GardenMusic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C35337C222AC4A10208B0DF /* GardenMusic.swift */; };
-		B4904A815C6E1BC2077465D7 /* GardenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67346D82DFE879085E02946 /* GardenView.swift */; };
-		B88E376F245351A337676493 /* AmbientSounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215C9799F8E464FE8DEE26A2 /* AmbientSounds.swift */; };
-		C1B9904289A5FC7345CB044D /* ReadingChairView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BF136E13AE6DDB5E5B9B7B8 /* ReadingChairView.swift */; };
-		C278C14BDF1B05A3D9441140 /* DharmaGardenArt in Frameworks */ = {isa = PBXBuildFile; productRef = 44388489CA595C3570F19D84 /* DharmaGardenArt */; };
-		DFCC72A264A411A38EF14576 /* DebugPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B1C7F5900DC59AA42B7FFD /* DebugPanel.swift */; };
-		E09F23E9ECD784704A2F928D /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC6326F6CC8D6AD5F7FBD3B /* AppSettings.swift */; };
-		E2C6719588CC6A2C90C01C8D /* ReminderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27270849A67E501401C4FF1F /* ReminderService.swift */; };
-		EE635E8F81ED9FF5A831D347 /* ToolSounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668A57F2A3F304EB8C7D9C75 /* ToolSounds.swift */; };
-		F044EF8E8E45BDAFCE3BE536 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FD60C31283DA7DA6190128E /* LocationService.swift */; };
+		120A7BF392D96B15D155ECE0 /* GardenGuidance.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6845B298AE95C6C1BDE7C35 /* GardenGuidance.swift */; };
+		124BF283AA2CC17BF3D94188 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B774EA17ECEA6DF04D964B0A /* LocationService.swift */; };
+		1692C4EBB38A145F1108ECF1 /* AmbientSounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06C75918CD51CC4CF6F273C /* AmbientSounds.swift */; };
+		37DA83F4F12B05FFD86F4C1B /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7FF4B1C92140E2DE75AF0E /* Theme.swift */; };
+		46863F1DB040A6600C38001C /* DharmaGardenCore in Frameworks */ = {isa = PBXBuildFile; productRef = 2D85935568CD44BB6120F5F6 /* DharmaGardenCore */; };
+		4707D7E9F3E646EF1D15D390 /* GardenBookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD72A9EEE27D2ACB68E4D9E /* GardenBookView.swift */; };
+		48A9257596009D80E31D844A /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4182632B1EE9B8B8D9FC4A /* AppSettings.swift */; };
+		49D1DE7E886E4618BE0E0543 /* DebugPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DA62AB8AAB960746682F9FA /* DebugPanel.swift */; };
+		805EEA78C37A369BF45F671C /* WeatherService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78CD3C4D6071146064A35915 /* WeatherService.swift */; };
+		87F176A0159BC1D74788470A /* ReadingChairView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C785BB77A4F024BC7AF4F5 /* ReadingChairView.swift */; };
+		8D88FEA0ECA9F5CC74314F9C /* GardenAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66376D5E823788DA1440ADAD /* GardenAudio.swift */; };
+		9E170E4742B57653A78A1440 /* GardenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ED61337202CF73DB46B7390 /* GardenView.swift */; };
+		B1EE8E73640B7A0A562EC3CF /* ReminderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713CEF9A59EB1493A905659F /* ReminderService.swift */; };
+		BBEBABA76F41CB7249CD6292 /* ThemePreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5409521DAE2374B38D6A8EC /* ThemePreview.swift */; };
+		C53C4C12A6B4FC94E7B29FA3 /* GardenMusic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD93EEB2565288BA26BE4AC /* GardenMusic.swift */; };
+		CAA2B3D47F75755A34AB4C15 /* DharmaGardenApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC1E628E0DB231111932F3E /* DharmaGardenApp.swift */; };
+		CD6527F1F3465800642FCE91 /* DharmaGardenArt in Frameworks */ = {isa = PBXBuildFile; productRef = 32094C6E2B25AEF7417B9CFE /* DharmaGardenArt */; };
+		CFECC78CD1507CC82E37C4AC /* GardenStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BB316E635AA8693BA09B662 /* GardenStore.swift */; };
+		D2DBE679670A2796B08B2477 /* GameCenterService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C8CC90584C4650181FBE292 /* GameCenterService.swift */; };
+		D9DE9D4A72AF10024E8A28AC /* PlantCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C86D51DAD5C088B056CBFE67 /* PlantCard.swift */; };
+		DADC85B621DA5FA9F036FB39 /* ToolSounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BB88443B211B547D9D2FFB /* ToolSounds.swift */; };
+		DB28C68E544FEA2CA1E981B2 /* ShopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F15B1F0C61BB167FEBC1A49 /* ShopView.swift */; };
+		DCB0C80D7ED1BA6C61ACEF15 /* VisitorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72DDE22DA73FB8BA1D1C9763 /* VisitorController.swift */; };
+		EA7921263C21FA2BAB9FC91C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4496B816A85AC376160CC506 /* Assets.xcassets */; };
+		FEFF2537C47973341799D787 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8668FA9C4A5B75294B46A14B /* SettingsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		066DA3A9071863E5C9DD3544 /* ThemePreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemePreview.swift; sourceTree = "<group>"; };
-		0F46A0FC64D7B62EF318F0FD /* GardenStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GardenStore.swift; sourceTree = "<group>"; };
-		215C9799F8E464FE8DEE26A2 /* AmbientSounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmbientSounds.swift; sourceTree = "<group>"; };
-		264E400C24F1B7CEB0633E50 /* PlantCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantCard.swift; sourceTree = "<group>"; };
-		27270849A67E501401C4FF1F /* ReminderService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderService.swift; sourceTree = "<group>"; };
-		353A816A49AC275D05C50C54 /* DharmaGardenCore */ = {isa = PBXFileReference; lastKnownFileType = folder; path = DharmaGardenCore; sourceTree = SOURCE_ROOT; };
-		3CE8723765A8AED5B3311090 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
-		5D1D3EA5D85EEC313610E334 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
-		5FD60C31283DA7DA6190128E /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
-		668A57F2A3F304EB8C7D9C75 /* ToolSounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolSounds.swift; sourceTree = "<group>"; };
-		7AA108AE6C6AC36575DB78F3 /* DharmaGarden.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DharmaGarden.entitlements; sourceTree = "<group>"; };
-		7BF136E13AE6DDB5E5B9B7B8 /* ReadingChairView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingChairView.swift; sourceTree = "<group>"; };
-		7C35337C222AC4A10208B0DF /* GardenMusic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GardenMusic.swift; sourceTree = "<group>"; };
-		8ADEE66902B8EFC18123C9C5 /* WeatherService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherService.swift; sourceTree = "<group>"; };
-		8FD5564BD2ED70819AC0AAA0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		A5D3B066586663AAFB000FB7 /* GardenGuidance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GardenGuidance.swift; sourceTree = "<group>"; };
-		B16BFDD293B42677979B4ABD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		B18F667FD0B635CF092C0A25 /* DharmaGardenApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DharmaGardenApp.swift; sourceTree = "<group>"; };
-		B67346D82DFE879085E02946 /* GardenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GardenView.swift; sourceTree = "<group>"; };
-		D0B1C7F5900DC59AA42B7FFD /* DebugPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugPanel.swift; sourceTree = "<group>"; };
-		D229FD3E3466E299755AB14A /* GameCenterService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCenterService.swift; sourceTree = "<group>"; };
-		E2F9E7880DD87F070FBCE442 /* GardenBookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GardenBookView.swift; sourceTree = "<group>"; };
-		E4FBA78C17E7C9CC07265B9F /* VisitorController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorController.swift; sourceTree = "<group>"; };
-		F15A3BCE746E6BA317849A77 /* Dharma Garden.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Dharma Garden.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		F5A44D90A300729FE68AFD5D /* ShopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopView.swift; sourceTree = "<group>"; };
-		FDC6326F6CC8D6AD5F7FBD3B /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
+		1A51ED1AB248B86EC827673E /* DharmaGardenCore */ = {isa = PBXFileReference; lastKnownFileType = folder; name = DharmaGardenCore; path = DharmaGardenCore; sourceTree = SOURCE_ROOT; };
+		1D4182632B1EE9B8B8D9FC4A /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
+		2AA97850FA1E28841F162304 /* DharmaGarden.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DharmaGarden.entitlements; sourceTree = "<group>"; };
+		3199D474B3BCC55B49CBC047 /* DharmaGarden.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DharmaGarden.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3BC1E628E0DB231111932F3E /* DharmaGardenApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DharmaGardenApp.swift; sourceTree = "<group>"; };
+		43C785BB77A4F024BC7AF4F5 /* ReadingChairView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingChairView.swift; sourceTree = "<group>"; };
+		4496B816A85AC376160CC506 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		4DA62AB8AAB960746682F9FA /* DebugPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugPanel.swift; sourceTree = "<group>"; };
+		5AD72A9EEE27D2ACB68E4D9E /* GardenBookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GardenBookView.swift; sourceTree = "<group>"; };
+		5C8CC90584C4650181FBE292 /* GameCenterService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCenterService.swift; sourceTree = "<group>"; };
+		5ED61337202CF73DB46B7390 /* GardenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GardenView.swift; sourceTree = "<group>"; };
+		66376D5E823788DA1440ADAD /* GardenAudio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GardenAudio.swift; sourceTree = "<group>"; };
+		713CEF9A59EB1493A905659F /* ReminderService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderService.swift; sourceTree = "<group>"; };
+		72BB88443B211B547D9D2FFB /* ToolSounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolSounds.swift; sourceTree = "<group>"; };
+		72DDE22DA73FB8BA1D1C9763 /* VisitorController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorController.swift; sourceTree = "<group>"; };
+		7532CA49B106650702D19848 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		78CD3C4D6071146064A35915 /* WeatherService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherService.swift; sourceTree = "<group>"; };
+		7F15B1F0C61BB167FEBC1A49 /* ShopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopView.swift; sourceTree = "<group>"; };
+		8668FA9C4A5B75294B46A14B /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		9BB316E635AA8693BA09B662 /* GardenStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GardenStore.swift; sourceTree = "<group>"; };
+		9BD93EEB2565288BA26BE4AC /* GardenMusic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GardenMusic.swift; sourceTree = "<group>"; };
+		A5409521DAE2374B38D6A8EC /* ThemePreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemePreview.swift; sourceTree = "<group>"; };
+		AE7FF4B1C92140E2DE75AF0E /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		B6845B298AE95C6C1BDE7C35 /* GardenGuidance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GardenGuidance.swift; sourceTree = "<group>"; };
+		B774EA17ECEA6DF04D964B0A /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
+		C86D51DAD5C088B056CBFE67 /* PlantCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantCard.swift; sourceTree = "<group>"; };
+		D06C75918CD51CC4CF6F273C /* AmbientSounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmbientSounds.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		B2A4BFD1DAE50B2615EAF9B3 /* Frameworks */ = {
+		24EF37EB158226580E3993B1 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0EC15AC8677DFAF8655433A8 /* DharmaGardenCore in Frameworks */,
-				C278C14BDF1B05A3D9441140 /* DharmaGardenArt in Frameworks */,
+				46863F1DB040A6600C38001C /* DharmaGardenCore in Frameworks */,
+				CD6527F1F3465800642FCE91 /* DharmaGardenArt in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		6B4DC6D8767DB04A57C61A59 /* Packages */ = {
+		0DC07BF942C8233169AC43B9 = {
 			isa = PBXGroup;
 			children = (
-				353A816A49AC275D05C50C54 /* DharmaGardenCore */,
+				387DBE14791B05B9C2D6A5E9 /* App */,
+				604970BC04BF93D39BA68BA3 /* Packages */,
+				129227C9639445731D6A6E75 /* Products */,
 			);
-			name = Packages;
 			sourceTree = "<group>";
 		};
-		6DA1B34877C4200718980176 /* Products */ = {
+		129227C9639445731D6A6E75 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F15A3BCE746E6BA317849A77 /* Dharma Garden.app */,
+				3199D474B3BCC55B49CBC047 /* DharmaGarden.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		91B8B79DE818B5725A99A048 = {
+		387DBE14791B05B9C2D6A5E9 /* App */ = {
 			isa = PBXGroup;
 			children = (
-				B55A37BFE34E51D43A6FCC16 /* App */,
-				6B4DC6D8767DB04A57C61A59 /* Packages */,
-				6DA1B34877C4200718980176 /* Products */,
-			);
-			sourceTree = "<group>";
-		};
-		B55A37BFE34E51D43A6FCC16 /* App */ = {
-			isa = PBXGroup;
-			children = (
-				215C9799F8E464FE8DEE26A2 /* AmbientSounds.swift */,
-				FDC6326F6CC8D6AD5F7FBD3B /* AppSettings.swift */,
-				B16BFDD293B42677979B4ABD /* Assets.xcassets */,
-				D0B1C7F5900DC59AA42B7FFD /* DebugPanel.swift */,
-				D229FD3E3466E299755AB14A /* GameCenterService.swift */,
-				E2F9E7880DD87F070FBCE442 /* GardenBookView.swift */,
-				A5D3B066586663AAFB000FB7 /* GardenGuidance.swift */,
-				7C35337C222AC4A10208B0DF /* GardenMusic.swift */,
-				0F46A0FC64D7B62EF318F0FD /* GardenStore.swift */,
-				B67346D82DFE879085E02946 /* GardenView.swift */,
-				8FD5564BD2ED70819AC0AAA0 /* Info.plist */,
-				5FD60C31283DA7DA6190128E /* LocationService.swift */,
-				264E400C24F1B7CEB0633E50 /* PlantCard.swift */,
-				7BF136E13AE6DDB5E5B9B7B8 /* ReadingChairView.swift */,
-				27270849A67E501401C4FF1F /* ReminderService.swift */,
-				5D1D3EA5D85EEC313610E334 /* SettingsView.swift */,
-				F5A44D90A300729FE68AFD5D /* ShopView.swift */,
-				3CE8723765A8AED5B3311090 /* Theme.swift */,
-				066DA3A9071863E5C9DD3544 /* ThemePreview.swift */,
-				668A57F2A3F304EB8C7D9C75 /* ToolSounds.swift */,
-				E4FBA78C17E7C9CC07265B9F /* VisitorController.swift */,
-				8ADEE66902B8EFC18123C9C5 /* WeatherService.swift */,
-				7AA108AE6C6AC36575DB78F3 /* DharmaGarden.entitlements */,
-				B18F667FD0B635CF092C0A25 /* DharmaGardenApp.swift */,
+				D06C75918CD51CC4CF6F273C /* AmbientSounds.swift */,
+				1D4182632B1EE9B8B8D9FC4A /* AppSettings.swift */,
+				4496B816A85AC376160CC506 /* Assets.xcassets */,
+				4DA62AB8AAB960746682F9FA /* DebugPanel.swift */,
+				2AA97850FA1E28841F162304 /* DharmaGarden.entitlements */,
+				3BC1E628E0DB231111932F3E /* DharmaGardenApp.swift */,
+				5C8CC90584C4650181FBE292 /* GameCenterService.swift */,
+				66376D5E823788DA1440ADAD /* GardenAudio.swift */,
+				5AD72A9EEE27D2ACB68E4D9E /* GardenBookView.swift */,
+				B6845B298AE95C6C1BDE7C35 /* GardenGuidance.swift */,
+				9BD93EEB2565288BA26BE4AC /* GardenMusic.swift */,
+				9BB316E635AA8693BA09B662 /* GardenStore.swift */,
+				5ED61337202CF73DB46B7390 /* GardenView.swift */,
+				7532CA49B106650702D19848 /* Info.plist */,
+				B774EA17ECEA6DF04D964B0A /* LocationService.swift */,
+				C86D51DAD5C088B056CBFE67 /* PlantCard.swift */,
+				43C785BB77A4F024BC7AF4F5 /* ReadingChairView.swift */,
+				713CEF9A59EB1493A905659F /* ReminderService.swift */,
+				8668FA9C4A5B75294B46A14B /* SettingsView.swift */,
+				7F15B1F0C61BB167FEBC1A49 /* ShopView.swift */,
+				AE7FF4B1C92140E2DE75AF0E /* Theme.swift */,
+				A5409521DAE2374B38D6A8EC /* ThemePreview.swift */,
+				72BB88443B211B547D9D2FFB /* ToolSounds.swift */,
+				72DDE22DA73FB8BA1D1C9763 /* VisitorController.swift */,
+				78CD3C4D6071146064A35915 /* WeatherService.swift */,
 			);
 			path = App;
+			sourceTree = "<group>";
+		};
+		604970BC04BF93D39BA68BA3 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				1A51ED1AB248B86EC827673E /* DharmaGardenCore */,
+			);
+			name = Packages;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		1123670FF3A2D139D8F8D977 /* DharmaGarden */ = {
+		53602EE0D4B37B5562EFDFD6 /* DharmaGarden */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 32E3E1E0765E144B47F15115 /* Build configuration list for PBXNativeTarget "DharmaGarden" */;
+			buildConfigurationList = B458846F27839ACCAB88D6B3 /* Build configuration list for PBXNativeTarget "DharmaGarden" */;
 			buildPhases = (
-				4412932CD383A761DA012592 /* Sources */,
-				2A1B1A9DD1FD915B155BEC58 /* Resources */,
-				B2A4BFD1DAE50B2615EAF9B3 /* Frameworks */,
+				6E0755EDBC3FE7C8004FBA2B /* Sources */,
+				AA052142B2FC651A1A8983C3 /* Resources */,
+				24EF37EB158226580E3993B1 /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -148,88 +151,170 @@
 			);
 			name = DharmaGarden;
 			packageProductDependencies = (
-				D49A6544422175F6B00570EA /* DharmaGardenCore */,
-				44388489CA595C3570F19D84 /* DharmaGardenArt */,
+				2D85935568CD44BB6120F5F6 /* DharmaGardenCore */,
+				32094C6E2B25AEF7417B9CFE /* DharmaGardenArt */,
 			);
 			productName = DharmaGarden;
-			productReference = F15A3BCE746E6BA317849A77 /* Dharma Garden.app */;
+			productReference = 3199D474B3BCC55B49CBC047 /* DharmaGarden.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		B8218C113AEEE672B990EE97 /* Project object */ = {
+		51491D65C4F2AB3A01AE1F97 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+				};
 			};
-			buildConfigurationList = 6C12A24DCCBC95E789F6BC3E /* Build configuration list for PBXProject "DharmaGarden" */;
+			buildConfigurationList = B7D9C51611B20F4CDE38E47B /* Build configuration list for PBXProject "DharmaGarden" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				Base,
 				en,
 			);
-			mainGroup = 91B8B79DE818B5725A99A048;
+			mainGroup = 0DC07BF942C8233169AC43B9;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				1FF4217661D4D6C6BD260348 /* XCLocalSwiftPackageReference "DharmaGardenCore" */,
+				FB610C710BADACD39C8A482A /* XCLocalSwiftPackageReference "DharmaGardenCore" */,
 			);
 			preferredProjectObjectVersion = 77;
-			productRefGroup = 6DA1B34877C4200718980176 /* Products */;
+			productRefGroup = 129227C9639445731D6A6E75 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				1123670FF3A2D139D8F8D977 /* DharmaGarden */,
+				53602EE0D4B37B5562EFDFD6 /* DharmaGarden */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		2A1B1A9DD1FD915B155BEC58 /* Resources */ = {
+		AA052142B2FC651A1A8983C3 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7E0D0205C2783073BCD03B00 /* Assets.xcassets in Resources */,
+				EA7921263C21FA2BAB9FC91C /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		4412932CD383A761DA012592 /* Sources */ = {
+		6E0755EDBC3FE7C8004FBA2B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B88E376F245351A337676493 /* AmbientSounds.swift in Sources */,
-				E09F23E9ECD784704A2F928D /* AppSettings.swift in Sources */,
-				DFCC72A264A411A38EF14576 /* DebugPanel.swift in Sources */,
-				171B847C869394706D95B536 /* GameCenterService.swift in Sources */,
-				3A6B53DC16F81DD57CD836E2 /* GardenBookView.swift in Sources */,
-				1BDDC0ED75C0D297AE4259C4 /* GardenGuidance.swift in Sources */,
-				AA7C368033CAFADE1CEAFE05 /* GardenMusic.swift in Sources */,
-				50DDCCABD40363F1A51AE08F /* GardenStore.swift in Sources */,
-				B4904A815C6E1BC2077465D7 /* GardenView.swift in Sources */,
-				F044EF8E8E45BDAFCE3BE536 /* LocationService.swift in Sources */,
-				1DC17537450D971DC407C8AB /* PlantCard.swift in Sources */,
-				C1B9904289A5FC7345CB044D /* ReadingChairView.swift in Sources */,
-				E2C6719588CC6A2C90C01C8D /* ReminderService.swift in Sources */,
-				6F57641D02FC8B221D4BBE9E /* SettingsView.swift in Sources */,
-				94E2F26083D9DF8B35136CE2 /* ShopView.swift in Sources */,
-				1CC6BF2CC1FD97FFFF85F853 /* Theme.swift in Sources */,
-				01D30F0D19B17E74A904F334 /* ThemePreview.swift in Sources */,
-				EE635E8F81ED9FF5A831D347 /* ToolSounds.swift in Sources */,
-				85A71BBC64395A87BEF75770 /* VisitorController.swift in Sources */,
-				21FC4CF44E78A323F0EE5F93 /* WeatherService.swift in Sources */,
-				6786AAF6D1380A0D9063CAD6 /* DharmaGardenApp.swift in Sources */,
+				1692C4EBB38A145F1108ECF1 /* AmbientSounds.swift in Sources */,
+				48A9257596009D80E31D844A /* AppSettings.swift in Sources */,
+				49D1DE7E886E4618BE0E0543 /* DebugPanel.swift in Sources */,
+				CAA2B3D47F75755A34AB4C15 /* DharmaGardenApp.swift in Sources */,
+				D2DBE679670A2796B08B2477 /* GameCenterService.swift in Sources */,
+				8D88FEA0ECA9F5CC74314F9C /* GardenAudio.swift in Sources */,
+				4707D7E9F3E646EF1D15D390 /* GardenBookView.swift in Sources */,
+				120A7BF392D96B15D155ECE0 /* GardenGuidance.swift in Sources */,
+				C53C4C12A6B4FC94E7B29FA3 /* GardenMusic.swift in Sources */,
+				CFECC78CD1507CC82E37C4AC /* GardenStore.swift in Sources */,
+				9E170E4742B57653A78A1440 /* GardenView.swift in Sources */,
+				124BF283AA2CC17BF3D94188 /* LocationService.swift in Sources */,
+				D9DE9D4A72AF10024E8A28AC /* PlantCard.swift in Sources */,
+				87F176A0159BC1D74788470A /* ReadingChairView.swift in Sources */,
+				B1EE8E73640B7A0A562EC3CF /* ReminderService.swift in Sources */,
+				FEFF2537C47973341799D787 /* SettingsView.swift in Sources */,
+				DB28C68E544FEA2CA1E981B2 /* ShopView.swift in Sources */,
+				37DA83F4F12B05FFD86F4C1B /* Theme.swift in Sources */,
+				BBEBABA76F41CB7249CD6292 /* ThemePreview.swift in Sources */,
+				DADC85B621DA5FA9F036FB39 /* ToolSounds.swift in Sources */,
+				DCB0C80D7ED1BA6C61ACEF15 /* VisitorController.swift in Sources */,
+				805EEA78C37A369BF45F671C /* WeatherService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		964EDCC3CB40BB58CC550315 /* Debug */ = {
+		21BA94A6A28BDBBE462C0C4C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		65699749C170AAC607124605 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = App/DharmaGarden.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = App/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.snape.dharmagarden;
+				PRODUCT_NAME = "Dharma Garden";
+				SDKROOT = macosx;
+				SWIFT_STRICT_CONCURRENCY = minimal;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+		D9A498EF1B142F1965CA2B56 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -292,17 +377,13 @@
 			};
 			name = Debug;
 		};
-		9E89078AAE98E9C45C99960D /* Debug */ = {
+		EF9E8C6090AFDAFC2FDC9E1F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = App/DharmaGarden.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
-				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = LE2JMFSWAQ;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = App/Info.plist;
@@ -313,114 +394,29 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.snape.dharmagarden;
 				PRODUCT_NAME = "Dharma Garden";
-				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
 				SWIFT_STRICT_CONCURRENCY = minimal;
 				SWIFT_VERSION = 6.0;
 			};
 			name = Debug;
 		};
-		C451DA9C04DAED5A1B0350B6 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				MTL_FAST_MATH = YES;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
-				SWIFT_VERSION = 5.0;
-			};
-			name = Release;
-		};
-		D85A304C0F902DCC14052E10 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = App/DharmaGarden.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = LE2JMFSWAQ;
-				ENABLE_HARDENED_RUNTIME = YES;
-				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = App/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.snape.dharmagarden;
-				PRODUCT_NAME = "Dharma Garden";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				SDKROOT = macosx;
-				SWIFT_STRICT_CONCURRENCY = minimal;
-				SWIFT_VERSION = 6.0;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		32E3E1E0765E144B47F15115 /* Build configuration list for PBXNativeTarget "DharmaGarden" */ = {
+		B458846F27839ACCAB88D6B3 /* Build configuration list for PBXNativeTarget "DharmaGarden" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				9E89078AAE98E9C45C99960D /* Debug */,
-				D85A304C0F902DCC14052E10 /* Release */,
+				EF9E8C6090AFDAFC2FDC9E1F /* Debug */,
+				65699749C170AAC607124605 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		6C12A24DCCBC95E789F6BC3E /* Build configuration list for PBXProject "DharmaGarden" */ = {
+		B7D9C51611B20F4CDE38E47B /* Build configuration list for PBXProject "DharmaGarden" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				964EDCC3CB40BB58CC550315 /* Debug */,
-				C451DA9C04DAED5A1B0350B6 /* Release */,
+				D9A498EF1B142F1965CA2B56 /* Debug */,
+				21BA94A6A28BDBBE462C0C4C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
@@ -428,22 +424,22 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		1FF4217661D4D6C6BD260348 /* XCLocalSwiftPackageReference "DharmaGardenCore" */ = {
+		FB610C710BADACD39C8A482A /* XCLocalSwiftPackageReference "DharmaGardenCore" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = DharmaGardenCore;
 		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		44388489CA595C3570F19D84 /* DharmaGardenArt */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = DharmaGardenArt;
-		};
-		D49A6544422175F6B00570EA /* DharmaGardenCore */ = {
+		2D85935568CD44BB6120F5F6 /* DharmaGardenCore */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = DharmaGardenCore;
 		};
+		32094C6E2B25AEF7417B9CFE /* DharmaGardenArt */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DharmaGardenArt;
+		};
 /* End XCSwiftPackageProductDependency section */
 	};
-	rootObject = B8218C113AEEE672B990EE97 /* Project object */;
+	rootObject = 51491D65C4F2AB3A01AE1F97 /* Project object */;
 }

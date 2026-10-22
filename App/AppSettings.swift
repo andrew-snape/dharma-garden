@@ -19,12 +19,17 @@ final class AppSettings: ObservableObject {
         static let musicVolume = "musicVolume"
         static let soundEffectsEnabled = "soundEffectsEnabled"
         static let ambientEnabled = "ambientEnabled"
+        static let effectsVolume = "effectsVolume"
+        static let ambientVolume = "ambientVolume"
         static let choreReadyAt = "choreReadyAt"
         static let lastSummaryDay = "lastSummaryDay"
     }
 
     /// Music volume when the user has not chosen one.
     static let defaultMusicVolume = 0.6
+    /// Tool sound and ambience volumes when the user has not chosen them.
+    static let defaultEffectsVolume = 0.7
+    static let defaultAmbientVolume = 0.7
 
     /// 09:00, in minutes after midnight.
     static let defaultReminderMinutes = 9 * 60
@@ -90,6 +95,14 @@ final class AppSettings: ObservableObject {
     @Published var ambientEnabled: Bool {
         didSet { defaults.set(ambientEnabled, forKey: Key.ambientEnabled) }
     }
+    /// Tool sound volume, 0...1.
+    @Published var effectsVolume: Double {
+        didSet { defaults.set(min(max(effectsVolume, 0), 1), forKey: Key.effectsVolume) }
+    }
+    /// Ambience volume, 0...1.
+    @Published var ambientVolume: Double {
+        didSet { defaults.set(min(max(ambientVolume, 0), 1), forKey: Key.ambientVolume) }
+    }
     /// When each side chore (see `SideChore`) can next be done, keyed by the chore's raw value. Kept across launches.
     var choreReadyAt: [String: Date] {
         get {
@@ -122,6 +135,8 @@ final class AppSettings: ObservableObject {
         musicVolume = min(max(volume, 0), 1)
         soundEffectsEnabled = defaults.object(forKey: Key.soundEffectsEnabled) as? Bool ?? true
         ambientEnabled = defaults.object(forKey: Key.ambientEnabled) as? Bool ?? true
+        effectsVolume = min(max(defaults.object(forKey: Key.effectsVolume) as? Double ?? Self.defaultEffectsVolume, 0), 1)
+        ambientVolume = min(max(defaults.object(forKey: Key.ambientVolume) as? Double ?? Self.defaultAmbientVolume, 0), 1)
     }
 
     /// The place the weather and the season are worked out for.

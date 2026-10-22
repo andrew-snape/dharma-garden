@@ -16,7 +16,10 @@ final class GardenMusic: ObservableObject {
     /// The largest render block the source node handles; bigger blocks are played as silence.
     private static let maxBlockFrames = 4096
 
-    private let engine = AVAudioEngine()
+    private let audio = GardenAudio.shared
+    private var engine: AVAudioEngine { audio.engine }
+    /// The music's part of the shared engine is playing (the engine itself may run for other sounds too).
+    private var running = false
     private var synth: GardenSynth?
     private var composer: MusicComposer?
     private var mood = GardenMood.plainDay(season: .spring)
@@ -30,15 +33,9 @@ final class GardenMusic: ObservableObject {
     private var wantsMusic = false
     /// The app is in the foreground (set by pause and resume).
     private var appActive = true
-    /// Observer for output device changes (headphones plugged in, AirPods connecting), which stop the engine.
-    private var configObserver: NSObjectProtocol?
-
     init() {
-        configObserver = NotificationCenter.default.addObserver(
-            forName: .AVAudioEngineConfigurationChange, object: engine, queue: .main
-        ) { [weak self] _ in
-            MainActor.assumeIsolated { self?.engineConfigurationChanged() }
-        }
+        // Output device changes (headphones plugged in, AirPods connecting) stop the engine.
+        audio.onConfigurationChange(.music) { [weak self] in self?.engineConfigurationChanged() }
     }
 
     /// The output changed and the engine stopped itself. Start again on the new output if music should be playing.
@@ -49,10 +46,11 @@ final class GardenMusic: ObservableObject {
         themeTask?.cancel()
         themeTask = nil
         guard wantsMusic else { return }
-        if engine.isRunning {
+        if running, audio.isRunning {
             startFeeder()
             applyLevel(fade: 0.2)
         } else {
+            running = false
             begin()
         }
     }
@@ -86,7 +84,7 @@ final class GardenMusic: ObservableObject {
     func setVolume(_ value: Double) {
         volume = min(max(value, 0), 1)
         // During a theme change the fade up picks the new volume up itself.
-        if engine.isRunning, themeTask == nil { applyLevel(fade: 0.2) }
+        if running, themeTask == nil { applyLevel(fade: 0.2) }
     }
 
     /// The mood the composer uses for the next phrase, so changes arrive without a cut. A different theme
@@ -94,7 +92,7 @@ final class GardenMusic: ObservableObject {
     func setMood(_ newMood: GardenMood) {
         let themeChanged = newMood.theme != mood.theme
         mood = newMood
-        if themeChanged, engine.isRunning, synth != nil { crossfadeTheme() }
+        if themeChanged, running, synth != nil { crossfadeTheme() }
     }
 
     /// Fades down, then resets the synth (silent by then, so no click) and starts a fresh composer for the new
@@ -106,7 +104,7 @@ final class GardenMusic: ObservableObject {
             try? await Task.sleep(for: .seconds(Self.themeFadeSeconds + 0.1))
             guard !Task.isCancelled, let self else { return }
             self.themeTask = nil
-            guard self.engine.isRunning, let synth = self.synth else { return }
+            guard self.running, let synth = self.synth else { return }
             synth.reset()
             self.composer = MusicComposer(seed: UInt64.random(in: 0...UInt64.max))
             self.applyLevel(fade: Self.themeFadeSeconds)
@@ -118,25 +116,22 @@ final class GardenMusic: ObservableObject {
     private func begin() {
         pauseTask?.cancel()
         pauseTask = nil
-        if !engine.isRunning {
+        if !running {
             themeTask?.cancel()
             themeTask = nil
             guard buildGraphIfNeeded(), let synth else { return }
             synth.reset()
             composer = MusicComposer(seed: UInt64.random(in: 0...UInt64.max))
-            do {
-                try engine.start()
-            } catch {
-                // No usable audio output: the garden stays quiet.
-                return
-            }
+            // No usable audio output: the garden stays quiet.
+            guard audio.start(for: .music) else { return }
+            running = true
             startFeeder()
         }
         applyLevel(fade: Self.fadeSeconds)
     }
 
     private func fadeOutAndPause() {
-        guard engine.isRunning else { return }
+        guard running else { return }
         themeTask?.cancel()
         themeTask = nil
         applyLevel(fade: Self.fadeSeconds)
@@ -153,7 +148,8 @@ final class GardenMusic: ObservableObject {
     private func pauseEngine() {
         feeder?.cancel()
         feeder = nil
-        engine.pause()
+        running = false
+        audio.release(.music)
     }
 
     private func applyLevel(fade: Double) {
@@ -187,7 +183,7 @@ final class GardenMusic: ObservableObject {
         }
     }
 
-    /// Builds the audio graph once: source node, delay, reverb, then the main mixer.
+    /// Builds the audio graph once: source node, delay, reverb, then the music bus.
     private func buildGraphIfNeeded() -> Bool {
         if synth != nil { return true }
         let rate = engine.outputNode.outputFormat(forBus: 0).sampleRate
@@ -217,8 +213,7 @@ final class GardenMusic: ObservableObject {
         engine.attach(reverb)
         engine.connect(source, to: delay, format: format)
         engine.connect(delay, to: reverb, format: format)
-        engine.connect(reverb, to: engine.mainMixerNode, format: format)
-        engine.prepare()
+        engine.connect(reverb, to: audio.bus(.music), format: format)
 
         self.synth = synth
         return true

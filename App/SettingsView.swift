@@ -114,10 +114,20 @@ struct SettingsView: View {
 
                 Section("Sound effects") {
                     Toggle("Tool sounds", isOn: $settings.soundEffectsEnabled)
+                    LabeledContent("Volume") {
+                        Slider(value: $settings.effectsVolume, in: 0...1)
+                            .frame(width: 200)
+                            .disabled(!settings.soundEffectsEnabled)
+                    }
                     Text("Soft sounds for watering, forking, picking and spotting visitors.")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                     Toggle("Ambient sounds", isOn: $settings.ambientEnabled)
+                    LabeledContent("Volume") {
+                        Slider(value: $settings.ambientVolume, in: 0...1)
+                            .frame(width: 200)
+                            .disabled(!settings.ambientEnabled)
+                    }
                     Text("Birdsong by day, crickets on warm nights, and rain when it rains where you are.")
                         .font(.caption)
                         .foregroundStyle(.secondary)

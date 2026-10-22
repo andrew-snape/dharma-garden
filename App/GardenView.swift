@@ -223,6 +223,8 @@ struct GardenView: View {
             // Asked once, on the very first launch only.
             if !settings.hasAskedLocation { showLocationQuestion = true }
             music.setVolume(settings.musicVolume)
+            GardenAudio.shared.setVolume(settings.effectsVolume, for: .effects)
+            GardenAudio.shared.setVolume(settings.ambientVolume, for: .ambient)
             music.setMood(weather.mood(theme: settings.sceneTheme.gardenTheme))
             updateAmbient()
         }
@@ -302,6 +304,8 @@ struct GardenView: View {
             if on { armMusic() } else { music.stop() }
         }
         .onChange(of: settings.musicVolume) { _, volume in music.setVolume(volume) }
+        .onChange(of: settings.effectsVolume) { _, volume in GardenAudio.shared.setVolume(volume, for: .effects) }
+        .onChange(of: settings.ambientVolume) { _, volume in GardenAudio.shared.setVolume(volume, for: .ambient) }
         // A seed tile pulses when its count goes up (bought in the shop, or a milestone reward).
         .onChange(of: store.garden.seedStock) { old, new in
             let up = Set(FlowerType.allCases.filter { (new[$0.rawValue] ?? 0) > (old[$0.rawValue] ?? 0) })

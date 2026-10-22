@@ -7,24 +7,22 @@ import DharmaGardenCore
 /// It fades in and out over a couple of seconds and keeps playing while the app is in the background, like the music.
 @MainActor
 final class AmbientSounds {
-    /// Where the player's ambient volume sits relative to full scale. Kept low so it sits under the music.
-    private static let baseLevel = 0.4
+    /// The ambience's level before the player's ambience volume, kept low so it sits under the music.
+    private static let baseLevel = 0.55
     private static let fadeSeconds = 2.5
     private static let maxBlockFrames = 4096
 
-    private let engine = AVAudioEngine()
+    private let audio = GardenAudio.shared
+    private var engine: AVAudioEngine { audio.engine }
+    /// The ambience's part of the shared engine is playing.
+    private var running = false
     private var synth: AmbientSynth?
     private var mix = AmbientMix.silent
     private var wantsSound = false
     private var pauseTask: Task<Void, Never>?
-    private var configObserver: NSObjectProtocol?
 
     init() {
-        configObserver = NotificationCenter.default.addObserver(
-            forName: .AVAudioEngineConfigurationChange, object: engine, queue: .main
-        ) { [weak self] _ in
-            MainActor.assumeIsolated { self?.configurationChanged() }
-        }
+        audio.onConfigurationChange(.ambient) { [weak self] in self?.configurationChanged() }
     }
 
     /// Starts (fading in) or stops (fading out) the ambience. Safe to call repeatedly.
@@ -42,9 +40,9 @@ final class AmbientSounds {
     private func begin() {
         pauseTask?.cancel()
         pauseTask = nil
-        if !engine.isRunning {
-            guard buildGraphIfNeeded() else { return }
-            do { try engine.start() } catch { return }
+        if !running {
+            guard buildGraphIfNeeded(), audio.start(for: .ambient) else { return }
+            running = true
         }
         applyTarget()
     }
@@ -54,19 +52,21 @@ final class AmbientSounds {
     }
 
     private func fadeOutAndPause() {
-        guard engine.isRunning else { return }
+        guard running else { return }
         applyTarget()
         pauseTask?.cancel()
         pauseTask = Task { [weak self] in
             try? await Task.sleep(for: .seconds(Self.fadeSeconds + 1.5))
             guard !Task.isCancelled, let self, !self.wantsSound else { return }
-            self.engine.pause()
+            self.running = false
+            self.audio.release(.ambient)
         }
     }
 
     private func configurationChanged() {
         guard wantsSound else { return }
-        if !engine.isRunning { begin() } else { applyTarget() }
+        if !audio.isRunning { running = false }
+        if !running { begin() } else { applyTarget() }
     }
 
     /// Built in a nonisolated function so the audio thread does not inherit main-actor isolation (see GardenMusic).
@@ -110,8 +110,7 @@ final class AmbientSounds {
         engine.attach(source)
         engine.attach(reverb)
         engine.connect(source, to: reverb, format: format)
-        engine.connect(reverb, to: engine.mainMixerNode, format: format)
-        engine.prepare()
+        engine.connect(reverb, to: audio.bus(.ambient), format: format)
         self.synth = synth
         return true
     }
