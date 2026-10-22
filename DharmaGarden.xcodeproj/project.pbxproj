@@ -39,7 +39,7 @@
 		215C9799F8E464FE8DEE26A2 /* AmbientSounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmbientSounds.swift; sourceTree = "<group>"; };
 		264E400C24F1B7CEB0633E50 /* PlantCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantCard.swift; sourceTree = "<group>"; };
 		27270849A67E501401C4FF1F /* ReminderService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderService.swift; sourceTree = "<group>"; };
-		353A816A49AC275D05C50C54 /* DharmaGardenCore */ = {isa = PBXFileReference; lastKnownFileType = folder; name = DharmaGardenCore; path = DharmaGardenCore; sourceTree = SOURCE_ROOT; };
+		353A816A49AC275D05C50C54 /* DharmaGardenCore */ = {isa = PBXFileReference; lastKnownFileType = folder; path = DharmaGardenCore; sourceTree = SOURCE_ROOT; };
 		3CE8723765A8AED5B3311090 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		5D1D3EA5D85EEC313610E334 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		5FD60C31283DA7DA6190128E /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
@@ -57,7 +57,7 @@
 		D229FD3E3466E299755AB14A /* GameCenterService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCenterService.swift; sourceTree = "<group>"; };
 		E2F9E7880DD87F070FBCE442 /* GardenBookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GardenBookView.swift; sourceTree = "<group>"; };
 		E4FBA78C17E7C9CC07265B9F /* VisitorController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorController.swift; sourceTree = "<group>"; };
-		F15A3BCE746E6BA317849A77 /* "Dharma Garden.app" */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Dharma Garden.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F15A3BCE746E6BA317849A77 /* Dharma Garden.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Dharma Garden.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F5A44D90A300729FE68AFD5D /* ShopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopView.swift; sourceTree = "<group>"; };
 		FDC6326F6CC8D6AD5F7FBD3B /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -86,7 +86,7 @@
 		6DA1B34877C4200718980176 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F15A3BCE746E6BA317849A77 /* "Dharma Garden.app" */,
+				F15A3BCE746E6BA317849A77 /* Dharma Garden.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -152,7 +152,7 @@
 				44388489CA595C3570F19D84 /* DharmaGardenArt */,
 			);
 			productName = DharmaGarden;
-			productReference = F15A3BCE746E6BA317849A77 /* "Dharma Garden.app" */;
+			productReference = F15A3BCE746E6BA317849A77 /* Dharma Garden.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -163,8 +163,6 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1430;
-				TargetAttributes = {
-				};
 			};
 			buildConfigurationList = 6C12A24DCCBC95E789F6BC3E /* Build configuration list for PBXProject "DharmaGarden" */;
 			developmentRegion = en;
@@ -299,8 +297,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = App/DharmaGarden.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
+				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = LE2JMFSWAQ;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = App/Info.plist;
@@ -311,6 +313,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.snape.dharmagarden;
 				PRODUCT_NAME = "Dharma Garden";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
 				SWIFT_STRICT_CONCURRENCY = minimal;
 				SWIFT_VERSION = 6.0;
@@ -378,8 +381,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = App/DharmaGarden.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
+				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = LE2JMFSWAQ;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = App/Info.plist;
@@ -390,6 +397,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.snape.dharmagarden;
 				PRODUCT_NAME = "Dharma Garden";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
 				SWIFT_STRICT_CONCURRENCY = minimal;
 				SWIFT_VERSION = 6.0;
