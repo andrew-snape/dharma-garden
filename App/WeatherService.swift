@@ -73,14 +73,14 @@ final class WeatherService: ObservableObject {
         return now.timeIntervalSince(lastAttempt) >= Self.refreshInterval
     }
 
-    /// Latitude of the place (Mount Duneed until the first refresh), for the season.
+    /// Latitude of the place (Melbourne until the first refresh), for the season.
     var season: Season {
-        SeasonProvider.season(on: Date(), latitude: (place ?? .mountDuneed).latitude)
+        SeasonProvider.season(on: Date(), latitude: (place ?? .melbourne).latitude)
     }
 
     func palette(at now: Date = Date(), theme: GardenTheme = .farm) -> ScenePalette? {
         guard let r = report else { return nil }
-        let here = place ?? .mountDuneed
+        let here = place ?? .melbourne
         let times = r.sunTimes(at: now)
         let phase = SunPhaseResolver.phase(at: now, sunrise: times.sunrise, sunset: times.sunset)
         let sun = SunPosition.light(at: now, sunrise: times.sunrise, sunset: times.sunset, latitude: here.latitude,

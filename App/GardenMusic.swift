@@ -2,10 +2,11 @@ import AVFoundation
 import Foundation
 import DharmaGardenCore
 
-/// The garden's music on the Mac's speakers. DharmaGardenCore's `GardenSynth` makes the sound inside an
-/// `AVAudioSourceNode`; the composer feeds it phrases a few seconds ahead. A large hall reverb and a very subtle
-/// delay sit after it. Music fades in and out over about three seconds, and keeps playing while the app is in the background.
-/// Changing the garden theme crossfades: the music fades down, the synth is reset, the new theme's music begins.
+/// The garden's music on the Mac's speakers. The composer writes the notes; they are played by the GeneralUser GS
+/// soundfont (`GardenSampler`), or by DharmaGardenCore's `GardenSynth` if the bank is missing. A large hall reverb and
+/// a very subtle delay sit after it. Music fades in and out over about three seconds, and keeps playing while the app
+/// is in the background. Changing the garden theme crossfades: the music fades down, the sound is reset, the new
+/// theme's music begins.
 @MainActor
 final class GardenMusic: ObservableObject {
     static let fadeSeconds = 3.0
@@ -13,13 +14,15 @@ final class GardenMusic: ObservableObject {
     static let themeFadeSeconds = 1.5
     /// How far ahead of the playhead the composer keeps notes queued.
     private static let lookAhead = 8.0
-    /// The largest render block the source node handles; bigger blocks are played as silence.
+    /// The largest render block the synth's source node handles; bigger blocks are played as silence.
     private static let maxBlockFrames = 4096
 
     private let audio = GardenAudio.shared
     private var engine: AVAudioEngine { audio.engine }
     /// The music's part of the shared engine is playing (the engine itself may run for other sounds too).
     private var running = false
+    /// The soundfont sampler, when the bank loaded. Otherwise the synth below plays the notes.
+    private var sampler: GardenSampler?
     private var synth: GardenSynth?
     private var composer: MusicComposer?
     private var mood = GardenMood.plainDay(season: .spring)
@@ -33,6 +36,10 @@ final class GardenMusic: ObservableObject {
     private var wantsMusic = false
     /// The app is in the foreground (set by pause and resume).
     private var appActive = true
+
+    /// True once the sound graph is built, whichever source it uses.
+    private var hasSource: Bool { sampler != nil || synth != nil }
+
     init() {
         // Output device changes (headphones plugged in, AirPods connecting) stop the engine.
         audio.onConfigurationChange(.music) { [weak self] in self?.engineConfigurationChanged() }
@@ -92,20 +99,20 @@ final class GardenMusic: ObservableObject {
     func setMood(_ newMood: GardenMood) {
         let themeChanged = newMood.theme != mood.theme
         mood = newMood
-        if themeChanged, running, synth != nil { crossfadeTheme() }
+        if themeChanged, running, hasSource { crossfadeTheme() }
     }
 
-    /// Fades down, then resets the synth (silent by then, so no click) and starts a fresh composer for the new
+    /// Fades down, then resets the sound (silent by then, so no click) and starts a fresh composer for the new
     /// theme, then fades up again. A second change during the fade restarts it.
     private func crossfadeTheme() {
         themeTask?.cancel()
-        synth?.setLevel(0, over: Self.themeFadeSeconds)
+        setSourceLevel(0, over: Self.themeFadeSeconds)
         themeTask = Task { [weak self] in
             try? await Task.sleep(for: .seconds(Self.themeFadeSeconds + 0.1))
             guard !Task.isCancelled, let self else { return }
             self.themeTask = nil
-            guard self.running, let synth = self.synth else { return }
-            synth.reset()
+            guard self.running else { return }
+            self.resetSource()
             self.composer = MusicComposer(seed: UInt64.random(in: 0...UInt64.max))
             self.applyLevel(fade: Self.themeFadeSeconds)
         }
@@ -119,8 +126,8 @@ final class GardenMusic: ObservableObject {
         if !running {
             themeTask?.cancel()
             themeTask = nil
-            guard buildGraphIfNeeded(), let synth else { return }
-            synth.reset()
+            guard buildGraphIfNeeded() else { return }
+            resetSource()
             composer = MusicComposer(seed: UInt64.random(in: 0...UInt64.max))
             // No usable audio output: the garden stays quiet.
             guard audio.start(for: .music) else { return }
@@ -154,7 +161,30 @@ final class GardenMusic: ObservableObject {
 
     private func applyLevel(fade: Double) {
         let target: Float = wantsMusic ? Float(volume) : 0
-        synth?.setLevel(target, over: fade)
+        setSourceLevel(target, over: fade)
+    }
+
+    // MARK: The sound source (sampler or synth)
+
+    /// The sound source's clock: seconds since its last reset.
+    private var sourceClock: Double { sampler?.renderedSeconds ?? synth?.renderedSeconds ?? 0 }
+
+    private func resetSource() {
+        sampler?.reset()
+        synth?.reset()
+    }
+
+    private func setSourceLevel(_ target: Float, over seconds: Double) {
+        sampler?.setLevel(target, over: seconds)
+        synth?.setLevel(target, over: seconds)
+    }
+
+    private func scheduleNotes(_ events: [NoteEvent]) {
+        if let sampler {
+            sampler.schedule(events)
+        } else {
+            synth?.schedule(events)
+        }
     }
 
     /// The render block runs on the real-time audio thread. It is built in a nonisolated function so it does not
@@ -183,20 +213,30 @@ final class GardenMusic: ObservableObject {
         }
     }
 
-    /// Builds the audio graph once: source node, delay, reverb, then the music bus.
+    /// Builds the audio graph once: sound source (soundfont sampler, or the synth if the bank is missing), delay,
+    /// reverb, then the music bus.
     private func buildGraphIfNeeded() -> Bool {
-        if synth != nil { return true }
+        if hasSource { return true }
         let rate = engine.outputNode.outputFormat(forBus: 0).sampleRate
         guard rate > 0, let format = AVAudioFormat(standardFormatWithSampleRate: rate, channels: 2) else {
             return false
         }
-        let synth = GardenSynth(sampleRate: rate, channels: 2)
-        let scratch = UnsafeMutablePointer<Float>.allocate(capacity: Self.maxBlockFrames * 2)
-        scratch.initialize(repeating: 0, count: Self.maxBlockFrames * 2)
 
-        let source = AVAudioSourceNode(
-            format: format,
-            renderBlock: Self.makeRenderBlock(synth: synth, scratch: scratch, maxFrames: Self.maxBlockFrames))
+        let source: AVAudioNode
+        if let made = GardenSampler(engine: engine, format: format) {
+            sampler = made
+            source = made.output
+        } else {
+            let synth = GardenSynth(sampleRate: rate, channels: 2)
+            let scratch = UnsafeMutablePointer<Float>.allocate(capacity: Self.maxBlockFrames * 2)
+            scratch.initialize(repeating: 0, count: Self.maxBlockFrames * 2)
+            let node = AVAudioSourceNode(
+                format: format,
+                renderBlock: Self.makeRenderBlock(synth: synth, scratch: scratch, maxFrames: Self.maxBlockFrames))
+            engine.attach(node)
+            self.synth = synth
+            source = node
+        }
 
         let delay = AVAudioUnitDelay()
         delay.delayTime = 0.33
@@ -208,14 +248,11 @@ final class GardenMusic: ObservableObject {
         reverb.loadFactoryPreset(.largeHall)
         reverb.wetDryMix = 35
 
-        engine.attach(source)
         engine.attach(delay)
         engine.attach(reverb)
         engine.connect(source, to: delay, format: format)
         engine.connect(delay, to: reverb, format: format)
         engine.connect(reverb, to: audio.bus(.music), format: format)
-
-        self.synth = synth
         return true
     }
 
@@ -234,10 +271,10 @@ final class GardenMusic: ObservableObject {
 
     /// Adds phrases until the queue reaches a few seconds past the playhead.
     private func feed() {
-        guard let synth, var next = composer else { return }
-        let horizon = synth.renderedSeconds + Self.lookAhead
+        guard var next = composer else { return }
+        let horizon = sourceClock + Self.lookAhead
         while next.cursor < horizon {
-            synth.schedule(next.nextPhrase(mood: mood))
+            scheduleNotes(next.nextPhrase(mood: mood))
         }
         composer = next
     }

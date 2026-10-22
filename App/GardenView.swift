@@ -232,7 +232,7 @@ struct GardenView: View {
             Button("Use my location") { answerLocationQuestion(useLocation: true) }
             Button("Not now", role: .cancel) { answerLocationQuestion(useLocation: false) }
         } message: {
-            Text("Your garden can match the weather and seasons to the town you are in. Until you say yes, the garden uses Mount Duneed, VIC. You can change this any time in Settings.")
+            Text("Your garden can match the weather and seasons to the town you are in. Until you say yes, the garden uses Melbourne, VIC. You can change this any time in Settings.")
         }
         .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { _ in
             music.resume()

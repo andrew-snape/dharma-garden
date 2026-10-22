@@ -22,8 +22,8 @@ public struct Town: Codable, Equatable, Hashable, Sendable {
     }
 
     /// The town used until the user picks another one.
-    public static let mountDuneed = Town(name: "Mount Duneed", latitude: -38.2167, longitude: 144.2833,
-                                         admin1: "Victoria", country: "Australia")
+    public static let melbourne = Town(name: "Melbourne", latitude: -37.8136, longitude: 144.9631,
+                                       admin1: "Victoria", country: "Australia")
 }
 
 /// Town search through Open-Meteo's geocoding API (no key needed). Building the URL and parsing the

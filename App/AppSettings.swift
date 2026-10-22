@@ -40,7 +40,7 @@ final class AppSettings: ObservableObject {
     @Published var useDeviceLocation: Bool {
         didSet { defaults.set(useDeviceLocation, forKey: Key.useDeviceLocation) }
     }
-    /// The town picked by hand (Mount Duneed until changed).
+    /// The town picked by hand (Melbourne until changed).
     @Published var manualTown: Town {
         didSet { store(manualTown, Key.manualTown) }
     }
@@ -121,7 +121,7 @@ final class AppSettings: ObservableObject {
     init(defaults: UserDefaults = .standard) {
         self.defaults = defaults
         useDeviceLocation = defaults.object(forKey: Key.useDeviceLocation) as? Bool ?? false
-        manualTown = Self.loadTown(defaults, Key.manualTown) ?? .mountDuneed
+        manualTown = Self.loadTown(defaults, Key.manualTown) ?? .melbourne
         devicePlace = Self.loadTown(defaults, Key.devicePlace)
         reminderEnabled = defaults.object(forKey: Key.reminderEnabled) as? Bool ?? false
         let minutes = defaults.object(forKey: Key.reminderMinutes) as? Int ?? Self.defaultReminderMinutes

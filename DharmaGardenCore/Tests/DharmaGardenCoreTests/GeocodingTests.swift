@@ -32,7 +32,7 @@ final class GeocodingTests: XCTestCase {
     func testDisplayNameJoinsTheParts() throws {
         let towns = try Geocoding.parse(fixture)
         XCTAssertEqual(towns[0].displayName, "Mount Duneed, Victoria, Australia")
-        XCTAssertEqual(Town.mountDuneed.displayName, "Mount Duneed, Victoria, Australia")
+        XCTAssertEqual(Town.melbourne.displayName, "Melbourne, Victoria, Australia")
     }
 
     func testNoMatchesGivesNoTowns() throws {

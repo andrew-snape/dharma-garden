@@ -3,6 +3,7 @@ import DharmaGardenArt
 import DharmaGardenCore
 
 /// Settings sheet, opened from the gear button in the garden header. A normal form, on the garden's own backdrop.
+/// Sections run from what changes the garden to what it sounds like, then notifications, motion and About.
 struct SettingsView: View {
     @ObservedObject var store: GardenStore
     @ObservedObject var settings: AppSettings
@@ -17,145 +18,201 @@ struct SettingsView: View {
     @State private var searchMessage: String?
     @State private var reminderNote: String?
     @State private var bedNote: String?
+    @State private var showingPrivacy = false
 
     var body: some View {
         GardenSheetFrame(title: "Settings", palette: palette, onDone: { dismiss() }) { style in
             Form {
-                Section("Location") {
-                    Toggle("Use my location", isOn: $settings.useDeviceLocation)
-                    LabeledContent("Current place") {
-                        Text(settings.activePlace.displayName)
-                            .multilineTextAlignment(.trailing)
-                    }
-                    if settings.useDeviceLocation && location.isDenied {
-                        Text("Location is off for Dharma Garden. To change it, open System Settings > Privacy & Security > Location Services.")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                    }
-                    HStack {
-                        TextField("Search for a town", text: $query)
-                            .textFieldStyle(.roundedBorder)
-                            .onSubmit { search() }
-                        Button("Search") { search() }
-                            .disabled(query.trimmingCharacters(in: .whitespaces).isEmpty || searching)
-                    }
-                    if searching {
-                        ProgressView().controlSize(.small)
-                    }
-                    if let searchMessage {
-                        Text(searchMessage).font(.caption).foregroundStyle(.secondary)
-                    }
-                    ForEach(results, id: \.self) { town in
-                        Button {
-                            choose(town)
-                        } label: {
-                            Text(town.displayName)
-                        }
-                        .buttonStyle(.plain)
-                    }
-                    Button("Reset to Mount Duneed") {
-                        settings.manualTown = .mountDuneed
-                        settings.useDeviceLocation = false
-                        results = []
-                        searchMessage = nil
-                    }
-                }
-
-                Section {
-                    Picker("Bed style", selection: bedStyleBinding) {
-                        ForEach(BedStyle.allCases, id: \.self) { style in
-                            BedStyleRow(style: style).tag(style)
-                        }
-                    }
-                    .pickerStyle(.inline)
-                    .labelsHidden()
-                    if let bedNote {
-                        Text(bedNote).font(.caption).foregroundStyle(.secondary)
-                    }
-                } header: {
-                    Text("Garden bed")
-                }
-
-                Section("View") {
-                    Picker("Scene view", selection: $settings.sceneStyle) {
-                        ForEach(SceneStyle.allCases, id: \.self) { style in
-                            Text(style.displayName).tag(style)
-                        }
-                    }
-                    Picker("Garden theme", selection: $settings.sceneTheme) {
-                        ForEach(SceneTheme.allCases, id: \.self) { theme in
-                            ThemeRow(theme: theme, bed: store.garden.plot.style, selected: theme == settings.sceneTheme).tag(theme)
-                        }
-                    }
-                    .pickerStyle(.inline)
-                }
-
-                Section("Reminder") {
-                    Toggle("Daily reminder", isOn: reminderBinding)
-                    if settings.reminderEnabled {
-                        DatePicker("Time", selection: reminderTime, displayedComponents: .hourAndMinute)
-                    }
-                    if let reminderNote {
-                        Text(reminderNote).font(.caption).foregroundStyle(.secondary)
-                    }
-                }
-
-                Section("Music") {
-                    Toggle("Garden music", isOn: $settings.musicEnabled)
-                    LabeledContent("Volume") {
-                        Slider(value: $settings.musicVolume, in: 0...1)
-                            .frame(width: 200)
-                            .disabled(!settings.musicEnabled)
-                    }
-                    Text("Soft koto and flute, made live on this Mac. It fades in gently and pauses when Dharma Garden is in the background.")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                }
-
-                Section("Sound effects") {
-                    Toggle("Tool sounds", isOn: $settings.soundEffectsEnabled)
-                    LabeledContent("Volume") {
-                        Slider(value: $settings.effectsVolume, in: 0...1)
-                            .frame(width: 200)
-                            .disabled(!settings.soundEffectsEnabled)
-                    }
-                    Text("Soft sounds for watering, forking, picking and spotting visitors.")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                    Toggle("Ambient sounds", isOn: $settings.ambientEnabled)
-                    LabeledContent("Volume") {
-                        Slider(value: $settings.ambientVolume, in: 0...1)
-                            .frame(width: 200)
-                            .disabled(!settings.ambientEnabled)
-                    }
-                    Text("Birdsong by day, crickets on warm nights, and rain when it rains where you are.")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                }
-
-                Section("Motion") {
-                    Toggle("Gentle camera drift", isOn: $settings.gentleDrift)
-                    Text("A slow, subtle sway of the view. Reduce Motion in System Settings also stops it.")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                }
-
-                Section("About") {
-                    LabeledContent("Dharma Garden", value: Self.versionText)
-                }
+                gardenSection
+                bedSection
+                placeSection
+                musicSection
+                effectsSection
+                ambientSection
+                reminderSection
+                motionSection
+                aboutSection
             }
             .formStyle(.grouped)
             .scrollContentBackground(.hidden)
             .panel(style)
         }
-        .frame(width: 500, height: 680)
+        .frame(width: 520, height: 720)
+        .sheet(isPresented: $showingPrivacy) {
+            PrivacyPolicyView(palette: palette)
+        }
+    }
+
+    // MARK: Sections
+
+    private var gardenSection: some View {
+        Section {
+            Picker("Scene view", selection: $settings.sceneStyle) {
+                ForEach(SceneStyle.allCases, id: \.self) { style in
+                    Text(style.displayName).tag(style)
+                }
+            }
+            Picker("Garden theme", selection: $settings.sceneTheme) {
+                ForEach(SceneTheme.allCases, id: \.self) { theme in
+                    ThemeRow(theme: theme, bed: store.garden.plot.style, selected: theme == settings.sceneTheme).tag(theme)
+                }
+            }
+            .pickerStyle(.inline)
+        } header: {
+            Text("Garden")
+        }
+    }
+
+    private var bedSection: some View {
+        Section {
+            Picker("Bed style", selection: bedStyleBinding) {
+                ForEach(BedStyle.allCases, id: \.self) { style in
+                    BedStyleRow(style: style).tag(style)
+                }
+            }
+            .pickerStyle(.inline)
+            .labelsHidden()
+        } header: {
+            Text("Garden bed")
+        } footer: {
+            if let bedNote {
+                Text(bedNote)
+            }
+        }
+    }
+
+    private var placeSection: some View {
+        Section {
+            Toggle("Use my location", isOn: $settings.useDeviceLocation)
+            LabeledContent("Current place") {
+                Text(settings.activePlace.displayName)
+                    .multilineTextAlignment(.trailing)
+            }
+            HStack {
+                TextField("Search for a town", text: $query)
+                    .textFieldStyle(.roundedBorder)
+                    .onSubmit { search() }
+                Button("Search") { search() }
+                    .disabled(query.trimmingCharacters(in: .whitespaces).isEmpty || searching)
+            }
+            if searching {
+                ProgressView().controlSize(.small)
+            }
+            if let searchMessage {
+                Text(searchMessage).font(.caption).foregroundStyle(.secondary)
+            }
+            ForEach(results, id: \.self) { town in
+                Button {
+                    choose(town)
+                } label: {
+                    Text(town.displayName)
+                }
+                .buttonStyle(.plain)
+            }
+            Button("Reset to Melbourne") {
+                settings.manualTown = .melbourne
+                settings.useDeviceLocation = false
+                results = []
+                searchMessage = nil
+            }
+        } header: {
+            Text("Place")
+        } footer: {
+            if settings.useDeviceLocation && location.isDenied {
+                Text("Location is off for Dharma Garden. To change it, open System Settings > Privacy & Security > Location Services.")
+            } else {
+                Text("The weather and seasons in the garden follow this place.")
+            }
+        }
+    }
+
+    private var musicSection: some View {
+        Section {
+            Toggle("Garden music", isOn: $settings.musicEnabled)
+            LabeledContent("Volume") {
+                Slider(value: $settings.musicVolume, in: 0...1)
+                    .frame(width: 200)
+                    .disabled(!settings.musicEnabled)
+            }
+        } header: {
+            Text("Music")
+        } footer: {
+            Text("Soft koto and flute, made live on this Mac. It fades in gently and pauses when Dharma Garden is in the background.")
+        }
+    }
+
+    private var effectsSection: some View {
+        Section {
+            Toggle("Tool sounds", isOn: $settings.soundEffectsEnabled)
+            LabeledContent("Volume") {
+                Slider(value: $settings.effectsVolume, in: 0...1)
+                    .frame(width: 200)
+                    .disabled(!settings.soundEffectsEnabled)
+            }
+        } header: {
+            Text("Sound effects")
+        } footer: {
+            Text("Soft sounds for watering, forking, picking and spotting visitors.")
+        }
+    }
+
+    private var ambientSection: some View {
+        Section {
+            Toggle("Ambient sounds", isOn: $settings.ambientEnabled)
+            LabeledContent("Volume") {
+                Slider(value: $settings.ambientVolume, in: 0...1)
+                    .frame(width: 200)
+                    .disabled(!settings.ambientEnabled)
+            }
+        } header: {
+            Text("Ambient sounds")
+        } footer: {
+            Text("Birdsong by day, crickets on warm nights, and rain when it rains where you are.")
+        }
+    }
+
+    private var reminderSection: some View {
+        Section {
+            Toggle("Daily reminder", isOn: reminderBinding)
+            if settings.reminderEnabled {
+                DatePicker("Time", selection: reminderTime, displayedComponents: .hourAndMinute)
+            }
+        } header: {
+            Text("Reminder")
+        } footer: {
+            if let reminderNote {
+                Text(reminderNote)
+            }
+        }
+    }
+
+    private var motionSection: some View {
+        Section {
+            Toggle("Gentle camera drift", isOn: $settings.gentleDrift)
+        } header: {
+            Text("Motion")
+        } footer: {
+            Text("A slow, subtle sway of the view. Reduce Motion in System Settings also stops it.")
+        }
+    }
+
+    private var aboutSection: some View {
+        Section {
+            LabeledContent("Version", value: Self.versionText)
+            LabeledContent("Analytics", value: "None")
+            Button("Privacy Policy") { showingPrivacy = true }
+        } header: {
+            Text("About")
+        } footer: {
+            Text("Dharma Garden collects no usage data and has no tracking. Your garden stays on this Mac; the only online requests are the weather and town lookups, and book downloads when you open a book.")
+        }
     }
 
     private static var versionText: String {
         let info = Bundle.main.infoDictionary
         let version = info?["CFBundleShortVersionString"] as? String ?? "1.0"
         let build = info?["CFBundleVersion"] as? String ?? "1"
-        return "Version \(version) (\(build))"
+        return "\(version) (\(build))"
     }
 
     // MARK: Town search
