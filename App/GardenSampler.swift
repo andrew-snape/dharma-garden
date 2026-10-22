@@ -11,6 +11,8 @@ final class GardenSampler {
         .koto: (107, 0), .flute: (73, 1), .drone: (89, 2), .pluck: (24, 3),
         .bass: (32, 4), .piano: (0, 5), .epiano: (4, 6), .pad: (89, 7),
     ]
+    /// Voices whose overlapping notes of one pitch join into one long note.
+    private static let held: Set<MusicVoice> = [.drone, .pad]
     private static let tick: Duration = .milliseconds(20)
     private static let rampStep: Duration = .milliseconds(50)
     private static let melodicBankMSB = UInt8(kAUSampler_DefaultMelodicBankMSB)
@@ -92,9 +94,20 @@ final class GardenSampler {
             pending.removeFirst()
             guard let voice = Self.voices[next.voice] else { continue }
             let note = UInt8(min(max(next.midiNote, 0), 127))
+            let end = next.time + next.duration
+            // The same pitch on the same channel is one MIDI note: stopping the older one would cut the new one off.
+            if let i = sounding.firstIndex(where: { $0.note == note && $0.channel == voice.channel }) {
+                if Self.held.contains(next.voice) {
+                    // Drones and pads overlap on purpose: keep the note sounding instead of striking it again.
+                    sounding[i].end = max(sounding[i].end, end)
+                    continue
+                }
+                sampler.stopNote(note, onChannel: voice.channel)
+                sounding.remove(at: i)
+            }
             let velocity = UInt8(min(max(Int((next.velocity * 127).rounded()), 1), 127))
             sampler.startNote(note, withVelocity: velocity, onChannel: voice.channel)
-            sounding.append((next.time + next.duration, note, voice.channel))
+            sounding.append((end, note, voice.channel))
         }
         var stillSounding: [(end: Double, note: UInt8, channel: UInt8)] = []
         for note in sounding {

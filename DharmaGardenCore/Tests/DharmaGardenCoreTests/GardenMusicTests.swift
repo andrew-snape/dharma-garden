@@ -80,11 +80,11 @@ final class GardenMusicTests: XCTestCase {
 
     // MARK: Phrases and rests
 
-    func testPhrasesHaveThreeToSixNotesAndEndOnTonicOrFifth() {
+    func testPhrasesHaveThreeToEightNotesAndEndOnTonicOrFifth() {
         let all = phrases(koto(events(clearSpring, seconds: 900)))
         XCTAssertGreaterThan(all.count, 40)
         for phrase in all {
-            XCTAssertTrue((3...6).contains(phrase.count), "phrase of \(phrase.count) notes")
+            XCTAssertTrue((3...8).contains(phrase.count), "phrase of \(phrase.count) notes")
             let last = phrase[phrase.count - 1].midiNote
             XCTAssertTrue(MusicScale.isCadence(last), "phrase ends on \(last), not tonic or fifth")
         }

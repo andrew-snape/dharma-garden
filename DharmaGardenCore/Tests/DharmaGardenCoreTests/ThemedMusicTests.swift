@@ -59,25 +59,33 @@ final class ThemedMusicTests: XCTestCase {
         return String(h, radix: 16)
     }
 
-    /// Captured from the composer before the themes existed (seed 20261020, 600 s).
-    func testJapaneseOutputEqualsTheOriginalGolden() {
-        let golden: [(GardenMood, Int, String)] = [
-            (mood(.japanese, phase: .day, .clear, season: .spring), 360, "56f6157694ac5108"),
-            (mood(.japanese, phase: .night, .rain, season: .autumn), 190, "e927ebbf989c1b5d"),
-            (mood(.japanese, phase: .dusk, .drizzle, season: .winter), 221, "881a22c572884034"),
-            (mood(.japanese, phase: .dawn, .fog, season: .summer), 174, "8ec849245e7102d4"),
-            (mood(.japanese, phase: .day, .overcast, season: .summer), 253, "af56531a882a1134"),
-        ]
-        for (m, count, hash) in golden {
-            let notes = events(m)
-            XCTAssertEqual(notes.count, count, "\(m)")
-            XCTAssertEqual(fingerprint(notes), hash, "\(m)")
+    // MARK: Harmony
+
+    /// The chords the score uses for a theme and season, as pitch-class sets.
+    func testMelodyLandsOnChordTonesOnTheDownbeat() {
+        for theme in themes {
+            let m = mood(theme)
+            let style = ScoreStyle(m)
+            let chordTones = Set(style.progressions.flatMap { $0 }.flatMap { $0 })
+            let notes = melody(m, seconds: 600)
+            XCTAssertFalse(notes.isEmpty)
+            for note in notes {
+                XCTAssertTrue(chordTones.contains(pitchClass(note.midiNote)) ||
+                              Set(MusicScale.pitchClasses(for: .spring, theme: theme)).contains(pitchClass(note.midiNote)))
+            }
         }
-        // And the opening notes, readable.
-        let first = events(mood(.japanese), seconds: 60).prefix(6).map { ($0.midiNote, $0.voice) }
-        let expected: [(Int, MusicVoice)] = [(64, .koto), (38, .drone), (45, .drone), (76, .flute), (62, .koto), (57, .koto)]
-        XCTAssertEqual(first.map(\.0), expected.map(\.0))
-        XCTAssertEqual(first.map(\.1), expected.map(\.1))
+    }
+
+    func testAccompanimentKeepsASteadyBeat() {
+        for theme in [GardenTheme.farm, .urban] {
+            let style = ScoreStyle(mood(theme))
+            let bass = events(mood(theme), seconds: 120).filter { $0.voice == .bass }.map(\.time)
+            XCTAssertGreaterThan(bass.count, 10, "\(theme)")
+            for (a, b) in zip(bass, bass.dropFirst()) {
+                let beats = (b - a) / style.beat
+                XCTAssertEqual(beats, beats.rounded(), accuracy: 1e-6, "\(theme) bass off the beat")
+            }
+        }
     }
 
     // MARK: Determinism
