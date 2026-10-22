@@ -299,7 +299,9 @@ final class ToolSounds {
     private static func renderLoop(_ loop: ToolLoop) -> [Float] {
         var noise = Noise(state: loop == .rake ? 0x51_7CC1_B727_220A : 0x94D0_49BB_1331_11EB)
         let length = 2.4, overlap = 0.3
-        var out = [Float](repeating: 0, count: Int(sampleRate * (length + overlap)))
+        // Size the buffer from the same whole-sample counts the crossfade uses, so the two can never disagree.
+        let n = Int(sampleRate * length), o = Int(sampleRate * overlap)
+        var out = [Float](repeating: 0, count: n + o)
         switch loop {
         case .rake:
             // Tines drawn through loose soil: a low brushing bed that swells with each pull, and the patter of
@@ -333,7 +335,6 @@ final class ToolSounds {
             bubbles(&out, from: 0, to: length + overlap, perSecond: 90, low: 500, high: 1700, gain: 0.2, noise: &noise)
         }
         soften(&out, cutoff: 1800)
-        let n = Int(sampleRate * length), o = Int(sampleRate * overlap)
         for i in 0..<o {
             let f = Float(i) / Float(o)
             out[i] = out[i] * f + out[n + i] * (1 - f)
