@@ -38,8 +38,7 @@ public struct SceneRipple: Equatable, Sendable {
         case .aerate: 1.2
         case .seasol, .fertilise: 1.5
         case .furrow: 4.0
-        case .plant, .spot: 0.9
-        case .pull, .pick: 1.1
+        case .plant, .pull, .pick, .spot: 0.9
         }
     }
 
