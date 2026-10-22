@@ -8,7 +8,7 @@ import DharmaGardenCore
 @MainActor
 final class AmbientSounds {
     /// Where the player's ambient volume sits relative to full scale. Kept low so it sits under the music.
-    private static let baseLevel = 0.7
+    private static let baseLevel = 0.4
     private static let fadeSeconds = 2.5
     private static let maxBlockFrames = 4096
 
@@ -106,7 +106,7 @@ final class AmbientSounds {
             renderBlock: Self.makeRenderBlock(synth: synth, scratch: scratch, maxFrames: Self.maxBlockFrames))
         let reverb = AVAudioUnitReverb()
         reverb.loadFactoryPreset(.mediumHall)
-        reverb.wetDryMix = 22
+        reverb.wetDryMix = 35
         engine.attach(source)
         engine.attach(reverb)
         engine.connect(source, to: reverb, format: format)

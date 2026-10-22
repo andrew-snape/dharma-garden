@@ -61,14 +61,14 @@ public final class AmbientSynth: @unchecked Sendable {
         self.sampleRate = sampleRate
         smoothing = Float(1 - exp(-1 / (sampleRate * 2.5)))
         masterSmoothing = Float(1 - exp(-1 / (sampleRate * 1.5)))
-        rainLowCoef = Float(1 - exp(-2 * .pi * 3500 / sampleRate))
-        rainHighCoef = Float(1 - exp(-2 * .pi * 250 / sampleRate))
-        outCoef = Float(1 - exp(-2 * .pi * 6000 / sampleRate))
+        rainLowCoef = Float(1 - exp(-2 * .pi * 2200 / sampleRate))
+        rainHighCoef = Float(1 - exp(-2 * .pi * 180 / sampleRate))
+        outCoef = Float(1 - exp(-2 * .pi * 3200 / sampleRate))
         rng = rng ^ seed
         crickets3 = [
-            Cricket(freq: 3300, cycle: 0.0, period: 1.07, left: 0.9, right: 0.4),
-            Cricket(freq: 3650, cycle: 0.45, period: 1.21, left: 0.5, right: 0.8),
-            Cricket(freq: 3950, cycle: 0.8, period: 0.93, left: 0.7, right: 0.7),
+            Cricket(freq: 2700, cycle: 0.0, period: 1.37, left: 0.9, right: 0.4),
+            Cricket(freq: 2950, cycle: 0.45, period: 1.61, left: 0.5, right: 0.8),
+            Cricket(freq: 3200, cycle: 0.8, period: 1.23, left: 0.7, right: 0.7),
         ]
         nextChirpIn = Int(0.3 * sampleRate)
     }
@@ -139,8 +139,8 @@ public final class AmbientSynth: @unchecked Sendable {
             return lp2 - hp
         }
         let n1 = nextNoise(), n2 = nextNoise()
-        l += channel(n1, &rainLP1.0, &rainLP2.0, &rainHP.0) * level * gust * 0.55
-        r += channel(n2, &rainLP1.1, &rainLP2.1, &rainHP.1) * level * gust * 0.55
+        l += channel(n1, &rainLP1.0, &rainLP2.0, &rainHP.0) * level * gust * 0.35
+        r += channel(n2, &rainLP1.1, &rainLP2.1, &rainHP.1) * level * gust * 0.35
     }
 
     private func addCrickets(_ l: inout Float, _ r: inout Float, level: Float, step: Double) {
@@ -156,7 +156,7 @@ public final class AmbientSynth: @unchecked Sendable {
                 let env = Float(s * s)
                 c.phase += 2 * .pi * c.freq * step
                 if c.phase > 2 * .pi { c.phase -= 2 * .pi }
-                let tone = Float(sin(c.phase)) * env * level * 0.035
+                let tone = Float(sin(c.phase)) * env * level * 0.01
                 l += tone * c.left
                 r += tone * c.right
             }
@@ -167,8 +167,8 @@ public final class AmbientSynth: @unchecked Sendable {
     private func addBirds(_ l: inout Float, _ r: inout Float, level: Float) {
         nextChirpIn -= 1
         if nextChirpIn <= 0 {
-            // Busier when the birds are louder: about one call every 1.5 to 9 seconds.
-            nextChirpIn = Int(range(1.5, 4.5) / Double(max(0.15, level)) * sampleRate)
+            // Busier when the birds are louder: about one call every 4 to 25 seconds, so they stay in the distance.
+            nextChirpIn = Int(range(4, 9) / Double(max(0.35, level)) * sampleRate)
             if level > 0.02, let free = birdVoices.firstIndex(where: { !$0.active }) { startBird(free) }
         }
         for k in birdVoices.indices where birdVoices[k].active {
@@ -180,7 +180,7 @@ public final class AmbientSynth: @unchecked Sendable {
                 b.phase += 2 * .pi * freq / sampleRate
                 if b.phase > 2 * .pi { b.phase -= 2 * .pi }
                 let env = pow(sin(.pi * p), 1.5)
-                let tone = Float((sin(b.phase) + 0.15 * sin(2 * b.phase)) * env) * 0.05
+                let tone = Float(sin(b.phase) * env) * 0.012
                 l += tone * b.left
                 r += tone * b.right
             }
@@ -201,8 +201,8 @@ public final class AmbientSynth: @unchecked Sendable {
     private func startBird(_ index: Int) {
         var b = Bird()
         b.active = true
-        b.notesLeft = Int(range(2, 6))
-        b.base = range(2200, 3600)
+        b.notesLeft = Int(range(2, 4))
+        b.base = range(1700, 2600)
         let pan = Float(nextUnit())
         b.left = 0.4 + 0.5 * (1 - pan)
         b.right = 0.4 + 0.5 * pan
@@ -212,10 +212,10 @@ public final class AmbientSynth: @unchecked Sendable {
 
     /// Picks the next note of a call: near the call's pitch, gliding up or down, short, then a short gap.
     private func nextNote(_ b: inout Bird) {
-        b.glide = (nextUnit() < 0.5 ? -1 : 1) * range(0.1, 0.35)
+        b.glide = (nextUnit() < 0.5 ? -1 : 1) * range(0.08, 0.25)
         b.base *= 1 + (nextUnit() - 0.5) * 0.2
-        b.base = min(max(b.base, 1800), 3800)
-        b.noteSamples = Int(range(0.05, 0.11) * sampleRate)
+        b.base = min(max(b.base, 1500), 2800)
+        b.noteSamples = Int(range(0.08, 0.16) * sampleRate)
         b.gapSamples = Int(range(0.03, 0.08) * sampleRate)
     }
 }

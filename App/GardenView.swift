@@ -645,6 +645,11 @@ struct GardenView: View {
         sounds.play(sound)
     }
 
+    private func sustainSound(_ loop: ToolLoop) {
+        guard settings.soundEffectsEnabled else { return }
+        sounds.sustain(loop)
+    }
+
     private func sound(for tool: Tool) -> ToolSound {
         switch tool {
         case .water: .water
@@ -710,7 +715,9 @@ struct GardenView: View {
         if tool == .fork {
             dragFork(from: previous, to: p)
         } else {
-            use(.water, at: p)
+            // The drag's own sprinkle loop stands in for the pour of a single tap.
+            use(.water, at: p, silent: true)
+            sustainSound(.sprinkle)
         }
     }
 
@@ -728,7 +735,7 @@ struct GardenView: View {
         }
         store.apply { g in GardenEngine.aerate(at: p, in: &g) }
         addRipple(p, .furrow, from: previous)
-        playSound(.fork)
+        sustainSound(.rake)
     }
 
     /// True when the straight line from `a` to `b` stays on the bed (sampled along its length).
@@ -741,7 +748,7 @@ struct GardenView: View {
 
     /// Applies one player action at a ground point and shows its feedback. A seed on a spot that is not allowed
     /// changes nothing and flashes the ghost red.
-    func use(_ tool: Tool, at p: GroundPoint) {
+    func use(_ tool: Tool, at p: GroundPoint, silent: Bool = false) {
         let coinsBefore = store.garden.coins
         var acted = false
         store.apply { g in
@@ -769,7 +776,7 @@ struct GardenView: View {
         // The fork always shows going in on the bed, even where the soil is already loose.
         if acted || (tool == .fork && store.garden.plot.contains(p)) {
             addRipple(p, kind(for: tool))
-            playSound(sound(for: tool))
+            if !silent { playSound(sound(for: tool)) }
         } else if case .plant = tool {
             flashRefusedSeed()
         }

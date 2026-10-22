@@ -16,6 +16,11 @@ enum ToolSound: CaseIterable {
     }
 }
 
+/// Sounds that last as long as a drag keeps moving: a rake scraping through the soil, a can sprinkling.
+enum ToolLoop: CaseIterable {
+    case rake, sprinkle
+}
+
 @MainActor
 final class ToolSounds {
     private static let sampleRate = 44_100.0
@@ -27,6 +32,19 @@ final class ToolSounds {
     private var nextVoice = 0
     private var lastPlayed: [ToolSound: Date] = [:]
     private var ready = false
+
+    /// One looping player per drag sound, each through its own mixer so it can fade.
+    private struct LoopVoice {
+        let player: AVAudioPlayerNode
+        let mixer: AVAudioMixerNode
+        let buffer: AVAudioPCMBuffer
+        var playing = false
+        var heldUntil = Date.distantPast
+        var fade: Task<Void, Never>?
+    }
+    private var loops: [ToolLoop: LoopVoice] = [:]
+    /// How long a loop keeps going after the last drag step, so a slow drag does not stutter.
+    private static let loopHold: TimeInterval = 0.25
 
     /// Overall level, 0...1. Kept low so the sounds sit under the music.
     var volume: Float = 0.5 {
@@ -45,6 +63,45 @@ final class ToolSounds {
         player.play()
     }
 
+    /// Keeps `loop` playing for a moment longer: it fades in on the first call and fades out once the calls stop.
+    func sustain(_ loop: ToolLoop) {
+        guard prepare(), var voice = loops[loop] else { return }
+        voice.heldUntil = Date().addingTimeInterval(Self.loopHold)
+        if !voice.playing {
+            voice.playing = true
+            voice.player.stop()
+            voice.player.scheduleBuffer(voice.buffer, at: nil, options: .loops, completionHandler: nil)
+            voice.player.play()
+            voice.fade?.cancel()
+            voice.fade = Task { [weak self] in await self?.runLoop(loop) }
+        }
+        loops[loop] = voice
+    }
+
+    /// Fades the loop in, waits while it is held, then fades it out and stops it.
+    private func runLoop(_ loop: ToolLoop) async {
+        guard let mixer = loops[loop]?.mixer else { return }
+        let step = 0.015
+        while mixer.outputVolume < 1 {
+            mixer.outputVolume = min(1, mixer.outputVolume + Float(step / 0.08))
+            try? await Task.sleep(for: .seconds(step))
+        }
+        while let held = loops[loop]?.heldUntil, held > Date() {
+            try? await Task.sleep(for: .seconds(0.03))
+        }
+        while mixer.outputVolume > 0 {
+            if let held = loops[loop]?.heldUntil, held > Date() {
+                // Picked up again while fading: go back up and keep holding.
+                await runLoop(loop)
+                return
+            }
+            mixer.outputVolume = max(0, mixer.outputVolume - Float(step / 0.22))
+            try? await Task.sleep(for: .seconds(step))
+        }
+        loops[loop]?.player.stop()
+        loops[loop]?.playing = false
+    }
+
     /// Builds the graph and the buffers on first use, and restarts the engine if the output device changed.
     private func prepare() -> Bool {
         if !ready {
@@ -57,6 +114,17 @@ final class ToolSounds {
             }
             for sound in ToolSound.allCases {
                 buffers[sound] = Self.makeBuffer(for: sound, format: format)
+            }
+            for loop in ToolLoop.allCases {
+                guard let buffer = Self.makeBuffer(Self.renderLoop(loop), format: format) else { continue }
+                let player = AVAudioPlayerNode()
+                let mixer = AVAudioMixerNode()
+                engine.attach(player)
+                engine.attach(mixer)
+                engine.connect(player, to: mixer, format: format)
+                engine.connect(mixer, to: engine.mainMixerNode, format: format)
+                mixer.outputVolume = 0
+                loops[loop] = LoopVoice(player: player, mixer: mixer, buffer: buffer)
             }
             engine.mainMixerNode.outputVolume = volume
             ready = true
@@ -71,7 +139,10 @@ final class ToolSounds {
     // MARK: Making the sounds
 
     private static func makeBuffer(for sound: ToolSound, format: AVAudioFormat) -> AVAudioPCMBuffer? {
-        let samples = render(sound)
+        makeBuffer(render(sound), format: format)
+    }
+
+    private static func makeBuffer(_ samples: [Float], format: AVAudioFormat) -> AVAudioPCMBuffer? {
         guard let buffer = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: AVAudioFrameCount(samples.count)),
               let channel = buffer.floatChannelData?[0] else { return nil }
         buffer.frameLength = AVAudioFrameCount(samples.count)
@@ -133,6 +204,32 @@ final class ToolSounds {
         }
     }
 
+    /// A water bubble: a sine that rises a little in pitch as it rings out (the sound of an air pocket closing).
+    private static func bubble(_ out: inout [Float], at start: Double, freq: Double, decay: Double, gain: Float) {
+        let first = Int(start * sampleRate)
+        let count = Int(decay * 5 * sampleRate)
+        var phase = 0.0
+        for i in 0..<count where first + i < out.count {
+            let t = Double(i) / sampleRate
+            phase += 2 * .pi * freq * (1 + 6 * t) / sampleRate
+            let env = Float(exp(-t / decay)) * Float(min(1, t / 0.002))
+            out[first + i] += Float(sin(phase)) * env * gain
+        }
+    }
+
+    /// A scatter of bubbles between `from` and `to` seconds, `perSecond` of them, low ones louder than high ones.
+    private static func bubbles(_ out: inout [Float], from: Double, to: Double, perSecond: Double,
+                                low: Double, high: Double, gain: Float, noise: inout Noise) {
+        let count = Int((to - from) * perSecond)
+        for _ in 0..<count {
+            let u = Double(noise.next() + 1) / 2
+            let at = from + (to - from) * Double(noise.next() + 1) / 2
+            let freq = low * pow(high / low, u)
+            let decay = 0.006 + 0.02 * (1 - u)
+            bubble(&out, at: at, freq: freq, decay: decay, gain: gain * Float(0.4 + 0.6 * (1 - u)))
+        }
+    }
+
     /// A one-pole low-pass over the whole sound, to take any remaining edge off.
     private static func soften(_ out: inout [Float], cutoff: Double) {
         let a = Float(1 - exp(-2 * .pi * cutoff / sampleRate))
@@ -150,11 +247,14 @@ final class ToolSounds {
         var out = [Float](repeating: 0, count: Int(sampleRate * 0.9))
         switch sound {
         case .water:
-            // A soft pour: low-passed noise that brightens a little as it falls.
-            noiseBurst(&out, at: 0, length: 0.7, from: 350, to: 900, gain: 1.4, attack: 0.12, noise: &noise)
+            // Water from the can landing on the soil: a quiet wash under a run of small bubbles and drips.
+            noiseBurst(&out, at: 0, length: 0.75, from: 250, to: 500, gain: 0.5, attack: 0.1, noise: &noise)
+            bubbles(&out, from: 0.02, to: 0.65, perSecond: 70, low: 450, high: 1500, gain: 0.22, noise: &noise)
+            let tail = Int(sampleRate * 0.65)
+            for i in tail..<out.count { out[i] *= Float(exp(-Double(i - tail) / (sampleRate * 0.08))) }
         case .fork:
             // The tines going in: a dull thud and a crunch of soil.
-            pluck(&out, at: 0, freq: 90, decay: 0.09, gain: 0.6)
+            pluck(&out, at: 0, freq: 90, decay: 0.09, gain: 0.35)
             noiseBurst(&out, at: 0.02, length: 0.22, from: 700, to: 300, gain: 1.0, attack: 0.02, noise: &noise)
         case .pull:
             // A weed coming out of the ground: a short rip that rises then stops.
@@ -188,6 +288,55 @@ final class ToolSounds {
         // Keep clear of clipping whatever was layered.
         let peak = out.map { abs($0) }.max() ?? 0
         if peak > 0.9 { out = out.map { $0 * 0.9 / peak } }
+        return out
+    }
+
+    /// A seamless loop for a drag sound: rendered a little long, with the end crossfaded into the start.
+    private static func renderLoop(_ loop: ToolLoop) -> [Float] {
+        var noise = Noise(state: loop == .rake ? 0x51_7CC1_B727_220A : 0x94D0_49BB_1331_11EB)
+        let length = 2.4, overlap = 0.3
+        var out = [Float](repeating: 0, count: Int(sampleRate * (length + overlap)))
+        switch loop {
+        case .rake:
+            // Tines drawn through loose soil: a low brushing bed that swells with each pull, and the patter of
+            // crumbs and little stones catching on the tines.
+            var y: Float = 0, z: Float = 0
+            let a = Float(1 - exp(-2 * .pi * 450 / sampleRate))
+            for i in out.indices {
+                y += a * (noise.next() - y)
+                z += a * (y - z)
+                let t = Double(i) / sampleRate
+                let stroke = Float(0.55 + 0.45 * sin(2 * .pi * 1.6 * t))
+                out[i] += z * stroke * 1.6
+            }
+            var t = 0.0
+            while t < length + overlap {
+                let cutoff = 700 + 700 * Double(noise.next() + 1) / 2
+                let gain = 0.12 + 0.18 * Float(noise.next() + 1) / 2
+                noiseBurst(&out, at: t, length: 0.012 + 0.012 * Double(noise.next() + 1) / 2,
+                           from: cutoff, to: cutoff * 0.6, gain: gain, attack: 0.002, noise: &noise)
+                t += 0.008 + 0.03 * Double(noise.next() + 1) / 2
+            }
+        case .sprinkle:
+            // A rose on the can: a soft patter of drops and bubbles over a gentle wash.
+            var y: Float = 0, z: Float = 0
+            let a = Float(1 - exp(-2 * .pi * 600 / sampleRate))
+            for i in out.indices {
+                y += a * (noise.next() - y)
+                z += a * (y - z)
+                out[i] += z * 0.5
+            }
+            bubbles(&out, from: 0, to: length + overlap, perSecond: 90, low: 500, high: 1700, gain: 0.2, noise: &noise)
+        }
+        soften(&out, cutoff: 1800)
+        let n = Int(sampleRate * length), o = Int(sampleRate * overlap)
+        for i in 0..<o {
+            let f = Float(i) / Float(o)
+            out[i] = out[i] * f + out[n + i] * (1 - f)
+        }
+        out.removeLast(out.count - n)
+        let peak = out.map { abs($0) }.max() ?? 0
+        if peak > 0 { out = out.map { $0 * 0.45 / peak } }
         return out
     }
 }
