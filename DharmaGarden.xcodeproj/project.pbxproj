@@ -39,13 +39,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		03BFB9B5395909F7BB3A03AE /* ambient-crickets.m4a */ = {isa = PBXFileReference; path = "ambient-crickets.m4a"; sourceTree = "<group>"; };
-		1A51ED1AB248B86EC827673E /* DharmaGardenCore */ = {isa = PBXFileReference; lastKnownFileType = folder; name = DharmaGardenCore; path = DharmaGardenCore; sourceTree = SOURCE_ROOT; };
+		03BFB9B5395909F7BB3A03AE /* ambient-crickets.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ambient-crickets.m4a"; sourceTree = "<group>"; };
+		1A51ED1AB248B86EC827673E /* DharmaGardenCore */ = {isa = PBXFileReference; lastKnownFileType = folder; path = DharmaGardenCore; sourceTree = SOURCE_ROOT; };
 		1D4182632B1EE9B8B8D9FC4A /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
-		27BA5A8F2ED05D395C084E46 /* ambient-rain.m4a */ = {isa = PBXFileReference; path = "ambient-rain.m4a"; sourceTree = "<group>"; };
+		27BA5A8F2ED05D395C084E46 /* ambient-rain.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ambient-rain.m4a"; sourceTree = "<group>"; };
 		2AA97850FA1E28841F162304 /* DharmaGarden.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DharmaGarden.entitlements; sourceTree = "<group>"; };
 		2E3CFC532085D63147B654BA /* CREDITS.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CREDITS.md; sourceTree = "<group>"; };
-		3199D474B3BCC55B49CBC047 /* DharmaGarden.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DharmaGarden.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3199D474B3BCC55B49CBC047 /* Dharma Garden.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Dharma Garden.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3BC1E628E0DB231111932F3E /* DharmaGardenApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DharmaGardenApp.swift; sourceTree = "<group>"; };
 		43C785BB77A4F024BC7AF4F5 /* ReadingChairView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingChairView.swift; sourceTree = "<group>"; };
 		4496B816A85AC376160CC506 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -57,7 +57,7 @@
 		713CEF9A59EB1493A905659F /* ReminderService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderService.swift; sourceTree = "<group>"; };
 		72BB88443B211B547D9D2FFB /* ToolSounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolSounds.swift; sourceTree = "<group>"; };
 		72DDE22DA73FB8BA1D1C9763 /* VisitorController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorController.swift; sourceTree = "<group>"; };
-		749F3636715E803FAD76B493 /* ambient-birds.m4a */ = {isa = PBXFileReference; path = "ambient-birds.m4a"; sourceTree = "<group>"; };
+		749F3636715E803FAD76B493 /* ambient-birds.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ambient-birds.m4a"; sourceTree = "<group>"; };
 		7532CA49B106650702D19848 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		78CD3C4D6071146064A35915 /* WeatherService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherService.swift; sourceTree = "<group>"; };
 		7F15B1F0C61BB167FEBC1A49 /* ShopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopView.swift; sourceTree = "<group>"; };
@@ -97,7 +97,7 @@
 		129227C9639445731D6A6E75 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				3199D474B3BCC55B49CBC047 /* DharmaGarden.app */,
+				3199D474B3BCC55B49CBC047 /* Dharma Garden.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -175,7 +175,7 @@
 				32094C6E2B25AEF7417B9CFE /* DharmaGardenArt */,
 			);
 			productName = DharmaGarden;
-			productReference = 3199D474B3BCC55B49CBC047 /* DharmaGarden.app */;
+			productReference = 3199D474B3BCC55B49CBC047 /* Dharma Garden.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -185,9 +185,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastUpgradeCheck = 1430;
-				TargetAttributes = {
-				};
+				LastUpgradeCheck = 2710;
 			};
 			buildConfigurationList = B7D9C51611B20F4CDE38E47B /* Build configuration list for PBXProject "DharmaGarden" */;
 			developmentRegion = en;
@@ -263,6 +261,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -293,9 +292,11 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -309,6 +310,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
@@ -322,9 +324,11 @@
 				CODE_SIGN_ENTITLEMENTS = App/DharmaGarden.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = App/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.games";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -342,6 +346,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -372,9 +377,11 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -395,6 +402,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -408,9 +416,11 @@
 				CODE_SIGN_ENTITLEMENTS = App/DharmaGarden.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = App/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.games";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
