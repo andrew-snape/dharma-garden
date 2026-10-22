@@ -1,6 +1,6 @@
 import Foundation
 import UserNotifications
-import WeedsCore
+import DharmaGardenCore
 
 /// Schedules the one daily reminder. Permission is asked only when the user turns the reminder on.
 /// The notification is a one-shot for the next occurrence of the chosen time. The app calls `reschedule`

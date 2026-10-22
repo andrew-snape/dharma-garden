@@ -38,10 +38,10 @@ A small, cosy garden game for macOS. You check in once a day to plant seeds, wat
 - A plant wilts after about 48 hours fully dry, and dies after about 96 hours
 - Wilted plants recover if watered in time
 
-**Weeds:**
+**DharmaGarden:**
 - A weed has a small chance of appearing in an empty or planted bed each few hours
 - Each weed next to a plant slows its growth slightly
-- Weeds never kill plants, they just slow them down
+- DharmaGarden never kill plants, they just slow them down
 
 **Offline calculation:**
 - No timer runs in the background

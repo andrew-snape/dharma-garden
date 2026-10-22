@@ -130,7 +130,7 @@ Notes for the game:
 
 ## 9. Game timings for new plants
 
-Days from seed to ready (harvest or bloom) at ideal conditions, as set in `WeedsCore/Sources/WeedsCore/Tuning.swift`. "Page" means The Seed Collection product page or sowing chart; "research" means section 2 of this file; "estimate" means a game estimate with no source yet, to check before release.
+Days from seed to ready (harvest or bloom) at ideal conditions, as set in `DharmaGardenCore/Sources/DharmaGardenCore/Tuning.swift`. "Page" means The Seed Collection product page or sowing chart; "research" means section 2 of this file; "estimate" means a game estimate with no source yet, to check before release.
 
 | Plant | Days | Source |
 |---|---|---|

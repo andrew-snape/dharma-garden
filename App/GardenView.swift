@@ -1,7 +1,7 @@
 import SwiftUI
 import AppKit
-import WeedsCore
-import WeedsArt
+import DharmaGardenCore
+import DharmaGardenArt
 
 enum Tool: Hashable { case water, weed, harvest, fork, seasol, fertiliser, plant(FlowerType) }
 

@@ -6,7 +6,7 @@
 - Grid layout = a tidy rectangular bed with **free planting** (no snapping) and **no visible lines anywhere**: no cell edges, no seams, no drawn grid. It should look like real tilled soil, only rectangular.
 - Look only: no growth or water rules change (optional balance idea at the end, off by default).
 
-## Model (WeedsCore)
+## Model (DharmaGardenCore)
 - `BedStyle` enum: `soilPatch, mounds, grid, plantersBoxes` (String raw, CaseIterable, Codable, Sendable; displayName, blurb).
 - `PlotShape` (Garden.swift) gains `style: BedStyle = .soilPatch` and keeps its API (`contains`, `edgeDistance`, `point(seed:inset:)`, `area`) so the engine, weed spawning, volunteers, `canPlant` and tests keep working. Internally it asks a list of **regions** for the style:
   - soilPatch: the existing wobbly oval.
@@ -19,7 +19,7 @@
 - `GardenEngine.setBedStyle(_ style: BedStyle, in g: inout Garden)`: swaps the plot, then for every plant and weed outside the new regions finds the nearest valid point (search outward from the object, respecting `sowSpacing`). A plant with nowhere to go is removed and its seed packet is returned to `seedStock` (weeds just vanish). Deterministic; covered by tests.
 - `SoilField` stays one unit-square grid; cells outside the regions are already ignored.
 
-## Rendering (WeedsArt)
+## Rendering (DharmaGardenArt)
 Keep everything in `ScenePatch.swift`'s pipeline (projected through `Camera.groundPoint(x:y:height:)`), split by style into `ScenePatch+Styles.swift` (new) so the file stays readable. `drawPatch` dispatches on `garden.plot.style`.
 - **Soil patch:** unchanged.
 - **Mounds:** per mound, a domed look in flat style: soil body with moisture shading (reuse the blurred cell fills clipped to each mound), a lighter crest highlight on the sun side, a darker lower rim, a crescent shadow on the lawn on the side away from the sun (reuse `SceneLighting.shadowDirection`), a few crumbs/pebbles. Plants are not lifted; the dome is shading only, so taps and depth order stay simple.
@@ -45,7 +45,7 @@ Wait for the visitor core (Garden.swift, GardenEngine.swift) to land first, sinc
 5. Balance: `maxPlants` and weed counts per style; confirm tap targets and the camera drift look right near box walls.
 
 ## Verification
-- `cd WeedsCore && swift test --scratch-path ~/Library/Caches/weeds-build`.
+- `cd DharmaGardenCore && swift test --scratch-path ~/Library/Caches/weeds-build`.
 - Render PNGs (extend `SceneStyleRenderTests`) for each style x both scene styles (first person and backyard) x day/dusk/night, view them, zoom on the grid bed to confirm no lines.
 - Run the app (build outside Documents; clean stale DerivedData): switch styles with plants in the garden, confirm they relocate, taps/water/weed/pick work in each shape, saves survive relaunch.
 

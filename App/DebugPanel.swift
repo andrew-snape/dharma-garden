@@ -1,6 +1,6 @@
 #if DEBUG
 import SwiftUI
-import WeedsCore
+import DharmaGardenCore
 
 /// Debug-only time travel: fast-forward the garden to watch growth, bloom, fade and seed heads.
 /// Compiled out of release builds.

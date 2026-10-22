@@ -1,6 +1,6 @@
 import Foundation
-import WeedsArt
-import WeedsCore
+import DharmaGardenArt
+import DharmaGardenCore
 
 /// The user's choices, saved in UserDefaults. The garden, the weather and the reminder all read from here.
 @MainActor

@@ -1,6 +1,6 @@
 import AppKit
 import GameKit
-import WeedsCore
+import DharmaGardenCore
 
 /// Signs the player in to Game Center and reports the garden's achievements (see `GardenAchievement`).
 /// Does nothing while nobody is signed in, and reports again once they are.

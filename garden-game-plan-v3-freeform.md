@@ -4,7 +4,7 @@
 - One big soft-edged patch of soil on the lawn; plant anywhere inside it.
 - Watering: a soft circle around where you tap; the soil darkens in a spreading patch.
 - Crowding: soft. Plants can sit close, crowded ones grow a bit slower; seeds cannot land on top of another plant.
-- Weeds: pop up at random spots on the soil, tap to pull, they slow nearby plants.
+- DharmaGarden: pop up at random spots on the soil, tap to pull, they slow nearby plants.
 - First-person 45 degree view stays the default; the backyard style must keep working.
 
 ## New model (engine contract, save version 4; old saves reset)

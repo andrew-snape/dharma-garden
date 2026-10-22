@@ -1,5 +1,5 @@
 import SwiftUI
-import WeedsCore
+import DharmaGardenCore
 
 /// Readable chrome for the garden window. Every piece of UI text sits on a rounded panel whose fill is
 /// opaque enough that the text colour does not depend on what the scene behind it looks like.

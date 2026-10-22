@@ -1,5 +1,5 @@
 import SwiftUI
-import WeedsCore
+import DharmaGardenCore
 
 extension GardenAdvice.Action {
     var symbol: String {

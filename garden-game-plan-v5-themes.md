@@ -14,7 +14,7 @@
 - **Urban backyard**: terrace houses with brick, windows, drainpipes and chimney pots over the fence, an apartment block skyline, power lines; the barrier is a tall timber close-board fence (panelled, with a gravel board) and neighbours' roofs; ground is a small lawn patch with concrete pavers around the bed; clutter props: wheelie bin, bike against the fence, barbecue, washing line. Ambient: string lights glowing at dusk and night, a cat on the fence sometimes, a lit window or two at night. Foreground prop: a plastic watering can and a pot plant.
 
 ## Architecture
-- `SceneTheme` enum in WeedsArt (`farm, japanese, ruralUK, urban`; `displayName`, `blurb`), carried like `SceneStyle`: `GardenSceneView(..., theme:)` -> `SceneContent` -> `SceneCanvas(theme:)`. Default `.farm`, so every existing caller keeps working.
+- `SceneTheme` enum in DharmaGardenArt (`farm, japanese, ruralUK, urban`; `displayName`, `blurb`), carried like `SceneStyle`: `GardenSceneView(..., theme:)` -> `SceneContent` -> `SceneCanvas(theme:)`. Default `.farm`, so every existing caller keeps working.
 - `SceneCanvas` draw entry points dispatch on theme instead of calling the farm functions directly (SceneView.swift lines around 257-312: sky, clouds, hills, lawn, backyard back, fence, side fences, foreground). Each theme implements the same set of hooks in its own file: `drawThemeSky/Clouds/Horizon/Ground/Barrier/BackdropProps/SideBarriers/Foreground/Ambient`. Farm's implementation wraps the current functions unchanged (`SceneBackdrop.swift`, `SceneBackyard.swift`, `SceneOverlay.swift`).
 - Barriers: generalise `FenceFrame` (SceneBackdrop.swift) into `BarrierFrame` with a style (railFence, bambooSlat, stoneWall, drystoneWall, timberPanel) built on the shared `Camera.upright` projection so back and side barriers meet at one corner post/pillar exactly as the fence does today (keep the corner-join and vanishing-point tests, add them for each barrier type). All heights use `upright(...)`: verticals vertical, lines to the vanishing point.
 - Palette: `ScenePalette.resolve(...)` gains an optional theme parameter that nudges grass, foliage, sky saturation and soil per theme (Japanese: mossier and cooler; UK: lusher and greyer; urban: duller grass). Real weather, seasons and darkness still drive everything.
@@ -27,12 +27,12 @@
 2. **Themes in parallel, one agent each, own file each**: `SceneThemeJapanese.swift`, `SceneThemeUK.swift`, `SceneThemeUrban.swift` (+ their barrier style). Each agent renders both views, day/dusk/night, plus planter boxes and soil patch, views the PNGs and iterates; checks that the bed, plants, visitors, fence corners and taps are unaffected and that the backdrop never overlaps the bed.
 3. **Ambient and foreground props** per theme (petals, smoke, string lights, creatures on walls).
 4. **Music per theme** (voices in `GardenSynth`, composer styles, tests), then the settings picker previews.
-5. **Verify and polish**: full suite, build with the `Weeds` scheme, run the app switching themes live with weather, check CPU (ambient effects capped), check dusk and night glow, and tune.
+5. **Verify and polish**: full suite, build with the `DharmaGarden` scheme, run the app switching themes live with weather, check CPU (ambient effects capped), check dusk and night glow, and tune.
 
 ## Verification
-- `cd WeedsCore && swift test --scratch-path ~/Library/Caches/weeds-build` (new theme tests: Farm unchanged, barrier corner joins and vanishing points for every barrier, setting round trip, mood/theme music determinism).
+- `cd DharmaGardenCore && swift test --scratch-path ~/Library/Caches/weeds-build` (new theme tests: Farm unchanged, barrier corner joins and vanishing points for every barrier, setting round trip, mood/theme music determinism).
 - Render sheets in `~/Library/Caches/weeds-renders/themes/` (theme x view x light x two beds) and look at every one, zooming on corners and seams.
-- Build and run the app via the `Weeds` scheme: switch theme in Settings with plants in the garden; confirm taps, planting, visitors and the book work under each theme; confirm music changes and fades.
+- Build and run the app via the `DharmaGarden` scheme: switch theme in Settings with plants in the garden; confirm taps, planting, visitors and the book work under each theme; confirm music changes and fades.
 
 ## Risks
 - Art quality: buildings and trees in a flat style take iteration; the Farm art is the style bar. Budget a visual review loop per theme.

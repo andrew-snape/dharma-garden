@@ -1,6 +1,6 @@
 import SwiftUI
-import WeedsCore
-import WeedsArt
+import DharmaGardenCore
+import DharmaGardenArt
 
 /// Seed shop, opened from the Shop tile in the tool bar. Drawn in the garden's own panel style, with a tab per
 /// category and a card per seed. A seed the player cannot afford dims, and its buy buttons switch off.

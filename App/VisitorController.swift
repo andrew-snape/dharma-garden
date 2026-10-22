@@ -1,6 +1,6 @@
 import Foundation
 import SwiftUI
-import WeedsCore
+import DharmaGardenCore
 
 /// Makes visitors for the garden view. The view keeps the list and the timers; this hands out ids and seeds
 /// so each roll is different, and turns a roll into a visitor the scene can show.

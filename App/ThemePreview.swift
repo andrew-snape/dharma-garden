@@ -1,6 +1,6 @@
 import SwiftUI
-import WeedsArt
-import WeedsCore
+import DharmaGardenArt
+import DharmaGardenCore
 
 /// Renders each theme's preview once and keeps the image, so the Settings rows draw a bitmap instead of the scene.
 @MainActor

@@ -1,6 +1,6 @@
 import SwiftUI
-import WeedsCore
-import WeedsArt
+import DharmaGardenCore
+import DharmaGardenArt
 
 /// The collection book, opened from the book button in the header. Shows the milestone rewards and every visitor
 /// species. Unspotted species stay as silhouettes with a hint about where to look. Reads the store live, so it

@@ -1,6 +1,6 @@
 import CoreLocation
 import Foundation
-import WeedsCore
+import DharmaGardenCore
 
 /// Gets the Mac's location once when asked, then names the town it is in. Permission is requested only
 /// when the user has turned on "Use my location". Any failure (denied, no fix, offline) returns nil, so the

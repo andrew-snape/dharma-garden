@@ -1,5 +1,5 @@
 import Foundation
-import WeedsCore
+import DharmaGardenCore
 
 /// Holds the garden, saves it as JSON, and catches it up with the weather.
 /// (JSON file for now; the Garden type is Codable so SwiftData can replace it later.)

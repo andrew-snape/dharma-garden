@@ -1,8 +1,8 @@
 import AVFoundation
 import Foundation
-import WeedsCore
+import DharmaGardenCore
 
-/// The garden's music on the Mac's speakers. WeedsCore's `GardenSynth` makes the sound inside an
+/// The garden's music on the Mac's speakers. DharmaGardenCore's `GardenSynth` makes the sound inside an
 /// `AVAudioSourceNode`; the composer feeds it phrases a few seconds ahead. A large hall reverb and a very subtle
 /// delay sit after it. Music fades in and out over about three seconds, and keeps playing while the app is in the background.
 /// Changing the garden theme crossfades: the music fades down, the synth is reset, the new theme's music begins.

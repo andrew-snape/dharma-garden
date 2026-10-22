@@ -1,31 +1,31 @@
-name: Weeds
+name: DharmaGarden
 options:
   bundleIdPrefix: com.snape
   deploymentTarget:
     macOS: "14.0"
 packages:
-  WeedsCore:
-    path: WeedsCore
+  DharmaGardenCore:
+    path: DharmaGardenCore
 schemes:
-  Weeds:
+  DharmaGarden:
     build:
       targets:
-        Weeds: all
+        DharmaGarden: all
     run:
       config: Debug
     test:
       config: Debug
 targets:
-  Weeds:
+  DharmaGarden:
     type: application
     platform: macOS
     sources: [App]
     dependencies:
-      - package: WeedsCore
-      - package: WeedsCore
-        product: WeedsArt
+      - package: DharmaGardenCore
+      - package: DharmaGardenCore
+        product: DharmaGardenArt
     entitlements:
-      path: App/Weeds.entitlements
+      path: App/DharmaGarden.entitlements
       properties:
         com.apple.security.app-sandbox: true
         com.apple.security.network.client: true
@@ -33,7 +33,7 @@ targets:
     info:
       path: App/Info.plist
       properties:
-        CFBundleDisplayName: Garden
+        CFBundleDisplayName: Dharma Garden
         CFBundleShortVersionString: "1.0"
         CFBundleVersion: "1"
         LSApplicationCategoryType: public.app-category.games
@@ -41,8 +41,8 @@ targets:
         NSLocationWhenInUseUsageDescription: Used to match your garden to the weather where you live.
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.snape.weeds
-        PRODUCT_NAME: Garden
+        PRODUCT_BUNDLE_IDENTIFIER: com.snape.dharmagarden
+        PRODUCT_NAME: "Dharma Garden"
         SWIFT_VERSION: "6.0"
         SWIFT_STRICT_CONCURRENCY: minimal
         GENERATE_INFOPLIST_FILE: NO

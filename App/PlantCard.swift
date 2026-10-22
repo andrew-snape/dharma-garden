@@ -1,6 +1,6 @@
 import SwiftUI
-import WeedsCore
-import WeedsArt
+import DharmaGardenCore
+import DharmaGardenArt
 
 /// A small card about the plant under the pointer: its growth, water and what it needs next.
 struct PlantCard: View {

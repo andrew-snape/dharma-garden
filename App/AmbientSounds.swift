@@ -1,8 +1,8 @@
 import AVFoundation
 import Foundation
-import WeedsCore
+import DharmaGardenCore
 
-/// The garden's ambience on the Mac's speakers: birds by day, crickets at night, rain with the weather. WeedsCore's
+/// The garden's ambience on the Mac's speakers: birds by day, crickets at night, rain with the weather. DharmaGardenCore's
 /// `AmbientSynth` makes the sound inside an `AVAudioSourceNode`; this class owns the engine, the fades and the levels.
 /// It fades in and out over a couple of seconds and keeps playing while the app is in the background, like the music.
 @MainActor

@@ -1,6 +1,6 @@
 import SwiftUI
-import WeedsArt
-import WeedsCore
+import DharmaGardenArt
+import DharmaGardenCore
 
 /// Settings sheet, opened from the gear button in the garden header. A normal form, on the garden's own backdrop.
 struct SettingsView: View {

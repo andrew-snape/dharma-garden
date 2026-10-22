@@ -1,5 +1,5 @@
 import Foundation
-import WeedsCore
+import DharmaGardenCore
 
 /// Live weather for the active place. Each place keeps its own last good report, so the garden shows
 /// that report when the network is down or the location is refused. It never invents weather.

@@ -1,6 +1,6 @@
 import SwiftUI
-import WeedsCore
-import WeedsArt
+import DharmaGardenCore
+import DharmaGardenArt
 
 /// Downloads a Project Gutenberg book once and keeps the text in Application Support, so a book opens instantly (and
 /// offline) after its first read.

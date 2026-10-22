@@ -5,7 +5,7 @@
 - **Art:** flat, outline-free, warm Bluey-inspired shapes with a darker offset shade layer. Style test of 4 flowers x 4 stages looked good.
 - **Growth time:** realistic weeks to months, with visible micro changes every visit.
 - **Micro changes wanted:** continuous growth, daily-life details, aging and seasons, wind sway and moving light.
-- **Already built:** engine, weather (live Open-Meteo), seasons, palette, placeholder app, flower style sheet. Details in the code under `WeedsCore/` and `App/`.
+- **Already built:** engine, weather (live Open-Meteo), seasons, palette, placeholder app, flower style sheet. Details in the code under `DharmaGardenCore/` and `App/`.
 
 ## What changes in the engine
 1. **Realistic durations** (days from seed to first bloom): daisy 49, poppy 70, sunflower 84, lavender 120. All in `Tuning`/`FlowerType`.
@@ -49,7 +49,7 @@
 
 ## Delivery process
 Haiku agents do the work in waves; Sonnet (the project manager) writes the briefs, keeps file ownership disjoint, checks each result by running the tests and viewing rendered output, then starts the next wave.
-- Wave 1 (parallel): A) art, `WeedsArt` + style sheet tests. B) engine v2, `WeedsCore` engine + tests.
+- Wave 1 (parallel): A) art, `DharmaGardenArt` + style sheet tests. B) engine v2, `DharmaGardenCore` engine + tests.
 - Wave 2: perspective scene and tapping, wired to the new art and engine.
 - Wave 3: lighting, animation, camera drift, debug time scrubber.
 - Wave 4: shop, location, reminders, settings.
