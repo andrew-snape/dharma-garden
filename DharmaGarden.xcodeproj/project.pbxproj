@@ -7,20 +7,24 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		03EEB79C35D34C44DFCF95BA /* ambient-rain.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 27BA5A8F2ED05D395C084E46 /* ambient-rain.m4a */; };
 		120A7BF392D96B15D155ECE0 /* GardenGuidance.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6845B298AE95C6C1BDE7C35 /* GardenGuidance.swift */; };
 		124BF283AA2CC17BF3D94188 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B774EA17ECEA6DF04D964B0A /* LocationService.swift */; };
 		1692C4EBB38A145F1108ECF1 /* AmbientSounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06C75918CD51CC4CF6F273C /* AmbientSounds.swift */; };
+		236F78B095B243693467F5B8 /* CREDITS.md in Resources */ = {isa = PBXBuildFile; fileRef = 2E3CFC532085D63147B654BA /* CREDITS.md */; };
 		37DA83F4F12B05FFD86F4C1B /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7FF4B1C92140E2DE75AF0E /* Theme.swift */; };
 		46863F1DB040A6600C38001C /* DharmaGardenCore in Frameworks */ = {isa = PBXBuildFile; productRef = 2D85935568CD44BB6120F5F6 /* DharmaGardenCore */; };
 		4707D7E9F3E646EF1D15D390 /* GardenBookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD72A9EEE27D2ACB68E4D9E /* GardenBookView.swift */; };
 		48A9257596009D80E31D844A /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4182632B1EE9B8B8D9FC4A /* AppSettings.swift */; };
 		49D1DE7E886E4618BE0E0543 /* DebugPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DA62AB8AAB960746682F9FA /* DebugPanel.swift */; };
+		7C6E573E58FA3968D318E113 /* ambient-crickets.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 03BFB9B5395909F7BB3A03AE /* ambient-crickets.m4a */; };
 		805EEA78C37A369BF45F671C /* WeatherService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78CD3C4D6071146064A35915 /* WeatherService.swift */; };
 		87F176A0159BC1D74788470A /* ReadingChairView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C785BB77A4F024BC7AF4F5 /* ReadingChairView.swift */; };
 		8D88FEA0ECA9F5CC74314F9C /* GardenAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66376D5E823788DA1440ADAD /* GardenAudio.swift */; };
 		9E170E4742B57653A78A1440 /* GardenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ED61337202CF73DB46B7390 /* GardenView.swift */; };
 		B1EE8E73640B7A0A562EC3CF /* ReminderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713CEF9A59EB1493A905659F /* ReminderService.swift */; };
 		BBEBABA76F41CB7249CD6292 /* ThemePreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5409521DAE2374B38D6A8EC /* ThemePreview.swift */; };
+		BD0A25FCBB574A66147CA821 /* ambient-birds.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 749F3636715E803FAD76B493 /* ambient-birds.m4a */; };
 		C53C4C12A6B4FC94E7B29FA3 /* GardenMusic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD93EEB2565288BA26BE4AC /* GardenMusic.swift */; };
 		CAA2B3D47F75755A34AB4C15 /* DharmaGardenApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC1E628E0DB231111932F3E /* DharmaGardenApp.swift */; };
 		CD6527F1F3465800642FCE91 /* DharmaGardenArt in Frameworks */ = {isa = PBXBuildFile; productRef = 32094C6E2B25AEF7417B9CFE /* DharmaGardenArt */; };
@@ -35,9 +39,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		03BFB9B5395909F7BB3A03AE /* ambient-crickets.m4a */ = {isa = PBXFileReference; path = "ambient-crickets.m4a"; sourceTree = "<group>"; };
 		1A51ED1AB248B86EC827673E /* DharmaGardenCore */ = {isa = PBXFileReference; lastKnownFileType = folder; name = DharmaGardenCore; path = DharmaGardenCore; sourceTree = SOURCE_ROOT; };
 		1D4182632B1EE9B8B8D9FC4A /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
+		27BA5A8F2ED05D395C084E46 /* ambient-rain.m4a */ = {isa = PBXFileReference; path = "ambient-rain.m4a"; sourceTree = "<group>"; };
 		2AA97850FA1E28841F162304 /* DharmaGarden.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DharmaGarden.entitlements; sourceTree = "<group>"; };
+		2E3CFC532085D63147B654BA /* CREDITS.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CREDITS.md; sourceTree = "<group>"; };
 		3199D474B3BCC55B49CBC047 /* DharmaGarden.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DharmaGarden.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3BC1E628E0DB231111932F3E /* DharmaGardenApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DharmaGardenApp.swift; sourceTree = "<group>"; };
 		43C785BB77A4F024BC7AF4F5 /* ReadingChairView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingChairView.swift; sourceTree = "<group>"; };
@@ -50,6 +57,7 @@
 		713CEF9A59EB1493A905659F /* ReminderService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderService.swift; sourceTree = "<group>"; };
 		72BB88443B211B547D9D2FFB /* ToolSounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolSounds.swift; sourceTree = "<group>"; };
 		72DDE22DA73FB8BA1D1C9763 /* VisitorController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorController.swift; sourceTree = "<group>"; };
+		749F3636715E803FAD76B493 /* ambient-birds.m4a */ = {isa = PBXFileReference; path = "ambient-birds.m4a"; sourceTree = "<group>"; };
 		7532CA49B106650702D19848 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		78CD3C4D6071146064A35915 /* WeatherService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherService.swift; sourceTree = "<group>"; };
 		7F15B1F0C61BB167FEBC1A49 /* ShopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopView.swift; sourceTree = "<group>"; };
@@ -122,6 +130,7 @@
 				72BB88443B211B547D9D2FFB /* ToolSounds.swift */,
 				72DDE22DA73FB8BA1D1C9763 /* VisitorController.swift */,
 				78CD3C4D6071146064A35915 /* WeatherService.swift */,
+				852716F4AA1CD19F2EAA2864 /* Sounds */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -132,6 +141,17 @@
 				1A51ED1AB248B86EC827673E /* DharmaGardenCore */,
 			);
 			name = Packages;
+			sourceTree = "<group>";
+		};
+		852716F4AA1CD19F2EAA2864 /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				749F3636715E803FAD76B493 /* ambient-birds.m4a */,
+				03BFB9B5395909F7BB3A03AE /* ambient-crickets.m4a */,
+				27BA5A8F2ED05D395C084E46 /* ambient-rain.m4a */,
+				2E3CFC532085D63147B654BA /* CREDITS.md */,
+			);
+			path = Sounds;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -197,6 +217,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				EA7921263C21FA2BAB9FC91C /* Assets.xcassets in Resources */,
+				236F78B095B243693467F5B8 /* CREDITS.md in Resources */,
+				BD0A25FCBB574A66147CA821 /* ambient-birds.m4a in Resources */,
+				7C6E573E58FA3968D318E113 /* ambient-crickets.m4a in Resources */,
+				03EEB79C35D34C44DFCF95BA /* ambient-rain.m4a in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
