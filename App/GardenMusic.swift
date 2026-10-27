@@ -383,7 +383,12 @@ final class GardenMusic: ObservableObject {
                 delay += 1.5
             }
         }
-        releaseEngineSoon()
+        // The run lasts longer than the engine lingers, so only let it go once the last note has started.
+        let runLength = delay
+        Task { [weak self] in
+            try? await Task.sleep(for: .seconds(runLength))
+            self?.releaseEngineSoon()
+        }
     }
 #endif
 }
