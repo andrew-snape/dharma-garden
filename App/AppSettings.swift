@@ -15,7 +15,10 @@ final class AppSettings: ObservableObject {
         static let sceneStyle = "sceneStyle"
         static let sceneTheme = "sceneTheme"
         static let hasAskedLocation = "hasAskedLocation"
-        static let musicEnabled = "musicEnabled"
+        static let musicEnabled = "musicEnabled"   // the old on/off switch, read once to migrate
+        static let musicDensity = "musicDensity"
+        static let gardenNotesEnabled = "gardenNotesEnabled"
+        static let soundMuted = "soundMuted"
         static let musicVolume = "musicVolume"
         static let soundEffectsEnabled = "soundEffectsEnabled"
         static let ambientEnabled = "ambientEnabled"
@@ -26,7 +29,7 @@ final class AppSettings: ObservableObject {
     }
 
     /// Music volume when the user has not chosen one.
-    static let defaultMusicVolume = 0.6
+    static let defaultMusicVolume = 0.35
     /// Tool sound and ambience volumes when the user has not chosen them.
     static let defaultEffectsVolume = 0.7
     static let defaultAmbientVolume = 0.7
@@ -74,11 +77,20 @@ final class AppSettings: ObservableObject {
         didSet { defaults.set(hasAskedLocation, forKey: Key.hasAskedLocation) }
     }
 
-    /// Plays the garden's generative music. Off is the mute: the header speaker button toggles this.
-    @Published var musicEnabled: Bool {
-        didSet { defaults.set(musicEnabled, forKey: Key.musicEnabled) }
+    /// How often the recorded pieces play: Off, Subtle (one every 6 to 12 minutes) or Often (every 1 to 3).
+    @Published var musicDensity: MusicDensity {
+        didSet { defaults.set(musicDensity.rawValue, forKey: Key.musicDensity) }
     }
-    /// Music volume, 0...1.
+    /// Plays a soft handpan note when something happens in the garden. Independent of the music setting.
+    @Published var gardenNotesEnabled: Bool {
+        didSet { defaults.set(gardenNotesEnabled, forKey: Key.gardenNotesEnabled) }
+    }
+    /// The header speaker button: silences the music, the garden notes and the ambience without changing any of
+    /// the settings above, so unmuting brings back exactly what the player chose.
+    @Published var muted: Bool {
+        didSet { defaults.set(muted, forKey: Key.soundMuted) }
+    }
+    /// Music volume, 0...1. It also sets the level of the garden notes.
     @Published var musicVolume: Double {
         didSet {
             let clamped = min(max(musicVolume, 0), 1)
@@ -130,7 +142,16 @@ final class AppSettings: ObservableObject {
         sceneStyle = (defaults.string(forKey: Key.sceneStyle)).flatMap(SceneStyle.init(rawValue:)) ?? .firstPerson
         sceneTheme = (defaults.string(forKey: Key.sceneTheme)).flatMap(SceneTheme.init(rawValue:)) ?? .farm
         hasAskedLocation = defaults.object(forKey: Key.hasAskedLocation) as? Bool ?? false
-        musicEnabled = defaults.object(forKey: Key.musicEnabled) as? Bool ?? true
+        // Saves from before the density setting have an on/off switch: off stays Off, on becomes Subtle.
+        if let saved = defaults.string(forKey: Key.musicDensity).flatMap(MusicDensity.init(rawValue:)) {
+            musicDensity = saved
+        } else if let wasOn = defaults.object(forKey: Key.musicEnabled) as? Bool {
+            musicDensity = wasOn ? .subtle : .off
+        } else {
+            musicDensity = .subtle
+        }
+        gardenNotesEnabled = defaults.object(forKey: Key.gardenNotesEnabled) as? Bool ?? true
+        muted = defaults.object(forKey: Key.soundMuted) as? Bool ?? false
         let volume = defaults.object(forKey: Key.musicVolume) as? Double ?? Self.defaultMusicVolume
         musicVolume = min(max(volume, 0), 1)
         soundEffectsEnabled = defaults.object(forKey: Key.soundEffectsEnabled) as? Bool ?? true

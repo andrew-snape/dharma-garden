@@ -128,16 +128,22 @@ struct SettingsView: View {
 
     private var musicSection: some View {
         Section {
-            Toggle("Garden music", isOn: $settings.musicEnabled)
+            Picker("Music", selection: $settings.musicDensity) {
+                Text("Off").tag(MusicDensity.off)
+                Text("Subtle").tag(MusicDensity.subtle)
+                Text("Often").tag(MusicDensity.often)
+            }
+            .pickerStyle(.segmented)
+            Toggle("Garden notes", isOn: $settings.gardenNotesEnabled)
             LabeledContent("Volume") {
                 Slider(value: $settings.musicVolume, in: 0...1)
                     .frame(width: 200)
-                    .disabled(!settings.musicEnabled)
+                    .disabled(settings.musicDensity == .off && !settings.gardenNotesEnabled)
             }
         } header: {
             Text("Music")
         } footer: {
-            Text("Soft koto and flute, made live on this Mac. It fades in gently and pauses when Dharma Garden is in the background.")
+            Text("Unhurried handpan pieces with long silences between them: Subtle plays one every 6 to 12 minutes, Often every 1 to 3. Garden notes are single soft notes when you plant, water, pick or spot a visitor.")
         }
     }
 

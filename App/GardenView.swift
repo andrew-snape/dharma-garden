@@ -84,6 +84,8 @@ struct GardenView: View {
     @State private var sounds = ToolSounds()
     /// Birds, crickets and rain (see `AmbientSounds`). Armed with the music, and set by the weather and time of day.
     @State private var ambient = AmbientSounds()
+    /// Whether it was raining at the last reading (nil until the weather is known), to notice rain beginning.
+    @State private var wasRaining: Bool?
     /// The time the side chores were last checked against their cooldowns. Moves on every minute.
     @State private var clock = Date()
 #if DEBUG
@@ -134,11 +136,33 @@ struct GardenView: View {
         if useLocation { settings.useDeviceLocation = true }
     }
 
-    /// Lets the music play from now on (fading in), if the user has it on.
+    /// Lets the music, garden notes and ambience sound from now on (fading in), unless the player muted them.
     func armMusic() {
         musicArmed = true
-        if settings.musicEnabled { music.start() }
-        if settings.ambientEnabled { ambient.setEnabled(true) }
+        if !settings.muted { music.start() }
+        if settings.ambientEnabled, !settings.muted { ambient.setEnabled(true) }
+    }
+
+    /// Applies the mute button: it silences the music, the garden notes and the ambience, and unmuting brings back
+    /// whatever the settings say.
+    func applyMute() {
+        if settings.muted {
+            music.stop()
+            ambient.setEnabled(false)
+        } else if musicArmed {
+            armMusic()
+        }
+    }
+
+    /// Hands the current weather and time of day to the music and the ambience, and sounds the first drops of rain.
+    func syncMood() {
+        let mood = weather.mood(theme: settings.sceneTheme.gardenTheme)
+        music.setMood(mood)
+        updateAmbient()
+        let raining = mood.condition == .rain || mood.condition == .thunderstorm
+        // Only a change seen while the garden is open sounds a note, not the first reading.
+        if raining, wasRaining == false { music.gardenEvent(.rainBegan) }
+        wasRaining = raining
     }
 
     /// Sets the ambience to what the weather and time of day call for.
@@ -199,7 +223,7 @@ struct GardenView: View {
             summaryLayer
 #if DEBUG
             if showDebug {
-                DebugPanel(store: store, onSpawn: spawnDebugVisitor)
+                DebugPanel(store: store, music: music, onSpawn: spawnDebugVisitor)
                     .padding(10)
                     .frame(width: 380)
                     .panel(style)
@@ -223,10 +247,11 @@ struct GardenView: View {
             // Asked once, on the very first launch only.
             if !settings.hasAskedLocation { showLocationQuestion = true }
             music.setVolume(settings.musicVolume)
+            music.setDensity(settings.musicDensity)
+            music.setGardenNotes(settings.gardenNotesEnabled)
             GardenAudio.shared.setVolume(settings.effectsVolume, for: .effects)
             GardenAudio.shared.setVolume(settings.ambientVolume, for: .ambient)
-            music.setMood(weather.mood(theme: settings.sceneTheme.gardenTheme))
-            updateAmbient()
+            syncMood()
         }
         .alert("Use your location for local weather?", isPresented: $showLocationQuestion) {
             Button("Use my location") { answerLocationQuestion(useLocation: true) }
@@ -248,8 +273,7 @@ struct GardenView: View {
         // Time moves on while the window sits still: catch the garden up, and re-read the mood, every minute.
         .onReceive(Self.minuteTimer) { now in
             Task { await tick() }
-            music.setMood(weather.mood(theme: settings.sceneTheme.gardenTheme))
-            updateAmbient()
+            syncMood()
             clock = now
         }
         // Every couple of seconds: drop visitors that have left, and take an early roll if one is due.
@@ -290,19 +314,24 @@ struct GardenView: View {
         .onChange(of: store.garden) { _, _ in Task { await rescheduleReminder(delay: reminderDebounce) } }
         .onChange(of: weather.report) { _, _ in
             Task { await rescheduleReminder() }
-            music.setMood(weather.mood(theme: settings.sceneTheme.gardenTheme))
-            updateAmbient()
+            syncMood()
         }
         .onChange(of: settings.sceneTheme) { _, theme in
             music.setMood(weather.mood(theme: theme.gardenTheme))
             updateAmbient()
         }
         .onChange(of: settings.ambientEnabled) { _, on in
-            if on { updateAmbient(); if musicArmed { ambient.setEnabled(true) } } else { ambient.setEnabled(false) }
+            if on { updateAmbient(); if musicArmed, !settings.muted { ambient.setEnabled(true) } } else { ambient.setEnabled(false) }
         }
-        .onChange(of: settings.musicEnabled) { _, on in
-            if on { armMusic() } else { music.stop() }
+        .onChange(of: settings.musicDensity) { _, density in
+            music.setDensity(density)
+            // Choosing Subtle or Often counts as asking to hear it.
+            if density != .off { armMusic() }
         }
+        .onChange(of: settings.gardenNotesEnabled) { _, on in music.setGardenNotes(on) }
+        .onChange(of: settings.muted) { _, _ in applyMute() }
+        // A flower opening while the garden is open: the engine steps whole hours, so compare across that step.
+        .onChange(of: store.garden) { old, new in noteOpenedFlowers(from: old, to: new) }
         .onChange(of: settings.musicVolume) { _, volume in music.setVolume(volume) }
         .onChange(of: settings.effectsVolume) { _, volume in GardenAudio.shared.setVolume(volume, for: .effects) }
         .onChange(of: settings.ambientVolume) { _, volume in GardenAudio.shared.setVolume(volume, for: .ambient) }
@@ -351,11 +380,9 @@ struct GardenView: View {
                     if let note = coinNote { CoinFloat(amount: note.amount).id(note.id).offset(x: -44) }
                 }
                 .padding(.trailing, 4)
-                headerButton(settings.musicEnabled ? "speaker.wave.2.fill" : "speaker.slash.fill",
-                             help: settings.musicEnabled ? "Mute garden sounds" : "Play garden sounds") {
-                    let on = !settings.musicEnabled
-                    settings.musicEnabled = on
-                    settings.ambientEnabled = on
+                headerButton(settings.muted ? "speaker.slash.fill" : "speaker.wave.2.fill",
+                             help: settings.muted ? "Play garden sounds" : "Mute garden sounds") {
+                    settings.muted.toggle()
                 }
                 headerButton("book.fill", help: "Garden book",
                              label: hasClaimableMilestone ? "Garden book, milestone ready to claim" : "Garden book",
@@ -781,6 +808,13 @@ struct GardenView: View {
         if acted || (tool == .fork && store.garden.plot.contains(p)) {
             addRipple(p, kind(for: tool))
             if !silent { playSound(sound(for: tool)) }
+            // The handpan answers a few actions. A sprinkle drag asks on every step, and the rate limit keeps it to one note.
+            switch tool {
+            case .plant: if acted { music.gardenEvent(.plant, x: p.x) }
+            case .water: music.gardenEvent(.water, x: p.x)
+            case .harvest: if acted { music.gardenEvent(.harvest, x: p.x) }
+            default: break
+            }
         } else if case .plant = tool {
             flashRefusedSeed()
         }
@@ -813,6 +847,17 @@ struct GardenView: View {
         earlyRollsLeft = 0
     }
 
+    /// Sounds a note when a plant has just come into flower across an hourly step of the garden.
+    private func noteOpenedFlowers(from old: Garden, to new: Garden) {
+        let step = new.lastSimulatedAt.timeIntervalSince(old.lastSimulatedAt)
+        // A catch-up after time away covers many hours: that is not a flower opening in front of the player.
+        guard step > 0, step <= 2 * 3600, appActive else { return }
+        let wasGrowing = Set(old.plants.filter { $0.lifeStage == .growing }.map(\.id))
+        if let opened = new.plants.first(where: { $0.lifeStage == .blooming && wasGrowing.contains($0.id) }) {
+            music.gardenEvent(.flowerOpened, x: opened.position.x)
+        }
+    }
+
     /// Drops feedback rings that have finished, so the scene can fall back to 30 fps and the list stays short.
     private func pruneRipples(at now: Date) {
         if ripples.contains(where: { now.timeIntervalSince($0.startedAt) > rippleKeepSeconds }) {
@@ -837,6 +882,7 @@ struct GardenView: View {
         if spotted.coins > 0 { flashCoins(spotted.coins) }
         addRipple(visitor.position, .spot)
         playSound(.spot)
+        music.gardenEvent(.visitorSpotted, x: visitor.position.x)
         if spotted.isNewEntry { flashEntry(visitor.species.displayName) }
         armMusic()
     }

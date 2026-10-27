@@ -6,6 +6,7 @@ import DharmaGardenCore
 /// Compiled out of release builds.
 struct DebugPanel: View {
     @ObservedObject var store: GardenStore
+    var music: GardenMusic
     /// Puts a visitor of the chosen species on the patch (the garden view owns the visitor list).
     var onSpawn: (VisitorSpecies) -> Void
     @State private var expanded = true
@@ -52,6 +53,21 @@ struct DebugPanel: View {
                     Button("Clear sightings", role: .destructive) { store.debugClearSightings() }
                 }
                 .controlSize(.small)
+                VStack(alignment: .leading, spacing: 6) {
+                    HStack(spacing: 6) {
+                        Text("Music").foregroundStyle(.secondary)
+                        Button("Play a piece now") { music.debugPlayPieceNow() }
+                        Button("Skip to silence") { music.debugSkipToSilence() }
+                        Button("Play each garden note") { music.debugPlayEachNote() }
+                    }
+                    .controlSize(.small)
+                    TimelineView(.periodic(from: .now, by: 1)) { context in
+                        Text(music.statusLine(at: context.date))
+                            .font(.caption.monospacedDigit())
+                            .foregroundStyle(.secondary)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                }
             }
             .padding(.top, 6)
         }

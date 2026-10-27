@@ -11,6 +11,7 @@ let package = Package(
     targets: [
         .target(name: "DharmaGardenCore"),
         .target(name: "DharmaGardenArt", dependencies: ["DharmaGardenCore"]),
+        .executableTarget(name: "GardenRender", dependencies: ["DharmaGardenCore"]),
         .testTarget(name: "DharmaGardenCoreTests", dependencies: ["DharmaGardenCore", "DharmaGardenArt"]),
     ]
 )

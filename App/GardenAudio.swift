@@ -14,6 +14,9 @@ final class GardenAudio {
 
     let engine = AVAudioEngine()
     private var buses: [Part: AVAudioMixerNode] = [:]
+    /// The player's slider level for each part, and a temporary gain on top of it (see `setDuck`).
+    private var levels: [Part: Float] = [:]
+    private var ducks: [Part: Float] = [:]
     private var wanting: Set<Part> = []
     private var configurationHandlers: [Part: () -> Void] = [:]
     private var configObserver: NSObjectProtocol?
@@ -37,7 +40,19 @@ final class GardenAudio {
 
     /// A part's level, 0...1 (the player's volume slider for it).
     func setVolume(_ volume: Double, for part: Part) {
-        bus(part).outputVolume = Float(min(max(volume, 0), 1))
+        levels[part] = Float(min(max(volume, 0), 1))
+        applyLevel(part)
+    }
+
+    /// A temporary gain (1 = none) that sits under a part's level without changing the slider's value. The music
+    /// uses it to lower the ambience a little while a piece plays.
+    func setDuck(_ gain: Float, for part: Part) {
+        ducks[part] = min(max(gain, 0), 1)
+        applyLevel(part)
+    }
+
+    private func applyLevel(_ part: Part) {
+        bus(part).outputVolume = (levels[part] ?? 1) * (ducks[part] ?? 1)
     }
 
     /// Called after the output device changed and the engine was restarted (if anything wanted sound).
