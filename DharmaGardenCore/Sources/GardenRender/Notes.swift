@@ -102,25 +102,32 @@ func runNotes(_ args: [String]) {
         return args[i + 1]
     }
     guard let outPath = option("--out") else {
-        print("usage: GardenRender notes --out <dir> [--calibrate <dir of piece .m4a files>] [--peak-db <dB>]")
+        print("usage: GardenRender notes --out <dir> [--instrument handpan] [--calibrate <dir of piece .m4a files>] [--peak-db <dB>]")
         exit(2)
     }
     let out = URL(fileURLWithPath: outPath)
     try? FileManager.default.createDirectory(at: out, withIntermediateDirectories: true)
     let rate = ModalInstrument.defaultSampleRate
+    guard let instrument = GardenInstrument(rawValue: option("--instrument") ?? "handpan") else {
+        print("unknown instrument"); exit(2)
+    }
+    let scale = instrument.gardenNotes
+    func finish(_ b: StereoBuffer, peakDb: Double) -> StereoBuffer {
+        ConvolutionReverb.finish(b, wet: instrument.wet, lowPassHz: instrument.lowPassHz, peakDb: peakDb)
+    }
 
     // One buffer holding all 18 notes, one strike every 10 s. The piece renders use instrument seed 42.
     var events: [HandpanEvent] = []
     var slots: [(index: Int, name: String)] = []
     for strength in noteStrengths {
-        for degree in 0..<ModalInstrument.scale.count {
+        for degree in 0..<scale.count {
             let time = 0.5 + Double(events.count) * noteSpacing
-            events.append(HandpanEvent(time: time, midi: ModalInstrument.scale[degree], velocity: strength.velocity))
+            events.append(HandpanEvent(time: time, midi: scale[degree], velocity: strength.velocity))
             slots.append((degree, strength.name))
         }
     }
     let total = 0.5 + Double(events.count) * noteSpacing + 1
-    let dry = ModalInstrument.render(events: events, duration: total, seed: 42)
+    let dry = instrument.render(events: events, duration: total, seed: 42)
 
     func window(of buf: StereoBuffer, _ slot: Int) -> StereoBuffer {
         let a = Int(events[slot].time * rate)
@@ -141,7 +148,7 @@ func runNotes(_ args: [String]) {
         }
         let target = quiet.reduce(0, +) / Double(max(1, quiet.count))
         // Trial render at -3 dBFS, measure the soft notes' loudness over their first 3 s, and move the gain.
-        let trial = ConvolutionReverb.finish(dry, peakDb: -3)
+        let trial = finish(dry, peakDb: -3)
         let soft = slots.indices.filter { slots[$0].name == "soft" }
         let softLevels = soft.map { integratedLUFS(slice(window(of: trial, $0), from: 0, to: Int(3 * rate))) }
         let mean = softLevels.reduce(0, +) / Double(softLevels.count)
@@ -151,11 +158,11 @@ func runNotes(_ args: [String]) {
     }
     precondition(peakDb <= -3, "notes must leave headroom")
 
-    let mix = ConvolutionReverb.finish(dry, peakDb: peakDb)
+    let mix = finish(dry, peakDb: peakDb)
     var summary = "note        seconds  peak dBFS  3 s LUFS\n"
     for (slot, info) in slots.enumerated() {
         let note = trimmed(window(of: mix, slot))
-        let name = "note-\(info.index)-\(info.name)"
+        let name = "\(instrument.noteFilePrefix)-\(info.index)-\(info.name)"
         do { try writeNote(note, to: out.appendingPathComponent("\(name).m4a")) } catch { print("\(name) failed: \(error)"); exit(1) }
         summary += String(format: "%-11@ %6.2f  %9.1f  %8.1f\n", name as NSString, Double(note.left.count) / rate,
                           db(Double(peak(note))), integratedLUFS(slice(note, from: 0, to: min(note.left.count, Int(3 * rate)))))

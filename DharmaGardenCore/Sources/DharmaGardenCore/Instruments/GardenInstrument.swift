@@ -5,6 +5,32 @@ import Foundation
 public enum GardenInstrument: String, CaseIterable, Sendable {
     case handpan, kalimba, piano, musicbox, tines
 
+    /// The instrument each garden theme plays.
+    public init(theme: GardenTheme) {
+        switch theme {
+        case .japanese: self = .handpan
+        case .farm: self = .kalimba
+        case .ruralUK: self = .piano
+        case .urban: self = .tines
+        }
+    }
+
+    /// The nine notes garden events play, low to high, in the roles `GardenNotes` gives the handpan's ring:
+    /// 0 a low anchor, 1 a low fifth, 4 home, 5...8 the upper notes.
+    public var gardenNotes: [Int] {
+        switch self {
+        case .handpan, .kalimba: return notes
+        // D3 A3 B3 C4 D4 E4 F4 G4 A4: the handpan's shape in D dorian.
+        case .piano, .tines: return [50, 57, 59, 60, 62, 64, 65, 67, 69]
+        // D4 A4 B4 C5 D5 E5 F5 G5 A5: a music box has no low end.
+        case .musicbox: return [62, 69, 71, 72, 74, 76, 77, 79, 81]
+        }
+    }
+
+    /// File names of the garden-note recordings: `<prefix>-<index>-<soft|medium>`. The handpan's keep their
+    /// original names.
+    public var noteFilePrefix: String { self == .handpan ? "note" : "\(rawValue)-note" }
+
     /// The notes of this instrument, low to high.
     public var notes: [Int] {
         switch self {

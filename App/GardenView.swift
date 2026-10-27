@@ -808,7 +808,7 @@ struct GardenView: View {
         if acted || (tool == .fork && store.garden.plot.contains(p)) {
             addRipple(p, kind(for: tool))
             if !silent { playSound(sound(for: tool)) }
-            // The handpan answers a few actions. A sprinkle drag asks on every step, and the rate limit keeps it to one note.
+            // The garden's instrument answers a few actions. A sprinkle drag asks on every step, and the rate limit keeps it to one note.
             switch tool {
             case .plant: if acted { music.gardenEvent(.plant, x: p.x) }
             case .water: music.gardenEvent(.water, x: p.x)

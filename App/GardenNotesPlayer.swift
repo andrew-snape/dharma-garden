@@ -1,8 +1,8 @@
 import AVFoundation
 import DharmaGardenCore
 
-/// Plays the garden's single handpan notes: 18 short recordings (9 notes, each soft and medium, made by
-/// `GardenRender notes`) through a pool of six voices on the music bus, so they share the music volume. The
+/// Plays the garden's single notes on the theme's instrument: 18 short recordings per instrument (9 notes, each
+/// soft and medium, made by `GardenRender notes --instrument`) through a pool of six voices on the music bus, so they share the music volume. The
 /// recordings load on first use. If all six voices are busy the oldest is faded out quickly and reused.
 @MainActor
 final class GardenNotesPlayer {
@@ -28,13 +28,22 @@ final class GardenNotesPlayer {
     private var buffers: [String: AVAudioPCMBuffer] = [:]
     private var voices: [Voice] = []
     private var loading: Task<Bool, Never>?
+    private var loadingPrefix: String?
+    /// The instrument notes should sound on, and the one whose recordings are in `buffers`.
+    private var instrument = GardenInstrument.handpan
+    private var loadedPrefix: String?
 
     /// Bytes of decoded audio kept in memory once the notes are loaded (reported in the debug drawer).
     var residentBytes: Int {
         buffers.values.reduce(0) { $0 + Int($1.frameLength) * Int($1.format.channelCount) * 4 }
     }
 
-    /// Plays note `index` (0...8 on the handpan's ring) at `velocity` 0...1 and `pan` -1...1. The caller has
+    /// Switches to another instrument's recordings. They load on the next note; a note already sounding finishes.
+    func setInstrument(_ newInstrument: GardenInstrument) {
+        instrument = newInstrument
+    }
+
+    /// Plays note `index` (0...8, low to high: see `GardenInstrument.gardenNotes`) at `velocity` 0...1 and `pan` -1...1. The caller has
     /// started the engine.
     func play(index: Int, velocity: Double, pan: Double) {
         Task { [weak self] in
@@ -44,17 +53,21 @@ final class GardenNotesPlayer {
     }
 
     private func ensureLoaded() async -> Bool {
-        if !voices.isEmpty { return true }
-        if let loading { return await loading.value }
+        let prefix = instrument.noteFilePrefix
+        if loadedPrefix == prefix, !voices.isEmpty { return true }
+        if let loading, loadingPrefix == prefix { return await loading.value }
         let task = Task { [weak self] () -> Bool in
             // Decoding 18 small files is quick, but not on the main thread: the first note should not hitch the garden.
-            guard let loaded = await Task.detached(priority: .utility, operation: { Self.loadBuffers() }).value,
-                  let self else { return false }
+            guard let loaded = await Task.detached(priority: .utility, operation: { Self.loadBuffers(prefix: prefix) }).value,
+                  let self, self.instrument.noteFilePrefix == prefix else { return false }
+            // Only one instrument's notes are kept in memory.
             self.buffers = loaded.buffers
-            self.buildVoices(format: loaded.format)
+            self.loadedPrefix = prefix
+            if self.voices.isEmpty { self.buildVoices(format: loaded.format) }
             return !self.voices.isEmpty
         }
         loading = task
+        loadingPrefix = prefix
         return await task.value
     }
 
@@ -63,12 +76,12 @@ final class GardenNotesPlayer {
         var format: AVAudioFormat
     }
 
-    private nonisolated static func loadBuffers() -> Loaded? {
+    private nonisolated static func loadBuffers(prefix: String) -> Loaded? {
         var buffers: [String: AVAudioPCMBuffer] = [:]
         var format: AVAudioFormat?
         for index in 0..<GardenNotes.scaleCount {
             for strength in ["soft", "medium"] {
-                let name = "note-\(index)-\(strength)"
+                let name = "\(prefix)-\(index)-\(strength)"
                 guard let url = GardenMusic.resourceURL(name, folder: "Music/notes"),
                       let file = try? AVAudioFile(forReading: url),
                       let buffer = AVAudioPCMBuffer(pcmFormat: file.processingFormat,
@@ -96,7 +109,8 @@ final class GardenNotesPlayer {
 
     private func start(index: Int, velocity: Double, pan: Double) {
         let medium = velocity >= Self.mediumFrom
-        let name = "note-\(index)-\(medium ? "medium" : "soft")"
+        guard let prefix = loadedPrefix else { return }
+        let name = "\(prefix)-\(index)-\(medium ? "medium" : "soft")"
         guard let buffer = buffers[name] else { return }
         // Recorded levels follow the strike, so a note played softer than its recording is turned down to match.
         let reference = medium ? Self.mediumVelocity : Self.softVelocity

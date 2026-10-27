@@ -298,7 +298,7 @@ func runBatch(_ args: [String]) {
         return args[i + 1]
     }
     guard let outPath = option("--out") else {
-        print("usage: GardenRender batch --out <dir> [--count 20] [--minutes 4] [--moods dawn,day,dusk,night,rain] [--start-seed 1]")
+        print("usage: GardenRender batch --out <dir> [--count 20] [--minutes 4] [--moods dawn,day,dusk,night,rain] [--start-seed 1] [--instrument handpan]")
         exit(2)
     }
     let count = Int(option("--count") ?? "") ?? 20
@@ -306,6 +306,9 @@ func runBatch(_ args: [String]) {
     let startSeed = UInt64(option("--start-seed") ?? "") ?? 1
     let moods = (option("--moods") ?? "dawn,day,dusk,night,rain").split(separator: ",").compactMap { PieceMood(rawValue: String($0)) }
     guard !moods.isEmpty else { print("no valid moods"); exit(2) }
+    guard let instrument = GardenInstrument(rawValue: option("--instrument") ?? "handpan") else {
+        print("unknown instrument"); exit(2)
+    }
     let out = URL(fileURLWithPath: outPath)
     try? FileManager.default.createDirectory(at: out, withIntermediateDirectories: true)
 
@@ -318,7 +321,7 @@ func runBatch(_ args: [String]) {
     DispatchQueue.concurrentPerform(iterations: jobs.count) { i in
         let (mood, seed) = jobs[i]
         do {
-            let r = try renderOne(mood: mood, seed: seed, minutes: minutes, out: out)
+            let r = try renderOne(mood: mood, seed: seed, minutes: minutes, out: out, instrument: instrument)
             results.set(i, r)
             print(String(format: "%@-%llu rendered in %.1f s (%@)", mood.rawValue, seed, r.entry.renderSeconds,
                          r.entry.accepted ? "ok" : "rejected: " + r.entry.rejectReasons.joined(separator: ", ")))

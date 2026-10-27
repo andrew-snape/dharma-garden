@@ -5,7 +5,7 @@ public enum GardenNoteEvent: Equatable, Sendable {
     case plant, water, harvest, visitorSpotted, flowerOpened, rainBegan
 }
 
-/// One note to play: `delay` seconds after the event, `scaleIndex` into `ModalInstrument.scale` (0 is the low
+/// One note to play: `delay` seconds after the event, `scaleIndex` into `GardenInstrument.gardenNotes` (0 is the low
 /// ding, 8 the top), `velocity` 0...1 and `pan` -1...1.
 public struct GardenNote: Equatable, Sendable {
     public var delay: Double

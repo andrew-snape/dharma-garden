@@ -2,7 +2,7 @@ import AVFoundation
 import Foundation
 import DharmaGardenCore
 
-/// The garden's music: long, quiet handpan pieces separated by long silences, and single notes when things
+/// The garden's music: long, quiet pieces on the theme's own instrument, separated by long silences, and single notes when things
 /// happen in the garden.
 ///
 /// The pieces are recorded files made in-house by `GardenRender` (see the Sounds folder); `MusicDirector`
@@ -11,8 +11,9 @@ import DharmaGardenCore
 /// short by a change of mood, only by switching the music off, muting, or changing the garden theme (3 s fade).
 /// Garden notes are played by `GardenNotesPlayer`, whether or not a piece is playing.
 ///
-/// Every garden theme uses the handpan library for now; Farm, Rural UK and Urban get their own instruments and
-/// pieces later (the file names already carry the theme: `japanese-<mood>-<n>`).
+/// Each garden theme has its own instrument (`GardenInstrument(theme:)`): handpan for Japanese, kalimba for Farm,
+/// felt piano for Rural UK and electric piano tines for Urban. Pieces are `<theme>-<mood>-<n>.m4a`, and the notes
+/// follow the theme too.
 ///
 /// Ambience is lowered by about 3 dB while a piece plays, so the two do not compete.
 @MainActor
@@ -47,7 +48,7 @@ final class GardenMusic: ObservableObject {
     private var director: MusicDirector?
     /// Ids played so far, kept across stops so a mute does not make the last pieces eligible again.
     private var history: [String] = []
-    private var catalogue: [PieceInfo]?
+    private var catalogues: [GardenTheme: [PieceInfo]] = [:]
     private var clock: Task<Void, Never>?
     private var releaseTask: Task<Void, Never>?
 
@@ -116,6 +117,8 @@ final class GardenMusic: ObservableObject {
     func setMood(_ newMood: GardenMood) {
         let themeChanged = newMood.theme != mood.theme
         mood = newMood
+        notesPlayer.setInstrument(GardenInstrument(theme: newMood.theme))
+        if themeChanged { director?.catalogue = loadCatalogue(newMood.theme) }
         if themeChanged, pieceActive {
             director?.goSilent(now: Date(), density: density)
             fadePieceOut(over: Self.quickFadeSeconds)
@@ -163,7 +166,7 @@ final class GardenMusic: ObservableObject {
 
     private func beginClock() {
         if director == nil {
-            director = MusicDirector(catalogue: loadCatalogue(), now: Date(), history: history)
+            director = MusicDirector(catalogue: loadCatalogue(mood.theme), now: Date(), history: history)
         }
         guard clock == nil else { return }
         clock = Task { [weak self] in
@@ -194,24 +197,24 @@ final class GardenMusic: ObservableObject {
         }
     }
 
-    /// The pieces in the bundle, with their lengths. A missing file is simply not in the library.
-    private func loadCatalogue() -> [PieceInfo] {
-        if let catalogue { return catalogue }
+    /// A theme's pieces in the bundle, with their lengths. A missing file is simply not in the library.
+    private func loadCatalogue(_ theme: GardenTheme) -> [PieceInfo] {
+        if let catalogue = catalogues[theme] { return catalogue }
         var found: [PieceInfo] = []
         for pieceMood in PieceMood.allCases {
             for number in 1...8 {
-                let id = Self.pieceID(pieceMood, number)
+                let id = Self.pieceID(theme, pieceMood, number)
                 guard let url = Self.resourceURL(id, folder: "Music"),
                       let file = try? AVAudioFile(forReading: url), file.length > 0 else { continue }
                 found.append(PieceInfo(id: id, mood: pieceMood, duration: Double(file.length) / file.processingFormat.sampleRate))
             }
         }
-        catalogue = found
+        catalogues[theme] = found
         return found
     }
 
-    private static func pieceID(_ mood: PieceMood, _ number: Int) -> String {
-        "japanese-\(mood.rawValue)-\(number)"
+    private static func pieceID(_ theme: GardenTheme, _ mood: PieceMood, _ number: Int) -> String {
+        "\(theme.rawValue)-\(mood.rawValue)-\(number)"
     }
 
     /// A bundled .m4a by name. Xcode flattens the Music folders into Resources, but a folder reference would keep
@@ -351,7 +354,7 @@ final class GardenMusic: ObservableObject {
         case .playing(let piece, let endsAt): state = "playing \(piece.id) until \(time(endsAt))"
         }
         let rate = density == .off ? "off" : density.rawValue
-        return "\(state) · \(rate)\(director.isQuietHour(now) ? " · quiet hours" : "") · \(catalogue?.count ?? 0) pieces"
+        return "\(state) · \(rate)\(director.isQuietHour(now) ? " · quiet hours" : "") · \(catalogues[mood.theme]?.count ?? 0) pieces"
     }
 
 #if DEBUG

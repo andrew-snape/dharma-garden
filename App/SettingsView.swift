@@ -143,7 +143,7 @@ struct SettingsView: View {
         } header: {
             Text("Music")
         } footer: {
-            Text("Unhurried handpan pieces with long silences between them: Subtle plays one every 6 to 12 minutes, Often every 1 to 3. Garden notes are single soft notes when you plant, water, pick or spot a visitor.")
+            Text("Unhurried pieces on the garden's own instrument, with long silences between them: Subtle plays one every 6 to 12 minutes, Often every 1 to 3. Garden notes are single soft notes when you plant, water, pick or spot a visitor.")
         }
     }
 

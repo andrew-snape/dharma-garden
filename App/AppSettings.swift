@@ -81,7 +81,7 @@ final class AppSettings: ObservableObject {
     @Published var musicDensity: MusicDensity {
         didSet { defaults.set(musicDensity.rawValue, forKey: Key.musicDensity) }
     }
-    /// Plays a soft handpan note when something happens in the garden. Independent of the music setting.
+    /// Plays a soft note on the theme's instrument when something happens in the garden. Independent of the music setting.
     @Published var gardenNotesEnabled: Bool {
         didSet { defaults.set(gardenNotesEnabled, forKey: Key.gardenNotesEnabled) }
     }
