@@ -107,6 +107,13 @@ public struct GardenSceneView: View {
     /// Called when a press lands on the reading chair on the lawn. The press then does not also call `onTap`. With no
     /// callback the chair is still drawn, and a press on it counts as an ordinary tap.
     public var onSitInChair: (() -> Void)?
+    /// Called when a press lands on the watering can's resting spot (see `wateringCanRect`), judged from the press's own
+    /// location. The press then does not also call `onTap`.
+    public var onWateringCanTap: (() -> Void)?
+    /// Where the player carries the watering can, in the scene's own point coordinates (the pointer), or nil when it
+    /// rests on the lawn. While set, the can is gone from its resting spot (see `wateringCanRect`) and an upright can
+    /// is drawn at this point, a little lifted, over everything on the lawn.
+    public var wateringCanCarried: CGPoint?
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.scenePhase) private var scenePhase
@@ -128,7 +135,8 @@ public struct GardenSceneView: View {
                 onDrag: ((GroundPoint?) -> Void)? = nil, onHover: ((GroundPoint?) -> Void)? = nil,
                 wind: Double = 0.25, driftEnabled: Bool = true, style: SceneStyle = .firstPerson,
                 theme: SceneTheme = .farm, visitors: [Visitor] = [], onSpotVisitor: ((Visitor) -> Void)? = nil,
-                onSitInChair: (() -> Void)? = nil) {
+                onSitInChair: (() -> Void)? = nil, wateringCanCarried: CGPoint? = nil,
+                onWateringCanTap: (() -> Void)? = nil) {
         self.garden = garden
         self.palette = palette
         self.camera = camera
@@ -147,6 +155,35 @@ public struct GardenSceneView: View {
         self.visitors = visitors
         self.onSpotVisitor = onSpotVisitor
         self.onSitInChair = onSitInChair
+        self.onWateringCanTap = onWateringCanTap
+        self.wateringCanCarried = wateringCanCarried
+    }
+
+    /// Where the watering can rests on the lawn, as a rect in the scene's own point coordinates for a scene of `size`:
+    /// the hit area for picking it up. It moves a little with the foreground parallax drift, so this reads the drift
+    /// at the moment of the call, like the chair's hit test; pass `driftEnabled: false` when the scene is not drifting
+    /// (Reduce Motion, or `driftEnabled` off). It is where the can rests whether or not it is being carried.
+    public static func wateringCanRect(size: CGSize, theme: SceneTheme, wind: Double = 0.25,
+                                       driftEnabled: Bool = true) -> CGRect {
+        let frame = SceneMotion.Frame(time: Date().timeIntervalSinceReferenceDate, wind: wind, enabled: driftEnabled)
+        let shift = frame.layerShift(.foreground)
+        return SceneContent.wateringCanRect(size: size, theme: theme,
+                                            layerShift: CGSize(width: shift.x * size.width, height: shift.y * size.height))
+    }
+
+    /// The sundial's rect in the scene's own point coordinates, for a hover tooltip (the scene already shows one
+    /// with `.help`; this is for callers that want their own).
+    public static func sundialRect(size: CGSize, style: SceneStyle, camera: Camera = Camera(), wind: Double = 0.25,
+                                   driftEnabled: Bool = true) -> CGRect {
+        let frame = SceneMotion.Frame(time: Date().timeIntervalSinceReferenceDate, wind: wind, enabled: driftEnabled)
+        let cam = style == .backyard ? Camera.backyard : camera
+        return SceneContent.sundialRect(size: size, camera: SceneMotion.camera(cam, frame: frame))
+    }
+
+    /// Text for the sundial's tooltip: the solar time its shadow shows for this light, such as
+    /// "Sundial: 10:42 am (solar time)", or a line saying it has no shadow when the sun is down.
+    public static func sundialReading(palette: ScenePalette) -> String {
+        SceneCanvas.sundialReading(for: palette.sun)
     }
 
     /// The camera this style draws with: the backyard style always uses `Camera.backyard`.
@@ -176,7 +213,8 @@ public struct GardenSceneView: View {
                                                    wind: wind, enabled: !isPaused),
                          onTap: onTap, onDrag: onDrag, onHover: onHover, style: style,
                          theme: theme, visitors: visitors, onSpotVisitor: onSpotVisitor,
-                         onSitInChair: onSitInChair)
+                         onSitInChair: onSitInChair, wateringCanCarried: wateringCanCarried,
+                         onWateringCanTap: onWateringCanTap)
         }
         .aspectRatio(4.0 / 3.0, contentMode: .fit)
     }
@@ -249,6 +287,9 @@ struct SceneContent: View {
     var visitors: [Visitor] = []
     var onSpotVisitor: ((Visitor) -> Void)? = nil
     var onSitInChair: (() -> Void)? = nil
+    /// Where the watering can is carried (see `GardenSceneView.wateringCanCarried`), or nil when it rests on the lawn.
+    var wateringCanCarried: CGPoint? = nil
+    var onWateringCanTap: (() -> Void)? = nil
 
     /// Pointer travel (points) that turns a press into a drag rather than a tap.
     static let tapSlop: Double = 6
@@ -332,6 +373,7 @@ struct SceneContent: View {
                 // The reading chair on the lawn, behind the plants and visitors.
                 Canvas { ctx, cs in
                     canvas(ctx, cs, drifted, nil).drawChair()
+                    canvas(ctx, cs, drifted, nil).drawSundial()
                 }
                 .allowsHitTesting(false)
                 // Plants and weeds, back to front by ground depth.
@@ -366,10 +408,31 @@ struct SceneContent: View {
                 Canvas { ctx, cs in
                     canvas(ctx, cs, camera, .foreground).drawThemeForeground()
                 }
+                // Tools in use (the can, the fork, falling water and granules) over the plants, boxes and walls, so
+                // nothing in the scenery covers them; then the carried watering can over that.
+                Canvas { ctx, cs in
+                    let rings = Self.activeRings(ripples, now: now)
+                    canvas(ctx, cs, drifted, nil).drawToolActions(rings)
+                    // While it pours, the pouring can (drawn at the carried can's size) stands in for the carried one.
+                    let pouring = rings.contains { $0.kind == .water && $0.showsCan }
+                    if let point = wateringCanCarried, !pouring {
+                        canvas(ctx, cs, camera, nil).drawCarriedWateringCan(at: point)
+                    }
+                }
+                .allowsHitTesting(false)
                 Canvas { ctx, cs in
                     canvas(ctx, cs, camera, nil).drawWeatherOverlays()
                 }
                 .allowsHitTesting(false)
+            }
+            .overlay(alignment: .topLeading) {
+                // The sundial's tooltip: it shows the solar time its shadow points at.
+                let rect = Self.sundialRect(size: size, camera: drifted)
+                Color.clear
+                    .frame(width: rect.width, height: rect.height)
+                    .contentShape(Rectangle())
+                    .help(SceneCanvas.sundialReading(for: palette.sun))
+                    .offset(x: rect.minX, y: rect.minY)
             }
             .frame(width: size.width, height: size.height)
             .contentShape(Rectangle())
@@ -383,6 +446,8 @@ struct SceneContent: View {
                         spot(visitor)
                     } else if let sit = onSitInChair, chairSpot(at: value.startLocation, size: size) {
                         sit()
+                    } else if let pick = onWateringCanTap, canSpot(at: value.startLocation, size: size) {
+                        pick()
                     } else {
                         onTap?(groundPoint(at: value.startLocation, size: size))
                     }
@@ -405,6 +470,15 @@ struct SceneContent: View {
         let hitCamera = SceneMotion.camera(camera, frame: frame)
         return hitCamera.groundPoint(atScreen: (x: Double(location.x / size.width), y: Double(location.y / size.height)),
                                      uprightHeight: soilLift)
+    }
+
+    /// Whether a press lands on the watering can's resting spot, with the foreground drift as drawn right now.
+    private func canSpot(at location: CGPoint, size: CGSize) -> Bool {
+        let frame = SceneMotion.Frame(time: Date().timeIntervalSinceReferenceDate, wind: motion.wind, enabled: motion.enabled)
+        let shift = frame.layerShift(.foreground)
+        let rect = Self.wateringCanRect(size: size, theme: theme,
+                                        layerShift: CGSize(width: shift.x * size.width, height: shift.y * size.height))
+        return rect.contains(location)
     }
 
     /// Whether a press lands on the reading chair. Uses the camera as it is drawn right now, like `groundPoint(at:)`.
@@ -490,6 +564,9 @@ struct SceneContent: View {
         }
         let canvas = SceneCanvas(ctx: g, size: cs, camera: cam, palette: palette, motion: motion, style: style, theme: theme)
         canvas.soilLift = soilLift
+        // The resting can is left out while it is carried, and while a pour shows the can (one can at a time).
+        canvas.wateringCanCarried = wateringCanCarried != nil
+            || Self.activeRings(ripples, now: now).contains { $0.kind == .water && $0.showsCan }
         return canvas
     }
 

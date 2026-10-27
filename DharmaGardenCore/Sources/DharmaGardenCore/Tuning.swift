@@ -125,11 +125,11 @@ public enum Tuning {
     /// Seasol seaweed tonic.
     public static let seasolHours = 72
     public static let seasolGrowthBonus = 0.15
-    public static let seasolCost = 2
+    public static let seasolCost = 1
     /// Fertiliser.
     public static let fertiliserHours = 168
     public static let fertiliserGrowthBonus = 0.25
-    public static let fertiliserCost = 3
+    public static let fertiliserCost = 2
     /// Default reach for pulling a weed (or clearing a withered plant).
     public static let pullReach = 0.05
     /// Default reach for picking a flower.
@@ -147,7 +147,7 @@ public enum Tuning {
     public static let visitorMaxLifetimeSeconds = 60.0
     /// How far from a bloom a flower visitor may land.
     public static let visitorPerchRadius = 0.05
-    /// Coins for spotting a visitor, by rarity.
+    /// Carrots for spotting a visitor, by rarity.
     public static let visitorCommonReward = 1
     public static let visitorUncommonReward = 3
     public static let visitorRareReward = 8
@@ -167,7 +167,7 @@ public enum Tuning {
     public static let visitorBeeMinBlooms = 2
 
     // Side chores (things to do when the garden needs nothing; see SideChores.swift)
-    /// Coins to scatter seed for the birds.
+    /// Carrots to scatter seed for the birds.
     public static let birdFeedCost = 1
     /// Minutes before each chore can be done again.
     public static let birdFeedCooldownMinutes = 10.0

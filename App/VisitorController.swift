@@ -49,7 +49,7 @@ struct VisitorController {
 }
 
 /// "New entry: <name>!" shown near the top of the scene when a species is spotted for the first time.
-/// It holds for a moment, then fades like the coin float.
+/// It holds for a moment, then fades like the carrot float.
 struct EntryToast: View {
     let name: String
     @State private var faded = false

@@ -99,7 +99,7 @@ extension SceneCanvas {
 
         // Soft shadow on the ground in front of the wall.
         fill([w.point(r, 0, 0), w.point(r, 1, 0), w.point(r, 1, 0, eave: 3), w.point(r, 0, 0, eave: 3)],
-             Color.black.opacity(0.12))
+             Color.black.opacity(0.12 * wallShadowShare()))
 
         // Foot and plaster body.
         fill([w.point(r, 0, 0), w.point(r, 1, 0), w.point(r, 1, low), w.point(r, 0, low)], W.foot)
@@ -169,7 +169,7 @@ extension SceneCanvas {
         func P(_ px: Double, _ pz: Double, _ h: Double) -> CGPoint { w.frame.point(x: px, z: pz, height: h) }
         // Shadow on the ground.
         fill([P(outer, z0 + p, 0), P(inner, z0 + p, 0), P(inner + (x < 0 ? 0.3 : -0.3), z0 + p + 0.3, 0), P(outer, z0 + p + 0.3, 0)],
-             Color.black.opacity(0.12))
+             Color.black.opacity(0.12 * wallShadowShare()))
         // Inner face (looks into the yard), then the front face.
         let innerFace = [P(inner, z0 - p, 0), P(inner, z0 + p, 0), P(inner, z0 + p, height), P(inner, z0 - p, height)]
         fill(innerFace, W.plasterShade)

@@ -47,6 +47,13 @@ struct SettingsView: View {
 
     private var gardenSection: some View {
         Section {
+            TextField("Gardener\u{2019}s name", text: $settings.gardenerName, prompt: Text("Your name"))
+            Picker("Garden speed", selection: $settings.gameSpeed) {
+                Text("1x").tag(1.0)
+                Text("2x").tag(2.0)
+                Text("4x").tag(4.0)
+            }
+            .pickerStyle(.segmented)
             Picker("Scene view", selection: $settings.sceneStyle) {
                 ForEach(SceneStyle.allCases, id: \.self) { style in
                     Text(style.displayName).tag(style)
@@ -195,16 +202,18 @@ struct SettingsView: View {
     private var motionSection: some View {
         Section {
             Toggle("Gentle camera drift", isOn: $settings.gentleDrift)
+            Toggle("Show in menu bar", isOn: $settings.showInMenuBar)
+            Toggle("Show in Dock", isOn: $settings.showInDock)
         } header: {
             Text("Motion")
         } footer: {
-            Text("A slow, subtle sway of the view. Reduce Motion in System Settings also stops it.")
+            Text("A slow, subtle sway of the view. Reduce Motion in System Settings also stops it. Hiding the Dock icon keeps the garden in the menu bar.")
         }
     }
 
     private var aboutSection: some View {
         Section {
-            LabeledContent("Version", value: Self.versionText)
+            Text(Self.versionText)
             LabeledContent("Analytics", value: "None")
             Button("Privacy Policy") { showingPrivacy = true }
         } header: {
@@ -216,9 +225,9 @@ struct SettingsView: View {
 
     private static var versionText: String {
         let info = Bundle.main.infoDictionary
-        let version = info?["CFBundleShortVersionString"] as? String ?? "1.0"
-        let build = info?["CFBundleVersion"] as? String ?? "1"
-        return "\(version) (\(build))"
+        let version = info?["CFBundleShortVersionString"] as? String ?? "1.1.0"
+        let build = info?["CFBundleVersion"] as? String ?? "2"
+        return "Version \(version) (\(build))"
     }
 
     // MARK: Town search

@@ -36,7 +36,7 @@ public enum DebugTools {
     }
 
     /// Plants `count` flowers at deterministic spots across the plot, rotating through `flowers`.
-    /// Spends no coins or seeds, and stops early if the plot is full.
+    /// Spends no carrots or seeds, and stops early if the plot is full.
     public static func fillWithPlants(garden: Garden, count: Int, flowers: [FlowerType] = FlowerType.allCases) -> Garden {
         guard count > 0, !flowers.isEmpty else { return garden }
         var g = garden

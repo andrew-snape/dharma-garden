@@ -183,7 +183,7 @@ extension SceneCanvas {
     /// A plastic watering can and a terracotta pot plant at the lower right, and a few paving weeds at the lower left.
     func urbanForeground() {
         urbanPavingDharmaGarden()
-        urbanWateringCan(at: p(0.775, 0.955), size: 0.085 * unit)
+        drawRestingWateringCan()
         urbanPotPlant(at: p(0.9, 0.965), size: 0.075 * unit)
     }
 
@@ -217,7 +217,7 @@ extension SceneCanvas {
 
     /// A flat plastic watering can in apple green: moulded body with a shade layer, a top handle, a back handle, a
     /// long spout and a rose. `at` is the base centre.
-    private func urbanWateringCan(at base: CGPoint, size u: CGFloat) {
+    func urbanWateringCan(at base: CGPoint, size u: CGFloat) {
         let body = Color(hex: 0x58B880), shade = Color(hex: 0x3A9163), light = Color(hex: 0x86D4A3)
         let drop: CGFloat = 0.03 * u
         // Tapered body: wider at the base.

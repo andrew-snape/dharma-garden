@@ -12,7 +12,7 @@ private let sprinkleSpacing = 0.04
 /// How long the garden must sit still before its change rewrites the reminder (sprinkling changes it many times).
 private let reminderDebounce: Duration = .milliseconds(1500)
 
-/// A coin change to show briefly beside the coin counter. Positive is income, negative is spending.
+/// A carrot change to show briefly beside the carrot counter. Positive is income, negative is spending.
 struct CoinNote: Equatable {
     let id: Int
     let amount: Int
@@ -41,14 +41,20 @@ struct CoinFloat: View {
 }
 
 struct GardenView: View {
-    @StateObject private var store = GardenStore()
-    @StateObject private var weather = WeatherService()
-    @StateObject private var settings = AppSettings()
+    // Shared with the menu bar garden (see `GardenShared`).
+    @StateObject private var store = GardenShared.shared.store
+    @StateObject private var weather = GardenShared.shared.weather
+    @StateObject private var settings = GardenShared.shared.settings
     @StateObject private var location = LocationService()
     @StateObject private var reminders = ReminderService()
     @StateObject private var music = GardenMusic()
     @Environment(\.scenePhase) private var scenePhase
     @State private var tool: Tool = .water
+    /// True while the watering can is picked up: it follows the pointer over the scene (see `GardenSceneView.wateringCanCarried`).
+    /// Stays true while the pointer is off the scene, when the can simply rests until the pointer returns.
+    @State private var canCarried = true
+    /// Where the pointer is over the scene, in the scene's own point coordinates. nil when it is off the scene.
+    @State private var scenePointer: CGPoint?
     /// The last place the player touched on the ground, marked with a ring.
     @State private var selectedPoint: GroundPoint?
     /// Where the pointer is over the patch, for the seed ghost. nil when it is off the scene.
@@ -201,6 +207,13 @@ struct GardenView: View {
                 let size = SceneFraming.coverSize(in: geo.size)
                 gardenScene
                     .frame(width: size.width, height: size.height)
+                    // Tracks the pointer in scene points, for the carried can. It runs beside the scene's own hover.
+                    .onContinuousHover { phase in
+                        switch phase {
+                        case .active(let location): scenePointer = location
+                        case .ended: scenePointer = nil
+                        }
+                    }
                     .position(x: geo.size.width / 2, y: geo.size.height / 2)
             }
             .clipped()
@@ -246,6 +259,7 @@ struct GardenView: View {
         .onAppear {
             // Asked once, on the very first launch only.
             if !settings.hasAskedLocation { showLocationQuestion = true }
+            store.speed = settings.gameSpeed
             music.setVolume(settings.musicVolume)
             music.setDensity(settings.musicDensity)
             music.setGardenNotes(settings.gardenNotesEnabled)
@@ -345,6 +359,11 @@ struct GardenView: View {
                 bumpedSeeds.subtract(up)
             }
         }
+        .onChange(of: settings.gameSpeed) { _, speed in store.speed = speed }
+        // Picking any other tool puts the watering can down,
+        // and choosing Water by any route (tile, key 1, the advice chip) picks it up.
+        .onChange(of: tool) { _, new in canCarried = new == .water }
+        .navigationTitle(settings.gardenTitle)
         .sheet(isPresented: $showSettings) {
             SettingsView(store: store, settings: settings, location: location, reminders: reminders, palette: palette)
         }
@@ -360,11 +379,11 @@ struct GardenView: View {
     }
 
     /// Two small panels along the top, so the scene shows between them: the garden's name and weather on the left,
-    /// the coins and the sound, book and settings buttons on the right.
+    /// the carrots and the sound, book and settings buttons on the right.
     private func header(_ style: ScenePanelStyle) -> some View {
         HStack(alignment: .top) {
             VStack(alignment: .leading, spacing: 1) {
-                Text("Dharma Garden").font(.headline)
+                Text(settings.gardenTitle).font(.headline)
                 WeatherLine(weather: weather)
             }
             .padding(.horizontal, 12)
@@ -373,9 +392,11 @@ struct GardenView: View {
             Spacer(minLength: 8)
             HStack(spacing: 8) {
                 HStack(spacing: 5) {
-                    Image(systemName: "circle.fill").foregroundStyle(.orange)
+                    CarrotIcon(size: 20)
                     Text("\(store.garden.coins)").font(.title3.bold().monospacedDigit())
                 }
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel("\(store.garden.coins) carrots")
                 .overlay(alignment: .leading) {
                     if let note = coinNote { CoinFloat(amount: note.amount).id(note.id).offset(x: -44) }
                 }
@@ -414,15 +435,15 @@ struct GardenView: View {
     }
 
     /// The tools on one row, with a scrollable tray of the seed packets the player owns. Keys 1 to 7 pick a tool
-    /// (7 opens the shop). Seasol and Fertiliser cost coins, so they dim when the player cannot pay.
+    /// (7 opens the shop). Seasol and Fertiliser cost carrots, so they dim when the player cannot pay.
     private func toolBar(_ style: ScenePanelStyle) -> some View {
         let coins = store.garden.coins
         return VStack(spacing: 7) {
             HStack(spacing: 5) {
-                toolTile("Water", "drop.fill", key: "1", selected: tool == .water, style) { tool = .water }
-                toolTile("Weed", "scissors", key: "2", selected: tool == .weed, style) { tool = .weed }
+                toolTile("Water", "drop.fill", key: "1", selected: tool == .water, style) { pickUpCan() }
+                toolTile("Weed", key: "2", selected: tool == .weed, style, icon: { HandWeederIcon(color: $0).frame(width: 15, height: 16) }) { tool = .weed }
                 toolTile("Pick", "basket.fill", key: "3", selected: tool == .harvest, style) { tool = .harvest }
-                toolTile("Fork", "rectangle.split.3x1.fill", key: "4", selected: tool == .fork, style) { tool = .fork }
+                toolTile("Fork", key: "4", selected: tool == .fork, style, icon: { GardenForkIcon(color: $0).frame(width: 15, height: 16) }) { tool = .fork }
                 toolTile("Seasol", "water.waves", key: "5", cost: Tuning.seasolCost, coins: coins,
                          selected: tool == .seasol, style) { tool = .seasol }
                 toolTile("Fertiliser", "leaf.arrow.circlepath", key: "6", cost: Tuning.fertiliserCost, coins: coins,
@@ -441,23 +462,84 @@ struct GardenView: View {
     private func bottomBar(_ style: ScenePanelStyle) -> some View {
         VStack(spacing: 8) {
             adviceLayer
-            if hasSeeds { seedTray(style) }
-            toolBar(style)
+            if !settings.toolBarHidden {
+                if hasSeeds { seedTray(style) }
+                toolBar(style)
+            }
+            toolBarToggle(style)
         }
         .frame(maxWidth: 720)
+        .background { if settings.toolBarHidden { hiddenToolKeys } }
+        .background(canDownKey)
+    }
+
+    /// Keys 1 to 6 while the tool bar is hidden: its tiles carry the shortcuts, so without them the keys would stop.
+    /// Zero-size buttons that nobody can see or click. Seasol and Fertiliser still need the carrots, as their tiles do.
+    private var hiddenToolKeys: some View {
+        let coins = store.garden.coins
+        return Group {
+            Button("Water") { pickUpCan() }.keyboardShortcut("1", modifiers: [])
+            Button("Weed") { tool = .weed }.keyboardShortcut("2", modifiers: [])
+            Button("Pick") { tool = .harvest }.keyboardShortcut("3", modifiers: [])
+            Button("Fork") { tool = .fork }.keyboardShortcut("4", modifiers: [])
+            Button("Seasol") { tool = .seasol }.keyboardShortcut("5", modifiers: [])
+                .disabled(coins < Tuning.seasolCost && tool != .seasol)
+            Button("Fertiliser") { tool = .fertiliser }.keyboardShortcut("6", modifiers: [])
+                .disabled(coins < Tuning.fertiliserCost && tool != .fertiliser)
+            Button("Shop") { showShop = true }.keyboardShortcut("7", modifiers: [])
+        }
+        .frame(width: 0, height: 0)
+        .opacity(0)
+        .allowsHitTesting(false)
+        .accessibilityHidden(true)
+    }
+
+    /// Escape puts the watering can down. Disabled otherwise, so Escape keeps its other jobs.
+    private var canDownKey: some View {
+        Button("Put down the watering can") { canCarried = false }
+            .keyboardShortcut(.escape, modifiers: [])
+            .disabled(!canCarried)
+            .frame(width: 0, height: 0)
+            .opacity(0)
+            .allowsHitTesting(false)
+            .accessibilityHidden(true)
+    }
+
+    /// The small chevron under the tools that collapses or restores them. Key H.
+    private func toolBarToggle(_ style: ScenePanelStyle) -> some View {
+        Button { withAnimation(.easeInOut(duration: 0.2)) { settings.toolBarHidden.toggle() } } label: {
+            Image(systemName: settings.toolBarHidden ? "chevron.up" : "chevron.down")
+                .font(.system(size: 11, weight: .bold))
+                .foregroundStyle(.primary)
+                .frame(width: 34, height: 18)
+                .background(Capsule().fill(style.fill))
+                .overlay(Capsule().stroke(style.stroke, lineWidth: 1))
+                .contentShape(Capsule())
+        }
+        .buttonStyle(.plain)
+        .keyboardShortcut("h", modifiers: [])
+        .help(settings.toolBarHidden ? "Show the tools (key H)" : "Hide the tools (key H)")
+        .accessibilityLabel(settings.toolBarHidden ? "Show tools" : "Hide tools")
     }
 
     /// Equal-width tiles, so every label fits without truncation at 640 pt. A tile with a `cost` shows it as a badge
-    /// and dims, and cannot be picked, while `coins` fall short (an already-picked tool stays pickable).
-    private func toolTile(_ title: String, _ icon: String, key: KeyEquivalent, cost: Int? = nil, coins: Int = 0,
+    /// and dims, and cannot be picked, while `coins` (the carrots held) fall short (an already-picked tool stays pickable).
+    private func toolTile(_ title: String, _ symbol: String, key: KeyEquivalent, cost: Int? = nil, coins: Int = 0,
                           alert: Bool = false, selected: Bool, _ style: ScenePanelStyle, action: @escaping () -> Void) -> some View {
+        toolTile(title, key: key, cost: cost, coins: coins, alert: alert, selected: selected, style,
+                 icon: { color in Image(systemName: symbol).font(.system(size: 13, weight: .semibold)).foregroundStyle(color) },
+                 action: action)
+    }
+
+    /// The same tile with a custom icon (a drawn shape), given the tile's text colour.
+    private func toolTile<Icon: View>(_ title: String, key: KeyEquivalent, cost: Int? = nil, coins: Int = 0,
+                                      alert: Bool = false, selected: Bool, _ style: ScenePanelStyle,
+                                      @ViewBuilder icon: (Color) -> Icon, action: @escaping () -> Void) -> some View {
         let text: Color = selected ? .white : .primary
         let affordable = cost.map { coins >= $0 } ?? true
         return Button(action: action) {
             VStack(spacing: 3) {
-                Image(systemName: icon)
-                    .font(.system(size: 13, weight: .semibold))
-                    .foregroundStyle(text)
+                icon(text)
                 Text(title)
                     .font(.caption.bold())
                     .foregroundStyle(text)
@@ -498,8 +580,8 @@ struct GardenView: View {
         .buttonStyle(.plain)
         .keyboardShortcut(key, modifiers: [])
         .disabled(!affordable && !selected)
-        .help(cost.map { "\(title): \($0) coins a use (key \(String(key.character)))" } ?? "\(title) (key \(String(key.character)))")
-        .accessibilityLabel(cost.map { "\(title), \($0) coins" } ?? title)
+        .help(cost.map { "\(title): \($0) carrots a use (key \(String(key.character)))" } ?? "\(title) (key \(String(key.character)))")
+        .accessibilityLabel(cost.map { "\(title), \($0) carrots" } ?? title)
         .accessibilityAddTraits(selected ? .isSelected : [])
     }
 
@@ -566,7 +648,16 @@ struct GardenView: View {
                         wind: windLevel, driftEnabled: settings.gentleDrift,
                         style: settings.sceneStyle, theme: settings.sceneTheme,
                         visitors: visitors, onSpotVisitor: spotVisitor,
-                        onSitInChair: { armMusic(); showReading = true })
+                        onSitInChair: { armMusic(); showReading = true },
+                        wateringCanCarried: canCarried && tool == .water ? scenePointer : nil,
+                        // A press on the can's resting spot only picks it up or puts it down.
+                        onWateringCanTap: { if canCarried { canCarried = false } else { pickUpCan() } })
+    }
+
+    /// Takes up the Water tool and the can with it. The can follows the pointer once it is over the scene.
+    private func pickUpCan() {
+        tool = .water
+        canCarried = true
     }
 
     /// The chip for the most pressing job. When nothing needs doing it offers a side chore instead (feed the birds,

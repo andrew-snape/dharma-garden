@@ -82,8 +82,8 @@ struct ShopView: View {
             }
             HStack(spacing: 8) {
                 VStack(alignment: .leading, spacing: 1) {
-                    Text("\(f.seedPrice) coins a seed").font(.callout.bold())
-                    Text(canBuyOne ? "Owned: \(store.garden.seedCount(f))" : "Not enough coins")
+                    Text("\(f.seedPrice) \(f.seedPrice == 1 ? "carrot" : "carrots") a seed").font(.callout.bold())
+                    Text(canBuyOne ? "Owned: \(store.garden.seedCount(f))" : "Not enough carrots")
                         .font(.caption)
                         .foregroundStyle(canBuyOne ? Color.secondary : Color.orange)
                 }

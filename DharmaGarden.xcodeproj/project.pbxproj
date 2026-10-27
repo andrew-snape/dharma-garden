@@ -127,6 +127,7 @@
 		CB75E866579ACDFD03168C14 /* tines-note-6-medium.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 011A77F9E0C6DF5470C92144 /* tines-note-6-medium.m4a */; };
 		CD6527F1F3465800642FCE91 /* DharmaGardenArt in Frameworks */ = {isa = PBXBuildFile; productRef = 32094C6E2B25AEF7417B9CFE /* DharmaGardenArt */; };
 		CFECC78CD1507CC82E37C4AC /* GardenStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BB316E635AA8693BA09B662 /* GardenStore.swift */; };
+		D266306C3DDABD930FC32084 /* HUDIcons.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2FDA6E3E1244F7B9ADF9DAB /* HUDIcons.swift */; };
 		D2DBE679670A2796B08B2477 /* GameCenterService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C8CC90584C4650181FBE292 /* GameCenterService.swift */; };
 		D3B2DBEBD57F2CCEBC4E6D59 /* piano-note-7-medium.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 23C1E95FA3B0FDAAEB189F90 /* piano-note-7-medium.m4a */; };
 		D5DFA764F3F5CE8B293793D6 /* kalimba-note-1-soft.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 731495F94D5ED6F84D34A72A /* kalimba-note-1-soft.m4a */; };
@@ -151,6 +152,7 @@
 		ED107DF79C874255AB680832 /* piano-note-6-soft.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 15D160273D2BBD1A38A134D2 /* piano-note-6-soft.m4a */; };
 		F35D13ED1122D47EC70CB4BF /* japanese-night-2.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 9322624EFD2A1775FE07DA64 /* japanese-night-2.m4a */; };
 		F7D2DDF7144EEBECBAEEB782 /* kalimba-note-5-medium.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 91BD75DC83343A9C72EFAAC6 /* kalimba-note-5-medium.m4a */; };
+		F8E185A08B3E3A0084578C56 /* MenuBarGarden.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6143AB8769B39BA9D73912B /* MenuBarGarden.swift */; };
 		F9E252023EAEF856677B5BD3 /* ruralUK-day-1.m4a in Resources */ = {isa = PBXBuildFile; fileRef = D0F7B16332E05299453D7838 /* ruralUK-day-1.m4a */; };
 		FDE21B2AE7BA4AC0FFCBDE9A /* kalimba-note-5-soft.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 7D03E4F04170782B06880132 /* kalimba-note-5-soft.m4a */; };
 		FE4F9FBB1B64BDB1F2EB05A8 /* note-8-soft.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 5AF4130D7C6B46DC1085FBD2 /* note-8-soft.m4a */; };
@@ -274,6 +276,7 @@
 		BFF626C0C7EB43D4768423EF /* japanese-dusk-2.m4a */ = {isa = PBXFileReference; path = "japanese-dusk-2.m4a"; sourceTree = "<group>"; };
 		C0826C3DB1EAFB1EF427D89F /* tines-note-4-medium.m4a */ = {isa = PBXFileReference; path = "tines-note-4-medium.m4a"; sourceTree = "<group>"; };
 		C1BE92EF3E7597E7AEE044D2 /* japanese-night-3.m4a */ = {isa = PBXFileReference; path = "japanese-night-3.m4a"; sourceTree = "<group>"; };
+		C2FDA6E3E1244F7B9ADF9DAB /* HUDIcons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUDIcons.swift; sourceTree = "<group>"; };
 		C3478403DCCABD60393011A1 /* ruralUK-dusk-2.m4a */ = {isa = PBXFileReference; path = "ruralUK-dusk-2.m4a"; sourceTree = "<group>"; };
 		C39CD075172CE4C2BC632123 /* kalimba-note-4-soft.m4a */ = {isa = PBXFileReference; path = "kalimba-note-4-soft.m4a"; sourceTree = "<group>"; };
 		C3EED5E439E0E9086C498F08 /* japanese-day-1.m4a */ = {isa = PBXFileReference; path = "japanese-day-1.m4a"; sourceTree = "<group>"; };
@@ -290,6 +293,7 @@
 		D0F7B16332E05299453D7838 /* ruralUK-day-1.m4a */ = {isa = PBXFileReference; path = "ruralUK-day-1.m4a"; sourceTree = "<group>"; };
 		D27309775E742194137D0C88 /* tines-note-1-medium.m4a */ = {isa = PBXFileReference; path = "tines-note-1-medium.m4a"; sourceTree = "<group>"; };
 		D3714ED6EAB7A6C40752692E /* tines-note-5-medium.m4a */ = {isa = PBXFileReference; path = "tines-note-5-medium.m4a"; sourceTree = "<group>"; };
+		D6143AB8769B39BA9D73912B /* MenuBarGarden.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarGarden.swift; sourceTree = "<group>"; };
 		D620695178172D49F1D62EA1 /* piano-note-8-soft.m4a */ = {isa = PBXFileReference; path = "piano-note-8-soft.m4a"; sourceTree = "<group>"; };
 		D6F56F26965EA11E698311BA /* urban-rain-1.m4a */ = {isa = PBXFileReference; path = "urban-rain-1.m4a"; sourceTree = "<group>"; };
 		DA139D1BCB37E2ED1F6FF339 /* tines-note-6-soft.m4a */ = {isa = PBXFileReference; path = "tines-note-6-soft.m4a"; sourceTree = "<group>"; };
@@ -357,9 +361,11 @@
 				7F0767CFC1AE00A3E2C5277F /* GardenNotesPlayer.swift */,
 				9BB316E635AA8693BA09B662 /* GardenStore.swift */,
 				5ED61337202CF73DB46B7390 /* GardenView.swift */,
+				C2FDA6E3E1244F7B9ADF9DAB /* HUDIcons.swift */,
 				7532CA49B106650702D19848 /* Info.plist */,
 				ADD32685EA75BC743C4F6E50 /* LevelRamp.swift */,
 				B774EA17ECEA6DF04D964B0A /* LocationService.swift */,
+				D6143AB8769B39BA9D73912B /* MenuBarGarden.swift */,
 				C86D51DAD5C088B056CBFE67 /* PlantCard.swift */,
 				3FD12EC4FB07C6E3EC33B0C2 /* PrivacyPolicyView.swift */,
 				43C785BB77A4F024BC7AF4F5 /* ReadingChairView.swift */,
@@ -732,8 +738,10 @@
 				604D001FE5CE3E08686AB744 /* GardenNotesPlayer.swift in Sources */,
 				CFECC78CD1507CC82E37C4AC /* GardenStore.swift in Sources */,
 				9E170E4742B57653A78A1440 /* GardenView.swift in Sources */,
+				D266306C3DDABD930FC32084 /* HUDIcons.swift in Sources */,
 				E71635F446354396D3105E20 /* LevelRamp.swift in Sources */,
 				124BF283AA2CC17BF3D94188 /* LocationService.swift in Sources */,
+				F8E185A08B3E3A0084578C56 /* MenuBarGarden.swift in Sources */,
 				D9DE9D4A72AF10024E8A28AC /* PlantCard.swift in Sources */,
 				6D865081303F2A896EADDCF4 /* PrivacyPolicyView.swift in Sources */,
 				87F176A0159BC1D74788470A /* ReadingChairView.swift in Sources */,
@@ -813,7 +821,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = App/DharmaGarden.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = App/Info.plist;
@@ -821,7 +829,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.snape.dharmagarden;
 				PRODUCT_NAME = "Dharma Garden";
 				SDKROOT = macosx;
@@ -899,7 +907,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = App/DharmaGarden.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = App/Info.plist;
@@ -907,7 +915,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.snape.dharmagarden;
 				PRODUCT_NAME = "Dharma Garden";
 				SDKROOT = macosx;

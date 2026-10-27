@@ -75,7 +75,7 @@ struct DebugPanel: View {
         .confirmationDialog("Reset the garden?", isPresented: $confirmReset) {
             Button("Reset", role: .destructive) { store.debugReset() }
         } message: {
-            Text("All plants and weeds will be cleared, and coins and seeds go back to the starting amounts.")
+            Text("All plants and weeds will be cleared, and carrots and seeds go back to the starting amounts.")
         }
     }
 

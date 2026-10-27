@@ -41,6 +41,10 @@ final class GardenStore: ObservableObject {
     /// and changed something. The view shows it and clears it.
     @Published var awaySummary: AwaySummary?
 
+    /// Garden speed (1, 2 or 4): how many times faster plants, weeds and soil move per real hour. The clock,
+    /// weather and seasons stay real. Set from the settings.
+    var speed: Double = 1
+
     /// Simulates the garden up to now with the forecast's hourly samples (missing hours use mild neutral weather).
     /// Does nothing while `now` is in the same hour as the last catch-up, since the engine steps whole hours.
     func catchUp(weather: [WeatherSample] = [], now: Date = Date()) {
@@ -48,7 +52,7 @@ final class GardenStore: ObservableObject {
         apply { GardenEngine.recordOpen(in: &$0, now: now) }
         guard Self.hourIndex(now) > Self.hourIndex(garden.lastSimulatedAt) else { return }
         let before = garden
-        garden = GardenEngine.advance(garden, weather: weather, to: now)
+        garden = GardenEngine.advance(garden, weather: weather, to: now, speed: speed)
         let summary = GardenEngine.awaySummary(from: before, to: garden)
         if summary.hoursAway >= Tuning.awaySummaryMinHours, !summary.isEmpty { awaySummary = summary }
         gameCenter.update(with: garden)

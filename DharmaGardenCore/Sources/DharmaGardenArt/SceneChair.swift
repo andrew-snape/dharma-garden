@@ -23,7 +23,7 @@ extension SceneCanvas {
         let wood = Color(hex: 0xC99B66), woodShade = Color(hex: 0x9A6F45), woodLight = Color(hex: 0xDDB680)
         let cushion = Color(hex: 0x6FA8A0), cushionShade = Color(hex: 0x558C85)
         let base = at3(x, 0, z)
-        ellipse(CGPoint(x: base.x + 0.08 * s, y: base.y), 1.1 * s, 0.26 * s, Color.black.opacity(0.15))
+        propShadow(foot: base, height: CGFloat(Self.chairHeight) * s, width: 0.9 * s, depth: 0.24 * s, opacity: 0.18)
         let leg = max(2, 0.07 * s)
         // Back legs and the posts of the backrest.
         for dx in [-0.34, 0.34] { stroke([P(dx, 0), P(dx, 0.5)], width: leg, woodShade) }

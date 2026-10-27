@@ -1,4 +1,4 @@
-import Foundation
+import AppKit
 import DharmaGardenArt
 import DharmaGardenCore
 
@@ -26,6 +26,11 @@ final class AppSettings: ObservableObject {
         static let ambientVolume = "ambientVolume"
         static let choreReadyAt = "choreReadyAt"
         static let lastSummaryDay = "lastSummaryDay"
+        static let gardenerName = "gardenerName"
+        static let showInMenuBar = "showInMenuBar"
+        static let showInDock = "showInDock"
+        static let toolBarHidden = "toolBarHidden"
+        static let gameSpeed = "gameSpeed"
     }
 
     /// Music volume when the user has not chosen one.
@@ -115,6 +120,35 @@ final class AppSettings: ObservableObject {
     @Published var ambientVolume: Double {
         didSet { defaults.set(min(max(ambientVolume, 0), 1), forKey: Key.ambientVolume) }
     }
+    /// The player's name for the header, "<Name>'s Garden". Empty gives "My Garden".
+    @Published var gardenerName: String {
+        didSet { defaults.set(gardenerName, forKey: Key.gardenerName) }
+    }
+    /// Shows the leaf menu with the compact garden in the menu bar.
+    @Published var showInMenuBar: Bool {
+        didSet {
+            defaults.set(showInMenuBar, forKey: Key.showInMenuBar)
+            // With neither the menu bar leaf nor the Dock icon there would be no way back to the garden.
+            if !showInMenuBar && !showInDock { showInDock = true }
+        }
+    }
+    /// Shows the app's icon in the Dock and the app switcher. Off makes it a menu bar only app (the menu bar
+    /// leaf is turned back on so the garden can still be reached).
+    @Published var showInDock: Bool {
+        didSet {
+            defaults.set(showInDock, forKey: Key.showInDock)
+            if !showInDock && !showInMenuBar { showInMenuBar = true }
+            Self.applyDockPolicy(showInDock)
+        }
+    }
+    /// True while the bottom tool bar is collapsed (the H key or the chevron).
+    @Published var toolBarHidden: Bool {
+        didSet { defaults.set(toolBarHidden, forKey: Key.toolBarHidden) }
+    }
+    /// How fast the garden grows: 1, 2 or 4 times the normal pace. The clock, weather and seasons stay real.
+    @Published var gameSpeed: Double {
+        didSet { defaults.set(gameSpeed, forKey: Key.gameSpeed) }
+    }
     /// When each side chore (see `SideChore`) can next be done, keyed by the chore's raw value. Kept across launches.
     var choreReadyAt: [String: Date] {
         get {
@@ -128,6 +162,12 @@ final class AppSettings: ObservableObject {
     var lastSummaryDay: String? {
         get { defaults.string(forKey: Key.lastSummaryDay) }
         set { defaults.set(newValue, forKey: Key.lastSummaryDay) }
+    }
+
+    /// The header title and the window title.
+    var gardenTitle: String {
+        let name = gardenerName.trimmingCharacters(in: .whitespacesAndNewlines)
+        return name.isEmpty ? "My Garden" : "\(name)\u{2019}s Garden"
     }
 
     init(defaults: UserDefaults = .standard) {
@@ -157,7 +197,27 @@ final class AppSettings: ObservableObject {
         soundEffectsEnabled = defaults.object(forKey: Key.soundEffectsEnabled) as? Bool ?? true
         ambientEnabled = defaults.object(forKey: Key.ambientEnabled) as? Bool ?? true
         effectsVolume = min(max(defaults.object(forKey: Key.effectsVolume) as? Double ?? Self.defaultEffectsVolume, 0), 1)
+        gardenerName = defaults.string(forKey: Key.gardenerName) ?? ""
+        showInMenuBar = defaults.object(forKey: Key.showInMenuBar) as? Bool ?? true
+        let dock = defaults.object(forKey: Key.showInDock) as? Bool ?? true
+        showInDock = dock
+        if !dock {
+            // NSApp is not ready while the first scene is built, so the policy is applied on the next turn.
+            DispatchQueue.main.async { Self.applyDockPolicy(false) }
+        }
+        toolBarHidden = defaults.object(forKey: Key.toolBarHidden) as? Bool ?? false
+        let speed = defaults.object(forKey: Key.gameSpeed) as? Double ?? 1
+        gameSpeed = [1, 2, 4].contains(speed) ? speed : 1
         ambientVolume = min(max(defaults.object(forKey: Key.ambientVolume) as? Double ?? Self.defaultAmbientVolume, 0), 1)
+    }
+
+    /// Switches between a regular app (Dock icon) and an accessory app (menu bar only), keeping the garden in front.
+    static func applyDockPolicy(_ showInDock: Bool) {
+        guard let app = NSApp else { return }
+        let policy: NSApplication.ActivationPolicy = showInDock ? .regular : .accessory
+        guard app.activationPolicy() != policy else { return }
+        app.setActivationPolicy(policy)
+        app.activate(ignoringOtherApps: true)
     }
 
     /// The place the weather and the season are worked out for.

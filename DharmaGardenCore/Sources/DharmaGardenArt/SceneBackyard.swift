@@ -187,7 +187,7 @@ extension SceneCanvas {
             return CGPoint(x: g.x, y: g.y - CGFloat(h) * s)
         }
         // Ground shadow and a small concrete footing.
-        ellipse(CGPoint(x: at3(hx, 0, hz).x + 0.02 * unit, y: at3(hx, 0, hz).y), 0.9 * s, 0.14 * s, Color(hex: 0x000000).opacity(0.1))
+        propShadow(foot: at3(hx, 0, hz), height: CGFloat(top) * s, width: 0.9 * s, depth: 0.14 * s, opacity: 0.12)
         ellipse(at3(hx, 0, hz), 0.2 * s, 0.07 * s, Color(hex: 0x9C968A))
         // Far arms first, then the pole, then the near arms, so the pole sits in the middle of the ring.
         let turn = 0.6

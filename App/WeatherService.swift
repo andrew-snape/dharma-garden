@@ -83,7 +83,7 @@ final class WeatherService: ObservableObject {
         let here = place ?? .melbourne
         let times = r.sunTimes(at: now)
         let phase = SunPhaseResolver.phase(at: now, sunrise: times.sunrise, sunset: times.sunset)
-        let sun = SunPosition.light(at: now, sunrise: times.sunrise, sunset: times.sunset, latitude: here.latitude,
+        let sun = SunPosition.light(at: now, sunrise: times.sunrise, sunset: times.sunset, latitude: here.latitude, longitude: here.longitude,
                                     cloudCover: r.current.cloudCover)
         return ScenePalette.resolve(season: season, phase: phase, condition: r.current.condition,
                                     temperatureC: r.current.temperatureC, cloudCover: r.current.cloudCover,

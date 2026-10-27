@@ -91,13 +91,13 @@ final class SceneLightingTests: XCTestCase {
     /// Writes morning, noon, dusk and overcast PNGs of the same garden to LIGHT_DIR. Skipped without the env var.
     func testRenderLightingSheet() throws {
         guard let dir = ProcessInfo.processInfo.environment["LIGHT_DIR"] else { return }
-        let sunrise = Date(timeIntervalSince1970: 1_700_000_000)
-        let sunset = sunrise.addingTimeInterval(14 * 3600)
-        let day = 293   // 20 October, Geelong
-        let lat = -38.2167
+        // 20 October at Geelong: sunrise 06:15 and sunset 19:50 AEDT, which is 19:15 and 08:50 UTC.
+        let sunrise = Date(timeIntervalSince1970: 1_760_901_300)
+        let sunset = sunrise.addingTimeInterval(13.58 * 3600)
+        let lat = -38.2167, lon = 144.36
         func sunAt(_ f: Double, cloud: Double = 0) -> SunLight {
-            SunPosition.light(at: sunrise.addingTimeInterval(f * 14 * 3600), sunrise: sunrise, sunset: sunset,
-                              latitude: lat, cloudCover: cloud, dayOfYear: day)
+            SunPosition.light(at: sunrise.addingTimeInterval(f * (sunset.timeIntervalSince(sunrise))), sunrise: sunrise,
+                              sunset: sunset, latitude: lat, longitude: lon, cloudCover: cloud)
         }
         let shots: [(name: String, palette: ScenePalette)] = [
             ("morning", ScenePalette.resolve(season: .spring, phase: .day, condition: .clear, temperatureC: 12,

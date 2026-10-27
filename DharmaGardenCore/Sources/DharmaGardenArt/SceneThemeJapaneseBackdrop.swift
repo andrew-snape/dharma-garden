@@ -51,7 +51,7 @@ extension SceneCanvas {
         let lit = smooth(palette.darkness, 0.1, 0.3)
 
         // Ground shadow and the stone plinth with joints.
-        ellipse(CGPoint(x: P((x0 + x1) / 2, 0).x + 0.1 * s, y: P(0, 0).y + 0.02 * s), (x1 - x0 + 1.2) * s, 0.28 * s, Color.black.opacity(0.12))
+        propShadow(foot: CGPoint(x: P((x0 + x1) / 2, 0).x, y: P(0, 0).y + 0.02 * s), height: CGFloat(eave) * s, width: (x1 - x0 + 1.2) * s, depth: 0.28 * s, opacity: 0.14)
         rect(x0 - 0.12, 0, x1 + 0.12, plinth, stone)
         rect(x0 - 0.12, 0, x1 + 0.12, 0.07, stoneShade)
         var jx = x0 - 0.12 + 0.5
@@ -246,7 +246,7 @@ extension SceneCanvas {
         let wood = JapaneseWallColour.wood, woodShade = JapaneseWallColour.woodShade
         let stone = Color(hex: 0x9C9A92), stoneShade = Color(hex: 0x76746C), water = Color(hex: 0x8DC0D6)
         // Shadow, then the basin: a low stone bowl with water and a ripple.
-        ellipse(CGPoint(x: base.x + 0.1 * s, y: base.y + 0.02 * s), 1.5 * s, 0.26 * s, Color.black.opacity(0.14))
+        propShadow(foot: CGPoint(x: base.x, y: base.y + 0.02 * s), height: 0.5 * s, width: 1.4 * s, depth: 0.26 * s, opacity: 0.16)
         ellipse(CGPoint(x: P(0.05, 0).x, y: P(0.05, 0).y), 1.0 * s, 0.34 * s, stoneShade)
         ellipse(CGPoint(x: P(0.05, 0.03).x, y: P(0.05, 0.03).y), 1.0 * s, 0.32 * s, stone)
         ellipse(P(0.05, 0.05), 0.82 * s, 0.24 * s, water)

@@ -12,8 +12,8 @@ extension SceneCanvas {
     }
 
     /// A soft contact shadow on the lawn.
-    private func urbanShadow(_ c: CGPoint, w: CGFloat, h: CGFloat) {
-        ellipse(CGPoint(x: c.x + w * 0.1, y: c.y + h * 0.1), w, h, Color.black.opacity(0.14))
+    private func urbanShadow(_ c: CGPoint, w: CGFloat, h: CGFloat, height: CGFloat) {
+        propShadow(foot: c, height: height, width: w * 0.8, depth: h, opacity: 0.17)
     }
 
     private func urbanDrawBin(x: Double, z: Double) {
@@ -21,7 +21,7 @@ extension SceneCanvas {
         let body = Color(hex: 0x4E8F66), shade = Color(hex: 0x376E4B), lid = Color(hex: 0x2F5D43), lidLight = Color(hex: 0x3E7557)
         func P(_ dx: Double, _ h: Double) -> CGPoint { upright(x + dx, h, z, scale: s) }
         let base = at3(x, 0, z)
-        urbanShadow(CGPoint(x: base.x + 0.05 * s, y: base.y), w: 0.9 * s, h: 0.2 * s)
+        urbanShadow(base, w: 0.9 * s, h: 0.2 * s, height: 1.0 * s)
         // Wheels behind the body's feet.
         for dx in [-0.17, 0.17] { ellipse(P(dx, 0.07), 0.15 * s, 0.15 * s, Color(hex: 0x2B2E31)) }
         // Tapered body with a darker side and moulded ribs.
@@ -42,7 +42,7 @@ extension SceneCanvas {
     private func urbanDrawBike(x: Double, z: Double) {
         let s = screenPerUnit(x: x, y: 0, z: z)
         let base = at3(x, 0, z)
-        urbanShadow(CGPoint(x: base.x + 0.1 * s, y: base.y), w: 1.5 * s, h: 0.22 * s)
+        urbanShadow(base, w: 1.5 * s, h: 0.22 * s, height: 0.9 * s)
         let frame = Color(hex: 0xD9534F), dark = Color(hex: 0x2B2D30), grey = Color(hex: 0x8B9096)
         let saved = ctx
         ctx.translateBy(x: base.x, y: base.y)
@@ -83,7 +83,7 @@ extension SceneCanvas {
         let s = screenPerUnit(x: x, y: 0, z: z)
         let base = at3(x, 0, z)
         func P(_ dx: Double, _ h: Double) -> CGPoint { upright(x + dx, h, z, scale: s) }
-        urbanShadow(CGPoint(x: base.x + 0.05 * s, y: base.y), w: 0.8 * s, h: 0.18 * s)
+        urbanShadow(base, w: 0.8 * s, h: 0.18 * s, height: 0.95 * s)
         let black = Color(hex: 0x2B2D31), blackShade = Color(hex: 0x1D1F22), lid = Color(hex: 0x3A3E44), metal = Color(hex: 0x9A9EA4)
         // Legs.
         for dx in [-0.24, 0.0, 0.24] { stroke([P(dx * 0.4, 0.5), P(dx, 0)], width: max(1.5, 0.035 * s), blackShade) }
