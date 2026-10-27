@@ -20,6 +20,13 @@ if CommandLine.arguments.count > 1 && CommandLine.arguments[1] == "notes" {
     exit(0)
 }
 
+// `GardenRender preview --instrument kalimba|piano|musicbox|tines|handpan --out <dir>` renders the Phase 3 previews;
+// see Preview.swift.
+if CommandLine.arguments.count > 1 && CommandLine.arguments[1] == "preview" {
+    runPreview(Array(CommandLine.arguments.dropFirst(2)))
+    exit(0)
+}
+
 let sampleRate = ModalInstrument.defaultSampleRate
 let outDir = URL(fileURLWithPath: CommandLine.arguments.count > 1 ? CommandLine.arguments[1] : "../music-previews")
 try FileManager.default.createDirectory(at: outDir, withIntermediateDirectories: true)
@@ -198,7 +205,7 @@ func writeSpectrogram(_ b: StereoBuffer, to url: URL, width: Int = 1600, height:
         pixels[i * 4 + 2] = UInt8(255 * (a.2 + (c.2 - a.2) * u))
     }
     // 1 kHz gridlines
-    for kHz in 1..<8 {
+    for kHz in 1..<8 where Double(kHz) * 1000 < maxHz {
         let row = Int((1 - Double(kHz) * 1000 / maxHz) * Double(height - 1))
         for col in stride(from: 0, to: width, by: 4) {
             let o = (row * width + col) * 4

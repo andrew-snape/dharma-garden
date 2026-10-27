@@ -40,7 +40,7 @@ struct BatchEntry: Codable {
     var excerpt: String
 }
 
-private struct Rendered {
+struct Rendered {
     var entry: BatchEntry
     var envelope: [Float]          // 0...1 per contact-sheet column
     var onsets: [(time: Double, degree: Int)]
@@ -67,7 +67,7 @@ func peak(_ b: StereoBuffer) -> Float {
 
 func db(_ x: Double) -> Double { 20 * log10(max(x, 1e-9)) }
 
-private func fadeInOut(_ b: StereoBuffer, fadeIn: Double, fadeOut: Double) -> StereoBuffer {
+func fadeInOut(_ b: StereoBuffer, fadeIn: Double, fadeOut: Double) -> StereoBuffer {
     var b = b
     let n = b.left.count
     let inN = min(n, Int(fadeIn * b.sampleRate)), outN = min(n, Int(fadeOut * b.sampleRate))
@@ -82,7 +82,7 @@ private func fadeInOut(_ b: StereoBuffer, fadeIn: Double, fadeOut: Double) -> St
     return b
 }
 
-private func scaled(_ b: StereoBuffer, byDb gainDb: Double) -> StereoBuffer {
+func scaled(_ b: StereoBuffer, byDb gainDb: Double) -> StereoBuffer {
     var b = b
     var g = Float(pow(10, gainDb / 20))
     b.left.withUnsafeMutableBufferPointer { vDSP_vsmul($0.baseAddress!, 1, &g, $0.baseAddress!, 1, vDSP_Length($0.count)) }
@@ -130,14 +130,14 @@ func integratedLUFS(_ b: StereoBuffer) -> Double {
     return lufs(gated.reduce(0, +) / Double(gated.count))
 }
 
-private func slice(_ b: StereoBuffer, from: Double, seconds: Double) -> StereoBuffer {
+func slice(_ b: StereoBuffer, from: Double, seconds: Double) -> StereoBuffer {
     let a = max(0, min(b.left.count, Int(from * b.sampleRate)))
     let e = max(a, min(b.left.count, a + Int(seconds * b.sampleRate)))
     return StereoBuffer(left: Array(b.left[a..<e]), right: Array(b.right[a..<e]), sampleRate: b.sampleRate)
 }
 
 /// AAC in an .m4a container, 128 kbps stereo.
-private func writeM4A(_ b: StereoBuffer, to url: URL) throws {
+func writeM4A(_ b: StereoBuffer, to url: URL) throws {
     try? FileManager.default.removeItem(at: url)
     let settings: [String: Any] = [
         AVFormatIDKey: kAudioFormatMPEG4AAC, AVSampleRateKey: b.sampleRate,
@@ -163,16 +163,20 @@ private func writeM4A(_ b: StereoBuffer, to url: URL) throws {
 
 private let sheetColumns = 1260
 
-private func renderOne(mood: PieceMood, seed: UInt64, minutes: Double, out: URL) throws -> Rendered {
+/// `instrument`, `excerptName` and `writeFull` exist for `GardenRender preview`; the defaults are the handpan batch
+/// exactly as before.
+func renderOne(mood: PieceMood, seed: UInt64, minutes: Double, out: URL,
+                       instrument: GardenInstrument = .handpan, excerptName: String? = nil,
+                       writeFull: Bool = true) throws -> Rendered {
     let began = Date()
     let duration = minutes * 60
-    let events = Improviser.piece(mood: mood, seed: seed, minutes: minutes)
+    let events = Improviser.piece(mood: mood, seed: seed, minutes: minutes, scale: instrument.pieceScale)
     let metrics = PieceMetrics(events: events, duration: duration)
 
     // The approved instrument and room, exactly as the earlier previews used them (instrument seed 42).
-    let dry = ModalInstrument.render(events: events, duration: duration, seed: 42)
+    let dry = instrument.render(events: events, duration: duration, seed: 42)
     let clipped = peak(dry) >= 1
-    var mix = fadeInOut(ConvolutionReverb.finish(dry), fadeIn: 4, fadeOut: 8)
+    var mix = fadeInOut(ConvolutionReverb.finish(dry, wet: instrument.wet, lowPassHz: instrument.lowPassHz), fadeIn: 4, fadeOut: 8)
 
     // Loudness: aim for -24 LUFS, but never let the peak pass -3 dBFS. Sparse music is peaky, so the ceiling
     // usually wins and the real figure (reported) sits a little under the target.
@@ -184,11 +188,11 @@ private func renderOne(mood: PieceMood, seed: UInt64, minutes: Double, out: URL)
     let peakDb = db(Double(peak(mix)))
 
     let name = "\(mood.rawValue)-\(seed)"
-    try writeM4A(mix, to: out.appendingPathComponent("\(name).m4a"))
+    if writeFull { try writeM4A(mix, to: out.appendingPathComponent("\(name).m4a")) }
 
     var excerpt = slice(mix, from: min(0.30 * duration, max(0, duration - 60)), seconds: 60)
     excerpt = fadeInOut(excerpt, fadeIn: 2, fadeOut: 2)
-    try writeM4A(excerpt, to: out.appendingPathComponent("\(name)-excerpt.m4a"))
+    try writeM4A(excerpt, to: out.appendingPathComponent(excerptName ?? "\(name)-excerpt.m4a"))
 
     // First-cut filter.
     var reasons: [String] = []
@@ -209,7 +213,7 @@ private func renderOne(mood: PieceMood, seed: UInt64, minutes: Double, out: URL)
         let v = db((s / Double(2 * (e - a))).squareRoot())
         envelope[c] = Float(min(1, max(0, (v + 60) / 54)))
     }
-    let onsets = events.map { (time: $0.time, degree: ModalInstrument.scale.firstIndex(of: $0.midi) ?? 0) }
+    let onsets = events.map { (time: $0.time, degree: instrument.notes.firstIndex(of: $0.midi) ?? 0) }
 
     let entry = BatchEntry(
         name: name, mood: mood.rawValue, seed: seed, minutes: minutes, notes: metrics.onsets,

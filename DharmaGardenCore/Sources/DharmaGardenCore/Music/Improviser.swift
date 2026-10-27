@@ -85,6 +85,55 @@ public struct ImprovisedPiece: Sendable {
     public var events: [HandpanEvent]
 }
 
+/// The notes a player has under the hand, and which of them are home.
+///
+/// The improviser thinks in indices into `notes`, never in pitches, so the same player can sit at a handpan, a
+/// kalimba, a piano or an electric piano. `handpan` reproduces the original D Kurd player exactly (same seed,
+/// same events); the others only change which notes the indices mean and a few dials.
+public struct PieceScale: Sendable {
+    /// MIDI numbers, lowest first.
+    public var notes: [Int]
+    /// The low anchor (the handpan's ding): sounded alone to open, and the note the player returns to now and then.
+    public var anchor: Int
+    /// The playable ring. The anchor sits outside it on a handpan; on other instruments it can be anywhere.
+    public var ring: ClosedRange<Int>
+    /// Cadence notes: D in the middle of the ring, a low A, and a high A.
+    public var home: Int
+    public var lowFifth: Int
+    public var high: Int
+    /// Notes a phrase can end on while leaving a question hanging (F and C on the handpan).
+    public var questions: [Int]
+    /// Added to a mood's `register` (which is written in handpan indices) to find where the hand sits here.
+    public var registerOffset: Double
+    /// Stretches the silences, for an instrument that wants to be even sparser.
+    public var restScale: Double
+    /// Whether a note may be struck together with the anchor (a handpan trick; wrong for a keyboard).
+    public var doubleStrikeAnchor: Bool
+    /// An occasional soft low note under the first note of a phrase (a left hand on a piano). Never used on the handpan.
+    public var underlay: Underlay?
+
+    public struct Underlay: Sendable {
+        /// Indices into `notes`, e.g. a low fifth and the octave below home.
+        public var indices: [Int]
+        public var chance: Double
+        public init(indices: [Int], chance: Double) { self.indices = indices; self.chance = chance }
+    }
+
+    public init(notes: [Int], anchor: Int, ring: ClosedRange<Int>, home: Int, lowFifth: Int, high: Int,
+                questions: [Int], registerOffset: Double = 0, restScale: Double = 1,
+                doubleStrikeAnchor: Bool = false, underlay: Underlay? = nil) {
+        self.notes = notes; self.anchor = anchor; self.ring = ring; self.home = home
+        self.lowFifth = lowFifth; self.high = high; self.questions = questions
+        self.registerOffset = registerOffset; self.restScale = restScale
+        self.doubleStrikeAnchor = doubleStrikeAnchor; self.underlay = underlay
+    }
+
+    /// D Kurd: D3 A3 Bb3 C4 D4 E4 F4 G4 A4. The default, and exactly the original behaviour.
+    public static let handpan = PieceScale(
+        notes: ModalInstrument.scale, anchor: 0, ring: 1...8, home: 4, lowFifth: 1, high: 8, questions: [6, 3],
+        doubleStrikeAnchor: true)
+}
+
 /// A solo handpan player, in code.
 ///
 /// The model: a hand rests near one part of the ring and plays short phrases on a loose pulse, mostly by step,
@@ -95,8 +144,9 @@ public enum Improviser {
     /// Indices into `ModalInstrument.scale`. 0 is the low ding; 1...8 are the playable ring.
     static let ringRange = 1...8
 
-    public static func piece(mood: PieceMood, seed: UInt64, minutes: Double) -> [HandpanEvent] {
-        compose(mood: mood, seed: seed, minutes: minutes).events
+    public static func piece(mood: PieceMood, seed: UInt64, minutes: Double,
+                             scale: PieceScale = .handpan) -> [HandpanEvent] {
+        compose(mood: mood, seed: seed, minutes: minutes, scale: scale).events
     }
 
     /// How full the piece is at `progress` (0...1): rises over the opening, holds, falls toward the end.
@@ -116,7 +166,7 @@ public enum Improviser {
         var home: Int          // where it was first heard
     }
 
-    static func makeMotif(register: Double, rng: inout SplitMix) -> Motif {
+    static func makeMotif(register: Double, ring: ClosedRange<Int> = ringRange, rng: inout SplitMix) -> Motif {
         let count = 3 + Int(rng.unit() * 3)
         var steps: [Int] = []
         for _ in 0..<(count - 1) {
@@ -131,12 +181,12 @@ public enum Improviser {
             if i == 0 && b < 1 { b = 1 }
             beats.append(b)
         }
-        let home = min(7, max(2, Int(register.rounded()) + Int(rng.signed() * 1.5)))
+        let home = min(ring.upperBound - 1, max(ring.lowerBound + 1, Int(register.rounded()) + Int(rng.signed() * 1.5)))
         return Motif(steps: steps, beats: beats, home: home)
     }
 
     /// Notes of a motif starting on `start`, shifted back into the ring if it would fall off an edge.
-    static func degrees(of steps: [Int], start: Int) -> [Int] {
+    static func degrees(of steps: [Int], start: Int, ring ringRange: ClosedRange<Int> = ringRange) -> [Int] {
         var d = [start]
         for s in steps { d.append(d.last! + s) }
         let low = d.min()!, high = d.max()!
@@ -149,7 +199,8 @@ public enum Improviser {
     // MARK: Walking
 
     /// A free stepwise line of `count` notes beginning on `start`, leaning back toward `centre`.
-    static func walk(from start: Int, count: Int, centre: Double, rng: inout SplitMix) -> [Int] {
+    static func walk(from start: Int, count: Int, centre: Double, ring ringRange: ClosedRange<Int> = ringRange,
+                     rng: inout SplitMix) -> [Int] {
         var out = [start]
         var direction = rng.unit() < 0.5 ? 1 : -1
         while out.count < count {
@@ -194,37 +245,46 @@ public enum Improviser {
         var isQuestion: Bool
     }
 
-    private static func pickCadence(answering: Bool, dingDue: Bool, allowQuestion: Bool,
+    private static func pickCadence(answering: Bool, dingDue: Bool, allowQuestion: Bool, scale: PieceScale,
                                     rng: inout SplitMix) -> Cadence {
-        if dingDue && rng.unit() < 0.7 { return Cadence(degree: 0, isQuestion: false) }
+        if dingDue && rng.unit() < 0.7 { return Cadence(degree: scale.anchor, isQuestion: false) }
         let r = rng.unit()
         if answering {
             // An answer always comes home.
-            return Cadence(degree: r < 0.5 ? 4 : (r < 0.72 ? 1 : (r < 0.90 ? 8 : 0)), isQuestion: false)
+            return Cadence(degree: r < 0.5 ? scale.home : (r < 0.72 ? scale.lowFifth : (r < 0.90 ? scale.high : scale.anchor)),
+                           isQuestion: false)
         }
-        if r < 0.28 { return Cadence(degree: 4, isQuestion: false) }
-        if r < 0.50 { return Cadence(degree: 1, isQuestion: false) }
-        if r < 0.66 { return Cadence(degree: 8, isQuestion: false) }
-        if r < 0.74 { return Cadence(degree: 0, isQuestion: false) }
-        if !allowQuestion { return Cadence(degree: 4, isQuestion: false) }
-        return Cadence(degree: r < 0.88 ? 6 : 3, isQuestion: true)
+        if r < 0.28 { return Cadence(degree: scale.home, isQuestion: false) }
+        if r < 0.50 { return Cadence(degree: scale.lowFifth, isQuestion: false) }
+        if r < 0.66 { return Cadence(degree: scale.high, isQuestion: false) }
+        if r < 0.74 { return Cadence(degree: scale.anchor, isQuestion: false) }
+        if !allowQuestion { return Cadence(degree: scale.home, isQuestion: false) }
+        return Cadence(degree: r < 0.88 ? scale.questions[0] : scale.questions[1], isQuestion: true)
     }
 
-    public static func compose(mood: PieceMood, seed: UInt64, minutes: Double) -> ImprovisedPiece {
+    public static func compose(mood: PieceMood, seed: UInt64, minutes: Double,
+                               scale: PieceScale = .handpan) -> ImprovisedPiece {
         let p = mood.parameters
+        let ring = scale.ring
+        let anchor = scale.anchor
+        let baseRegister = p.register + scale.registerOffset
+        func clampRing(_ d: Int) -> Int { min(ring.upperBound, max(ring.lowerBound, d)) }
+        // A second stream for anything only the other instruments do, so the handpan's stream is never disturbed.
+        var extra = SplitMix(seed: seed &* 0xA24B_AED4_963E_E407 &+ UInt64(PieceMood.allCases.firstIndex(of: mood) ?? 0))
         let duration = minutes * 60
         let moodIndex = UInt64(PieceMood.allCases.firstIndex(of: mood) ?? 0) + 1
         var rng = SplitMix(seed: seed &* 0x9E37_79B9_7F4A_7C15 &+ moodIndex &* 0xD1B5_4A32_D192_ED03)
         _ = rng.next()
 
-        let motifs = [makeMotif(register: p.register, rng: &rng), makeMotif(register: p.register, rng: &rng)]
+        let motifs = [makeMotif(register: baseRegister, ring: ring, rng: &rng),
+                      makeMotif(register: baseRegister, ring: ring, rng: &rng)]
         var phrases: [ImprovisedPhrase] = []
 
         // The last melodic phrase must end early enough for the closing D to ring before the fade.
         let phraseLimit = duration - 22
         var time = 1.5 + 2 * rng.unit()
         var lastDing = -1000.0
-        var degree = 4
+        var degree = scale.home
         var owedAnswerMotif: Int? = nil
         var previousDegrees: [Int] = []
         var previousBeats: [Double] = []
@@ -232,7 +292,7 @@ public enum Improviser {
         while true {
             let progress = time / duration
             let full = fullness(at: progress)
-            let centre = p.register + p.registerRise * full
+            let centre = baseRegister + p.registerRise * full
             let beatSeconds = 60 / (p.bpm.lowerBound + (p.bpm.upperBound - p.bpm.lowerBound) * rng.unit())
             let dingDue = time - lastDing > p.anchorEvery * (0.8 + 0.4 * rng.unit()) && full > 0.1
             let isFirst = phrases.isEmpty
@@ -243,20 +303,20 @@ public enum Improviser {
 
             if isFirst {
                 // Always open on the ding, alone.
-                degrees = [0]; beats = [2.0]
+                degrees = [anchor]; beats = [2.0]
             } else if full < 0.18 {
                 // Sparse edges: one note, sometimes two.
-                let cadence = pickCadence(answering: false, dingDue: dingDue, allowQuestion: false, rng: &rng)
+                let cadence = pickCadence(answering: false, dingDue: dingDue, allowQuestion: false, scale: scale, rng: &rng)
                 if rng.unit() < 0.6 {
                     degrees = [cadence.degree]; beats = [2.0]
                 } else {
-                    let first = min(8, max(1, cadence.degree + (rng.unit() < 0.5 ? 1 : -1)))
+                    let first = clampRing(cadence.degree + (rng.unit() < 0.5 ? 1 : -1))
                     degrees = [first, cadence.degree]; beats = [1.5, 2.0]
                 }
             } else if !previousDegrees.isEmpty && owedAnswerMotif == nil && rng.unit() < p.repeatChance {
                 // Say it again, nearly: same line, perhaps one step off, ending where it ended.
                 let shift = rng.unit() < 0.35 ? (rng.unit() < 0.5 ? 1 : -1) : 0
-                degrees = previousDegrees.map { $0 == 0 ? 0 : min(8, max(1, $0 + shift)) }
+                degrees = previousDegrees.map { $0 == anchor ? anchor : clampRing($0 + shift) }
                 beats = previousBeats
             } else {
                 let allowQuestion = full > 0.3
@@ -265,7 +325,7 @@ public enum Improviser {
                 let count = min(9, max(p.phraseLength.lowerBound, p.phraseLength.lowerBound + Int(target.rounded())))
                 let answering = owedAnswerMotif != nil
                 let cadence = pickCadence(answering: answering, dingDue: dingDue, allowQuestion: allowQuestion,
-                                          rng: &rng)
+                                          scale: scale, rng: &rng)
                 let question = cadence.isQuestion
 
                 var usedMotif: Int? = owedAnswerMotif
@@ -279,29 +339,31 @@ public enum Improviser {
                     let r = rng.unit()
                     if answering {
                         // The answer is the question's idea again, mostly unchanged.
-                        if r < 0.3 { start = min(7, max(2, start + (rng.unit() < 0.5 ? 1 : -1))) }
+                        if r < 0.3 {
+                            start = min(ring.upperBound - 1, max(ring.lowerBound + 1, start + (rng.unit() < 0.5 ? 1 : -1)))
+                        }
                     } else if r < 0.28 {
-                        start = min(8, max(1, Int(centre.rounded()) + Int(rng.signed() * 2)))   // transposed
+                        start = clampRing(Int(centre.rounded()) + Int(rng.signed() * 2))        // transposed
                     } else if r < 0.46 {
                         steps = steps.map { -$0 }                                              // inverted
                     } else if r < 0.64 {
-                        let extra = walk(from: 0, count: 3, centre: centre, rng: &rng)         // extended
-                        steps += [extra[1] - extra[0], extra[2] - extra[1]]
+                        let more = walk(from: ring.lowerBound - 1, count: 3, centre: centre, ring: ring, rng: &rng)  // extended
+                        steps += [more[1] - more[0], more[2] - more[1]]
                         mBeats += freeBeats(count: 2, rng: &rng)
                     } else if r < 0.80 {
                         mBeats = freeBeats(count: mBeats.count, rng: &rng)                      // new rhythm
                     }
-                    degrees = Self.degrees(of: steps, start: start)
+                    degrees = Self.degrees(of: steps, start: start, ring: ring)
                     beats = mBeats
                     if degrees.count < count {
-                        let more = walk(from: degrees.last!, count: count - degrees.count + 1, centre: centre, rng: &rng)
+                        let more = walk(from: degrees.last!, count: count - degrees.count + 1, centre: centre, ring: ring, rng: &rng)
                         degrees += more.dropFirst()
                         beats += freeBeats(count: more.count - 1, rng: &rng)
                     }
                     if !answering && question { owedAnswerMotif = m } else { owedAnswerMotif = nil }
                 } else {
-                    let start = min(8, max(1, degree == 0 ? 4 : degree))
-                    degrees = walk(from: start, count: count, centre: centre, rng: &rng)
+                    let start = clampRing(degree == anchor ? scale.home : degree)
+                    degrees = walk(from: start, count: count, centre: centre, ring: ring, rng: &rng)
                     beats = freeBeats(count: count, rng: &rng)
                     owedAnswerMotif = question ? Int(rng.unit() * 2) : nil
                 }
@@ -309,8 +371,8 @@ public enum Improviser {
                 // Approach the cadence by step, then land on it.
                 var last = degrees.last!
                 if last != cadence.degree {
-                    if cadence.degree == 0 {
-                        degrees.append(0); beats.append(2.0)
+                    if cadence.degree == anchor {
+                        degrees.append(anchor); beats.append(2.0)
                     } else {
                         while abs(cadence.degree - last) > 1 && degrees.count < 9 {
                             last += cadence.degree > last ? 1 : -1
@@ -324,7 +386,7 @@ public enum Improviser {
                 // Keep the length within a hand's reach, always keeping the cadence note.
                 if degrees.count > 9 { degrees = Array(degrees.prefix(8)) + [cadence.degree] }
                 beats = Array((beats + [Double](repeating: 1, count: degrees.count)).prefix(degrees.count))
-                beats[beats.count - 1] = cadence.degree == 0 ? 2.0 : (rng.unit() < 0.5 ? 2.0 : 1.5)
+                beats[beats.count - 1] = cadence.degree == anchor ? 2.0 : (rng.unit() < 0.5 ? 2.0 : 1.5)
             }
 
             // Lay the notes on the loose pulse.
@@ -340,15 +402,22 @@ public enum Improviser {
                 if isFirst { v = p.velocity * 0.9 }
                 v = min(0.6, max(0.2, v))
                 let when = max(0, t + rng.signed() * p.timingJitter)
-                events.append(HandpanEvent(time: when, midi: ModalInstrument.scale[d], velocity: v))
+                events.append(HandpanEvent(time: when, midi: scale.notes[d], velocity: v))
                 // Occasionally strike the ding together with a melodic note, in the fuller part.
-                if d != 0, full > 0.5, (k == 0 || k == n - 1), rng.unit() < p.doubleStrikeChance {
+                if scale.doubleStrikeAnchor, d != anchor, full > 0.5, (k == 0 || k == n - 1),
+                   rng.unit() < p.doubleStrikeChance {
                     events.append(HandpanEvent(time: when + 0.004 + 0.008 * rng.unit(),
-                                               midi: ModalInstrument.scale[0], velocity: min(0.6, max(0.2, v * 0.6))))
+                                               midi: scale.notes[anchor], velocity: min(0.6, max(0.2, v * 0.6))))
                 }
-                if d == 0 { lastDing = when }
+                if d == anchor { lastDing = when }
                 phraseEnd = when
                 t += beats[k] * beatSeconds
+            }
+            // A left hand: now and then a soft low note under the phrase's first note, in the fuller part.
+            if let under = scale.underlay, !isFirst, full > 0.25, extra.unit() < under.chance, let first = events.first {
+                let index = under.indices[Int(extra.unit() * Double(under.indices.count)) % under.indices.count]
+                events.append(HandpanEvent(time: first.time + 0.01 + 0.02 * extra.unit(), midi: scale.notes[index],
+                                           velocity: min(0.6, max(0.15, first.velocity * 0.6))))
             }
             // `t` is now the time the last note's own length runs out.
             let ringEnd = t
@@ -361,6 +430,7 @@ public enum Improviser {
             let restBase = p.rest.upperBound - (p.rest.upperBound - p.rest.lowerBound) * full
             var rest = restBase * (0.8 + 0.4 * rng.unit())
             rest = min(p.restCap, max(max(2.4, p.rest.lowerBound * 0.9), rest))
+            if scale.restScale != 1 { rest = min(p.restCap * scale.restScale, rest * scale.restScale) }
             // A question hangs in the air a little less before its answer arrives.
             if owedAnswerMotif != nil { rest = max(2.4, rest * 0.8) }
             time = ringEnd + rest
@@ -369,7 +439,7 @@ public enum Improviser {
         // The last word: a single D, after a long breath, left to ring out under the fade.
         let lastEnd = phrases.last!.end
         let finalTime = min(duration - 10, lastEnd + 5.5 + 2.5 * rng.unit())
-        let finalMidi = rng.unit() < 0.5 ? ModalInstrument.scale[0] : ModalInstrument.scale[4]
+        let finalMidi = rng.unit() < 0.5 ? scale.notes[anchor] : scale.notes[scale.home]
         let finalEvent = HandpanEvent(time: finalTime, midi: finalMidi, velocity: min(0.6, max(0.2, p.velocity * 0.85)))
         phrases.append(ImprovisedPhrase(events: [finalEvent], start: finalTime, end: finalTime))
 
