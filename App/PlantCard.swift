@@ -77,7 +77,7 @@ struct PlantCard: View {
         if isFrosted { return "Chilled by frost" }
         switch plant.lifeStage {
         case .growing: return "Doing well"
-        case .blooming: return flower.readyWord == "harvest" ? "Pick it for coins" : "Enjoy the flowers"
+        case .blooming: return flower.readyWord == "harvest" ? "Pick it for carrots" : "Enjoy the flowers"
         case .fading, .seedHead: return "Past its best"
         }
     }

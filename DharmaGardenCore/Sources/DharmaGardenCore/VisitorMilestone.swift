@@ -6,7 +6,7 @@ public struct VisitorMilestone: Equatable, Sendable, Identifiable {
     public var species: Int
     public var title: String
     public var coins: Int
-    /// Seed packets granted with the coins.
+    /// Seed packets granted with the carrots.
     public var seeds: [FlowerType: Int]
 
     public var id: Int { species }

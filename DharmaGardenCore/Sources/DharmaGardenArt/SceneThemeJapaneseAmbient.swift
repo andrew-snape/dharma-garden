@@ -14,6 +14,7 @@ extension SceneCanvas {
         for (x, y, w) in [(0.05, 0.97, 0.07), (0.37, 0.992, 0.055), (0.62, 0.997, 0.05)] {
             drawJapaneseMoss(at: p(x, y), width: w * unit)
         }
+        drawRestingWateringCan()
         let lantern = japaneseForegroundLantern
         drawJapaneseStoneLantern(base: lantern.base, u: lantern.u, glowing: palette.darkness)
     }
@@ -45,7 +46,7 @@ extension SceneCanvas {
             ctx.fill(Path(CGRect(x: r.minX, y: r.minY, width: r.width, height: max(1, 0.025 * u))), with: .color(light))
         }
         // Ground shadow.
-        ellipse(CGPoint(x: b.x + 0.15 * u, y: b.y + 0.02 * u), 1.1 * u, 0.2 * u, Color.black.opacity(0.14))
+        propShadow(foot: CGPoint(x: b.x, y: b.y + 0.02 * u), height: 1.6 * u, width: 0.9 * u, depth: 0.2 * u, opacity: 0.16)
         // Base slab.
         let slab = CGRect(x: b.x - 0.4 * u, y: b.y - 0.09 * u, width: 0.8 * u, height: 0.09 * u)
         ctx.fill(Path(slab.offsetBy(dx: 0.03 * u, dy: 0.02 * u)), with: .color(shade))

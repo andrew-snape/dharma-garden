@@ -26,7 +26,12 @@ final class ToolSounds {
     private static let sampleRate = 44_100.0
     private static let voices = 4
 
-    private let engine = AVAudioEngine()
+    private let audio = GardenAudio.shared
+    private var engine: AVAudioEngine { audio.engine }
+    /// Lets the shared engine pause a while after the last sound.
+    private var releaseTask: Task<Void, Never>?
+    /// Level of each sound before the player's effects volume, so the slider's middle sits under the music.
+    private static let trim: Float = 0.7
     private var players: [AVAudioPlayerNode] = []
     private var buffers: [ToolSound: AVAudioPCMBuffer] = [:]
     private var nextVoice = 0
@@ -45,11 +50,6 @@ final class ToolSounds {
     private var loops: [ToolLoop: LoopVoice] = [:]
     /// How long a loop keeps going after the last drag step, so a slow drag does not stutter.
     private static let loopHold: TimeInterval = 0.25
-
-    /// Overall level, 0...1. Kept low so the sounds sit under the music.
-    var volume: Float = 0.5 {
-        didSet { engine.mainMixerNode.outputVolume = volume }
-    }
 
     /// Plays `sound` unless it was played too recently. Silent if the audio engine cannot start.
     func play(_ sound: ToolSound) {
@@ -102,14 +102,15 @@ final class ToolSounds {
         loops[loop]?.playing = false
     }
 
-    /// Builds the graph and the buffers on first use, and restarts the engine if the output device changed.
+    /// Builds the graph and the buffers on first use, and starts the shared engine if it is not running.
     private func prepare() -> Bool {
         if !ready {
             guard let format = AVAudioFormat(standardFormatWithSampleRate: Self.sampleRate, channels: 1) else { return false }
             for _ in 0..<Self.voices {
                 let player = AVAudioPlayerNode()
                 engine.attach(player)
-                engine.connect(player, to: engine.mainMixerNode, format: format)
+                engine.connect(player, to: audio.bus(.effects), format: format)
+                player.volume = Self.trim
                 players.append(player)
             }
             for sound in ToolSound.allCases {
@@ -122,16 +123,19 @@ final class ToolSounds {
                 engine.attach(player)
                 engine.attach(mixer)
                 engine.connect(player, to: mixer, format: format)
-                engine.connect(mixer, to: engine.mainMixerNode, format: format)
+                engine.connect(mixer, to: audio.bus(.effects), format: format)
+                player.volume = Self.trim
                 mixer.outputVolume = 0
                 loops[loop] = LoopVoice(player: player, mixer: mixer, buffer: buffer)
             }
-            engine.mainMixerNode.outputVolume = volume
             ready = true
         }
-        if !engine.isRunning {
-            engine.prepare()
-            do { try engine.start() } catch { return false }
+        guard audio.start(for: .effects) else { return false }
+        releaseTask?.cancel()
+        releaseTask = Task { [weak self] in
+            try? await Task.sleep(for: .seconds(3))
+            guard !Task.isCancelled, let self, !self.loops.values.contains(where: \.playing) else { return }
+            self.audio.release(.effects)
         }
         return true
     }
@@ -295,7 +299,9 @@ final class ToolSounds {
     private static func renderLoop(_ loop: ToolLoop) -> [Float] {
         var noise = Noise(state: loop == .rake ? 0x51_7CC1_B727_220A : 0x94D0_49BB_1331_11EB)
         let length = 2.4, overlap = 0.3
-        var out = [Float](repeating: 0, count: Int(sampleRate * (length + overlap)))
+        // Size the buffer from the same whole-sample counts the crossfade uses, so the two can never disagree.
+        let n = Int(sampleRate * length), o = Int(sampleRate * overlap)
+        var out = [Float](repeating: 0, count: n + o)
         switch loop {
         case .rake:
             // Tines drawn through loose soil: a low brushing bed that swells with each pull, and the patter of
@@ -329,7 +335,6 @@ final class ToolSounds {
             bubbles(&out, from: 0, to: length + overlap, perSecond: 90, low: 500, high: 1700, gain: 0.2, noise: &noise)
         }
         soften(&out, cutoff: 1800)
-        let n = Int(sampleRate * length), o = Int(sampleRate * overlap)
         for i in 0..<o {
             let f = Float(i) / Float(o)
             out[i] = out[i] * f + out[n + i] * (1 - f)

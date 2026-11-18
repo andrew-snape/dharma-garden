@@ -74,6 +74,48 @@ final class GardenEngineTests: XCTestCase {
         XCTAssertEqual(plant(day50, 1)!.progress, 1)
     }
 
+    // MARK: Garden speed
+
+    /// The first hour (counting from the start) at which the lone daisy is in bloom at the given speed.
+    func bloomHour(speed: Double) -> Int {
+        let g = F.garden([F.plant(.daisy, id: 1)])
+        let weather = F.weather(hours: 50 * 24, rain: 1)
+        var lo = 1, hi = 50 * 24
+        while lo < hi {
+            let mid = (lo + hi) / 2
+            let out = GardenEngine.advance(g, weather: weather, to: F.at(hours: mid), speed: speed)
+            // A plant that has bloomed and gone to seed is no longer there, which also counts as past bloom.
+            if (plant(out, 1)?.progress ?? 1) >= 1 { hi = mid } else { lo = mid + 1 }
+        }
+        return lo
+    }
+
+    func testSpeedMultipliesGrowth() {
+        let one = Double(bloomHour(speed: 1))
+        XCTAssertEqual(one, 49 * 24, accuracy: 2)
+        XCTAssertEqual(Double(bloomHour(speed: 2)), one / 2, accuracy: 2)
+        XCTAssertEqual(Double(bloomHour(speed: 4)), one / 4, accuracy: 2)
+    }
+
+    func testSpeedOneMatchesDefaultAdvance() {
+        let start = F.garden([F.plant(.daisy, id: 1), F.plant(.lavender, id: 2, at: GroundPoint(x: 0.7, y: 0.6))])
+        let weather = varied(hours: 24 * 30)
+        XCTAssertEqual(GardenEngine.advance(start, weather: weather, to: F.at(hours: 24 * 30), speed: 1),
+                       GardenEngine.advance(start, weather: weather, to: F.at(hours: 24 * 30)))
+    }
+
+    func testSpeedAgesWeedsAndDriesSoilFaster() {
+        var start = F.garden([], soil: 100)
+        start.weeds = []
+        let weather = F.weather(hours: 24 * 3)
+        let slow = GardenEngine.advance(start, weather: weather, to: F.at(hours: 24 * 3))
+        let fast = GardenEngine.advance(start, weather: weather, to: F.at(hours: 24 * 3), speed: 4)
+        XCTAssertGreaterThan(fast.weeds.count, slow.weeds.count)
+        XCTAssertGreaterThan(fast.weeds.map(\.ageHours).max() ?? 0, slow.weeds.map(\.ageHours).max() ?? 0)
+        XCTAssertLessThan(fast.soil.values.reduce(0, +), slow.soil.values.reduce(0, +))
+        XCTAssertEqual(fast.lastSimulatedAt, slow.lastSimulatedAt, "the clock stays real")
+    }
+
     func testLifeCycleBloomFadeSeedHeadThenGone() {
         let bloomed = F.garden([F.plant(.daisy, id: 1, progress: 1)])
         XCTAssertEqual(plant(F.advance(bloomed, hours: 9 * 24, rain: 1), 1)?.lifeStage, .blooming)

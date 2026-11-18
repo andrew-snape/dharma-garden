@@ -6,8 +6,7 @@ extension SceneCanvas {
     /// A watering can on the lawn at the bottom right, and a few grass tufts at the bottom left.
     func drawForeground() {
         drawGrassTufts()
-        // Set in from the edge so the rose and the lawn-parallax drift stay inside the frame.
-        drawWateringCan(at: p(0.84, 0.93), size: 0.1 * unit)
+        drawRestingWateringCan()
     }
 
     private func drawGrassTufts() {
@@ -24,9 +23,8 @@ extension SceneCanvas {
         }
     }
 
-    /// Flat watering can in lilac: body with a shade layer, a spout, a rose and a handle. `at` is the base centre.
-    private func drawWateringCan(at base: CGPoint, size u: CGFloat) {
-        let body = Color(hex: 0xA58BD3), bodyShade = Color(hex: 0x7F66B0)
+    /// Flat watering can (lilac by default; the Japanese garden gives it a celadon glaze): body with a shade layer, a spout, a rose and a handle. `at` is the base centre.
+    func drawLilacCan(at base: CGPoint, size u: CGFloat, body: Color = Color(hex: 0xA58BD3), bodyShade: Color = Color(hex: 0x7F66B0)) {
         let drop: CGFloat = 0.03 * u
         let bodyRect = CGRect(x: base.x - 0.5 * u, y: base.y - 0.55 * u, width: 0.7 * u, height: 0.55 * u)
         ctx.fill(Path(roundedRect: bodyRect.offsetBy(dx: 0, dy: drop), cornerRadius: 0.14 * u), with: .color(bodyShade))

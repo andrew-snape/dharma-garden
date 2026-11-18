@@ -1,4 +1,4 @@
-import Foundation
+import AppKit
 import DharmaGardenArt
 import DharmaGardenCore
 
@@ -15,16 +15,29 @@ final class AppSettings: ObservableObject {
         static let sceneStyle = "sceneStyle"
         static let sceneTheme = "sceneTheme"
         static let hasAskedLocation = "hasAskedLocation"
-        static let musicEnabled = "musicEnabled"
+        static let musicEnabled = "musicEnabled"   // the old on/off switch, read once to migrate
+        static let musicDensity = "musicDensity"
+        static let gardenNotesEnabled = "gardenNotesEnabled"
+        static let soundMuted = "soundMuted"
         static let musicVolume = "musicVolume"
         static let soundEffectsEnabled = "soundEffectsEnabled"
         static let ambientEnabled = "ambientEnabled"
+        static let effectsVolume = "effectsVolume"
+        static let ambientVolume = "ambientVolume"
         static let choreReadyAt = "choreReadyAt"
         static let lastSummaryDay = "lastSummaryDay"
+        static let gardenerName = "gardenerName"
+        static let showInMenuBar = "showInMenuBar"
+        static let showInDock = "showInDock"
+        static let toolBarHidden = "toolBarHidden"
+        static let gameSpeed = "gameSpeed"
     }
 
     /// Music volume when the user has not chosen one.
-    static let defaultMusicVolume = 0.6
+    static let defaultMusicVolume = 0.35
+    /// Tool sound and ambience volumes when the user has not chosen them.
+    static let defaultEffectsVolume = 0.7
+    static let defaultAmbientVolume = 0.7
 
     /// 09:00, in minutes after midnight.
     static let defaultReminderMinutes = 9 * 60
@@ -35,7 +48,7 @@ final class AppSettings: ObservableObject {
     @Published var useDeviceLocation: Bool {
         didSet { defaults.set(useDeviceLocation, forKey: Key.useDeviceLocation) }
     }
-    /// The town picked by hand (Mount Duneed until changed).
+    /// The town picked by hand (Melbourne until changed).
     @Published var manualTown: Town {
         didSet { store(manualTown, Key.manualTown) }
     }
@@ -69,11 +82,20 @@ final class AppSettings: ObservableObject {
         didSet { defaults.set(hasAskedLocation, forKey: Key.hasAskedLocation) }
     }
 
-    /// Plays the garden's generative music. Off is the mute: the header speaker button toggles this.
-    @Published var musicEnabled: Bool {
-        didSet { defaults.set(musicEnabled, forKey: Key.musicEnabled) }
+    /// How often the recorded pieces play: Off, Subtle (one every 6 to 12 minutes) or Often (every 1 to 3).
+    @Published var musicDensity: MusicDensity {
+        didSet { defaults.set(musicDensity.rawValue, forKey: Key.musicDensity) }
     }
-    /// Music volume, 0...1.
+    /// Plays a soft note on the theme's instrument when something happens in the garden. Independent of the music setting.
+    @Published var gardenNotesEnabled: Bool {
+        didSet { defaults.set(gardenNotesEnabled, forKey: Key.gardenNotesEnabled) }
+    }
+    /// The header speaker button: silences the music, the garden notes and the ambience without changing any of
+    /// the settings above, so unmuting brings back exactly what the player chose.
+    @Published var muted: Bool {
+        didSet { defaults.set(muted, forKey: Key.soundMuted) }
+    }
+    /// Music volume, 0...1. It also sets the level of the garden notes.
     @Published var musicVolume: Double {
         didSet {
             let clamped = min(max(musicVolume, 0), 1)
@@ -90,6 +112,43 @@ final class AppSettings: ObservableObject {
     @Published var ambientEnabled: Bool {
         didSet { defaults.set(ambientEnabled, forKey: Key.ambientEnabled) }
     }
+    /// Tool sound volume, 0...1.
+    @Published var effectsVolume: Double {
+        didSet { defaults.set(min(max(effectsVolume, 0), 1), forKey: Key.effectsVolume) }
+    }
+    /// Ambience volume, 0...1.
+    @Published var ambientVolume: Double {
+        didSet { defaults.set(min(max(ambientVolume, 0), 1), forKey: Key.ambientVolume) }
+    }
+    /// The player's name for the header, "<Name>'s Garden". Empty gives "My Garden".
+    @Published var gardenerName: String {
+        didSet { defaults.set(gardenerName, forKey: Key.gardenerName) }
+    }
+    /// Shows the leaf menu with the compact garden in the menu bar.
+    @Published var showInMenuBar: Bool {
+        didSet {
+            defaults.set(showInMenuBar, forKey: Key.showInMenuBar)
+            // With neither the menu bar leaf nor the Dock icon there would be no way back to the garden.
+            if !showInMenuBar && !showInDock { showInDock = true }
+        }
+    }
+    /// Shows the app's icon in the Dock and the app switcher. Off makes it a menu bar only app (the menu bar
+    /// leaf is turned back on so the garden can still be reached).
+    @Published var showInDock: Bool {
+        didSet {
+            defaults.set(showInDock, forKey: Key.showInDock)
+            if !showInDock && !showInMenuBar { showInMenuBar = true }
+            Self.applyDockPolicy(showInDock)
+        }
+    }
+    /// True while the bottom tool bar is collapsed (the H key or the chevron).
+    @Published var toolBarHidden: Bool {
+        didSet { defaults.set(toolBarHidden, forKey: Key.toolBarHidden) }
+    }
+    /// How fast the garden grows: 1, 2 or 4 times the normal pace. The clock, weather and seasons stay real.
+    @Published var gameSpeed: Double {
+        didSet { defaults.set(gameSpeed, forKey: Key.gameSpeed) }
+    }
     /// When each side chore (see `SideChore`) can next be done, keyed by the chore's raw value. Kept across launches.
     var choreReadyAt: [String: Date] {
         get {
@@ -105,10 +164,16 @@ final class AppSettings: ObservableObject {
         set { defaults.set(newValue, forKey: Key.lastSummaryDay) }
     }
 
+    /// The header title and the window title.
+    var gardenTitle: String {
+        let name = gardenerName.trimmingCharacters(in: .whitespacesAndNewlines)
+        return name.isEmpty ? "My Garden" : "\(name)\u{2019}s Garden"
+    }
+
     init(defaults: UserDefaults = .standard) {
         self.defaults = defaults
         useDeviceLocation = defaults.object(forKey: Key.useDeviceLocation) as? Bool ?? false
-        manualTown = Self.loadTown(defaults, Key.manualTown) ?? .mountDuneed
+        manualTown = Self.loadTown(defaults, Key.manualTown) ?? .melbourne
         devicePlace = Self.loadTown(defaults, Key.devicePlace)
         reminderEnabled = defaults.object(forKey: Key.reminderEnabled) as? Bool ?? false
         let minutes = defaults.object(forKey: Key.reminderMinutes) as? Int ?? Self.defaultReminderMinutes
@@ -117,11 +182,42 @@ final class AppSettings: ObservableObject {
         sceneStyle = (defaults.string(forKey: Key.sceneStyle)).flatMap(SceneStyle.init(rawValue:)) ?? .firstPerson
         sceneTheme = (defaults.string(forKey: Key.sceneTheme)).flatMap(SceneTheme.init(rawValue:)) ?? .farm
         hasAskedLocation = defaults.object(forKey: Key.hasAskedLocation) as? Bool ?? false
-        musicEnabled = defaults.object(forKey: Key.musicEnabled) as? Bool ?? true
+        // Saves from before the density setting have an on/off switch: off stays Off, on becomes Subtle.
+        if let saved = defaults.string(forKey: Key.musicDensity).flatMap(MusicDensity.init(rawValue:)) {
+            musicDensity = saved
+        } else if let wasOn = defaults.object(forKey: Key.musicEnabled) as? Bool {
+            musicDensity = wasOn ? .subtle : .off
+        } else {
+            musicDensity = .subtle
+        }
+        gardenNotesEnabled = defaults.object(forKey: Key.gardenNotesEnabled) as? Bool ?? true
+        muted = defaults.object(forKey: Key.soundMuted) as? Bool ?? false
         let volume = defaults.object(forKey: Key.musicVolume) as? Double ?? Self.defaultMusicVolume
         musicVolume = min(max(volume, 0), 1)
         soundEffectsEnabled = defaults.object(forKey: Key.soundEffectsEnabled) as? Bool ?? true
         ambientEnabled = defaults.object(forKey: Key.ambientEnabled) as? Bool ?? true
+        effectsVolume = min(max(defaults.object(forKey: Key.effectsVolume) as? Double ?? Self.defaultEffectsVolume, 0), 1)
+        gardenerName = defaults.string(forKey: Key.gardenerName) ?? ""
+        showInMenuBar = defaults.object(forKey: Key.showInMenuBar) as? Bool ?? true
+        let dock = defaults.object(forKey: Key.showInDock) as? Bool ?? true
+        showInDock = dock
+        if !dock {
+            // NSApp is not ready while the first scene is built, so the policy is applied on the next turn.
+            DispatchQueue.main.async { Self.applyDockPolicy(false) }
+        }
+        toolBarHidden = defaults.object(forKey: Key.toolBarHidden) as? Bool ?? false
+        let speed = defaults.object(forKey: Key.gameSpeed) as? Double ?? 1
+        gameSpeed = [1, 2, 4].contains(speed) ? speed : 1
+        ambientVolume = min(max(defaults.object(forKey: Key.ambientVolume) as? Double ?? Self.defaultAmbientVolume, 0), 1)
+    }
+
+    /// Switches between a regular app (Dock icon) and an accessory app (menu bar only), keeping the garden in front.
+    static func applyDockPolicy(_ showInDock: Bool) {
+        guard let app = NSApp else { return }
+        let policy: NSApplication.ActivationPolicy = showInDock ? .regular : .accessory
+        guard app.activationPolicy() != policy else { return }
+        app.setActivationPolicy(policy)
+        app.activate(ignoringOtherApps: true)
     }
 
     /// The place the weather and the season are worked out for.

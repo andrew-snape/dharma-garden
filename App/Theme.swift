@@ -85,7 +85,7 @@ struct GardenSheetFrame<Content: View>: View {
             Spacer()
             if let coins {
                 HStack(spacing: 5) {
-                    Image(systemName: "circle.fill").foregroundStyle(.orange)
+                    CarrotIcon(size: 20)
                     Text("\(coins)").font(.title3.bold().monospacedDigit())
                 }
                 .overlay(alignment: .leading) {

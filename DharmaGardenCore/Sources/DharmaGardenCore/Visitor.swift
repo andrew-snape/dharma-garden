@@ -1,6 +1,6 @@
 import Foundation
 
-/// How often a visitor species turns up. Drives the coin reward for spotting it.
+/// How often a visitor species turns up. Drives the carrot reward for spotting it.
 public enum VisitorRarity: String, Codable, Sendable, CaseIterable { case common, uncommon, rare }
 
 /// Creatures that drop in on the garden for a while. Visitors are live view state: they are not saved, only
@@ -34,7 +34,7 @@ public enum VisitorSpecies: String, Codable, Sendable, CaseIterable {
         }
     }
 
-    /// Coins paid the first time (and every time) the visitor is spotted.
+    /// Carrots paid the first time (and every time) the visitor is spotted.
     public var coinReward: Int {
         switch rarity {
         case .common: Tuning.visitorCommonReward

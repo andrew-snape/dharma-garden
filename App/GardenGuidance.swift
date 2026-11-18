@@ -133,7 +133,7 @@ struct ChoreChip: View {
         }
         .buttonStyle(.plain)
         .help(chore.detail)
-        .accessibilityLabel(chore.cost > 0 ? "\(chore.title), \(chore.cost) coin" : chore.title)
+        .accessibilityLabel(chore.cost > 0 ? "\(chore.title), \(chore.cost) \(chore.cost == 1 ? "carrot" : "carrots")" : chore.title)
         .accessibilityHint(chore.detail)
     }
 }

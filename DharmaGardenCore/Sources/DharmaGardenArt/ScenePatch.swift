@@ -290,7 +290,7 @@ extension SceneCanvas {
         let tint = Self.ringTint(ring.kind)
         // A furrow is just its lines. The tool actions keep a faint ring so the reach still shows.
         if ring.kind == .furrow {
-            drawToolAction(ring)
+            drawToolAction(ring, pass: .ground)
             return
         }
         let strength = [.aerate, .seasol, .fertilise].contains(ring.kind) ? 0.4 : 1.0
@@ -299,7 +299,7 @@ extension SceneCanvas {
             fill(pts, SceneColour.color(tint).opacity(0.12 * fade))
         }
         stroke(pts + [pts[0]], width: max(1.2, 0.003 * unit), SceneColour.color(tint).opacity(0.8 * fade * strength))
-        drawToolAction(ring)
+        drawToolAction(ring, pass: .ground)
         if ring.kind == .spot {
             // Sparkle: short bright ticks around the ring, turning as it fades.
             let c = ring.point

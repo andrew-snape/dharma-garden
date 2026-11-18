@@ -105,7 +105,11 @@ extension SceneCanvas {
         let verge = SceneColour.color(SceneColour.scaled(ukGrass(), 0.93))
         fill([f.point(x: -h, z: z - 0.02), f.point(x: h, z: z - 0.02), f.point(x: h, z: z + 0.2), f.point(x: -h, z: z + 0.2)], verge)
         let shadow = Color(hex: 0x1B2A14).opacity(0.16)
-        fill([f.point(x: -h, z: z), f.point(x: h, z: z), f.point(x: h, z: z + 0.1), f.point(x: -h, z: z + 0.1)], shadow)
+        // The wall's shadow falls toward the viewer only when the sun is behind it (to the west).
+        let reach = wallShadowDepth(height: UKWall.height, fallback: 0.1)
+        if reach > 0.005 {
+            fill([f.point(x: -h, z: z), f.point(x: h, z: z), f.point(x: h, z: z + reach), f.point(x: -h, z: z + reach)], shadow)
+        }
     }
 
     /// A face of irregular stones laid in rough courses, with dark gaps between them and no mortar. `skip` leaves a

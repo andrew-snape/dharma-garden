@@ -5,3 +5,7 @@ DerivedData/
 xcuserdata/
 *.xcuserstate
 DharmaGarden.xcodeproj/-Xcc/
+
+# Local audio renders and downloaded reference samples (large; regenerate with GardenRender)
+music-previews/
+Sounds/

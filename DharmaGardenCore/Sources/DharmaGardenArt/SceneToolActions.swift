@@ -9,18 +9,29 @@ extension SceneCanvas {
     /// The tine positions across the fork's head, in units of the tool size.
     private static let tineOffsets: [Double] = [-0.09, -0.03, 0.03, 0.09]
 
-    func drawToolAction(_ ring: ActiveRing) {
+    /// Which half of a tool action is drawn. The `ground` half (wet soil, tine holes, heaps, furrows, tints) lies on the
+    /// soil and is drawn with the patch, under the plants. The `air` half (the can, the fork, falling water and
+    /// granules, flying clods and hopping blooms) is drawn in its own layer over the plants, boxes and walls, so
+    /// nothing in the scenery covers a tool while it is in use.
+    enum ToolPass { case ground, air }
+
+    func drawToolAction(_ ring: ActiveRing, pass: ToolPass) {
         let t = min(1, max(0, ring.progress))
         switch ring.kind {
-        case .water: drawPouringCan(ring.point, t, showCan: ring.showsCan, continuing: ring.continuesPour)
-        case .aerate: drawForkStab(ring.point, t)
-        case .seasol: drawFeed(ring.point, t, radius: ring.maxRadius, liquid: true)
-        case .fertilise: drawFeed(ring.point, t, radius: ring.maxRadius, liquid: false)
-        case .furrow: drawFurrow(ring, t)
-        case .pick: drawHop(ring.point, t, weed: false)
-        case .pull: drawHop(ring.point, t, weed: true)
+        case .water: drawPouringCan(ring.point, t, showCan: ring.showsCan, continuing: ring.continuesPour, pass: pass)
+        case .aerate: drawForkStab(ring.point, t, pass: pass)
+        case .seasol: drawFeed(ring.point, t, radius: ring.maxRadius, liquid: true, pass: pass)
+        case .fertilise: drawFeed(ring.point, t, radius: ring.maxRadius, liquid: false, pass: pass)
+        case .furrow: drawFurrow(ring, t, pass: pass)
+        case .pick: if pass == .air { drawHop(ring.point, t, weed: false) }
+        case .pull: if pass == .air { drawHop(ring.point, t, weed: true) }
         case .plant, .spot: break
         }
+    }
+
+    /// The air half of every tool action alive, over everything on the lawn (see `ToolPass`).
+    func drawToolActions(_ rings: [ActiveRing]) {
+        for ring in rings { drawToolAction(ring, pass: .air) }
     }
 
     /// A smooth 0...1 ramp of `t` between `a` and `b`.
@@ -42,7 +53,7 @@ extension SceneCanvas {
     // MARK: Watering can
 
     /// A can tips over the spot, a stream falls from its rose and splashes, and the soil darkens.
-    private func drawPouringCan(_ c: GroundPoint, _ t: Double, showCan: Bool, continuing: Bool) {
+    private func drawPouringCan(_ c: GroundPoint, _ t: Double, showCan: Bool, continuing: Bool, pass: ToolPass) {
         let base = ground(c)
         let k = toolSize(at: c)
         let seed = actionSeed(c)
@@ -51,13 +62,22 @@ extension SceneCanvas {
         let pour = Self.ramp(t, 0.12, 0.25) * (1 - Self.ramp(t, 0.78, 0.9))
         let wet = Self.ramp(t, 0.15, 0.6) * (1 - Self.ramp(t, 0.8, 1))
         let tip = CGPoint(x: base.x - 0.05 * k, y: base.y - 0.8 * k)
-
-        // Soil darkens where the water lands.
-        let wetColour = SceneColour.color(SceneColour.scaled(palette.soil, 0.5))
-        ellipse(base, 0.34 * k * CGFloat(wet), 0.14 * k * CGFloat(wet), wetColour.opacity(0.3 * wet))
-
-        // The stream: drops fall from the rose, speeding up as they go, and ripple where they land.
         let drop = Color(red: 0.62, green: 0.82, blue: 1)
+
+        if pass == .ground {
+            // Soil darkens where the water lands.
+            let wetColour = SceneColour.color(SceneColour.scaled(palette.soil, 0.5))
+            ellipse(base, 0.34 * k * CGFloat(wet), 0.14 * k * CGFloat(wet), wetColour.opacity(0.3 * wet))
+            for i in 0..<2 {
+                let phase = (t * 3 + Double(i) / 2).truncatingRemainder(dividingBy: 1)
+                let w = 0.34 * k * CGFloat(0.2 + phase)
+                let splash = Path(ellipseIn: CGRect(x: base.x - w / 2, y: base.y - w * 0.2, width: w, height: w * 0.4))
+                ctx.stroke(splash, with: .color(drop.opacity(0.7 * (1 - phase) * pour)), lineWidth: max(1, 0.012 * k))
+            }
+            return
+        }
+
+        // The stream: drops fall from the rose, speeding up as they go.
         for i in 0..<16 {
             let phase = (t * 4 + unitHash(seed, UInt64(i))).truncatingRemainder(dividingBy: 1)
             let fall = CGFloat(0.5 * phase + 0.5 * phase * phase)
@@ -65,40 +85,24 @@ extension SceneCanvas {
             let y = tip.y + (base.y - tip.y) * fall
             ellipse(CGPoint(x: x, y: y), 0.024 * k, 0.07 * k, drop.opacity(0.9 * pour))
         }
-        for i in 0..<2 {
-            let phase = (t * 3 + Double(i) / 2).truncatingRemainder(dividingBy: 1)
-            let w = 0.34 * k * CGFloat(0.2 + phase)
-            let splash = Path(ellipseIn: CGRect(x: base.x - w / 2, y: base.y - w * 0.2, width: w, height: w * 0.4))
-            ctx.stroke(splash, with: .color(drop.opacity(0.7 * (1 - phase) * pour)), lineWidth: max(1, 0.012 * k))
-        }
 
-        // The can: it tips toward the spot, spout first, then rights itself.
+        // The can: it tips toward the spot, spout first, then rights itself. It is the same can as the one on the
+        // lawn (see SceneWateringCan.swift), turned about its rose so the stream leaves from `tip`.
         guard showCan, tilt > 0.01 else { return }
         let saved = ctx
-        ctx.translateBy(x: tip.x, y: tip.y)
-        ctx.rotate(by: .radians(0.05 + 0.4 * tilt))
         ctx.opacity = min(1, tilt * 4)
-        let body = Color(hex: 0x9FB0C8), shade = Color(hex: 0x7F90A8)
-        var spout = Path()
-        spout.move(to: CGPoint(x: -0.32 * k, y: 0.38 * k))
-        spout.addLine(to: CGPoint(x: -0.03 * k, y: 0.02 * k))
-        ctx.stroke(spout, with: .color(shade), style: StrokeStyle(lineWidth: 0.06 * k, lineCap: .round))
-        var handle = Path()
-        handle.move(to: CGPoint(x: -0.95 * k, y: 0.08 * k))
-        handle.addQuadCurve(to: CGPoint(x: -0.45 * k, y: 0.02 * k), control: CGPoint(x: -0.75 * k, y: -0.4 * k))
-        ctx.stroke(handle, with: .color(shade), style: StrokeStyle(lineWidth: 0.05 * k, lineCap: .round))
-        let can = CGRect(x: -1.0 * k, y: 0.02 * k, width: 0.7 * k, height: 0.56 * k)
-        ctx.fill(Path(roundedRect: can, cornerRadius: 0.08 * k), with: .color(body))
-        ctx.fill(Path(roundedRect: CGRect(x: can.minX, y: can.midY + 0.1 * k, width: can.width, height: can.height / 2 - 0.1 * k),
-                      cornerRadius: 0.06 * k), with: .color(shade.opacity(0.7)))
-        ctx.fill(Path(ellipseIn: CGRect(x: -0.07 * k, y: -0.04 * k, width: 0.12 * k, height: 0.16 * k)), with: .color(shade))
+        // The same size as the can on the lawn and in hand, so there is one can however it got here.
+        drawWateringCan(roseAt: tip, size: Self.wateringCanSpot(theme: theme).size * unit, tilt: Self.pourAngle * tilt + 0.05)
         ctx = saved
     }
+
+    /// How far the can turns to pour, in radians (clockwise on screen: the spout dips toward the soil).
+    static let pourAngle = 0.95
 
     // MARK: Garden fork
 
     /// The fork goes into the soil, the soil is turned over and flung up in clods, and the fork lifts out.
-    private func drawForkStab(_ c: GroundPoint, _ t: Double) {
+    private func drawForkStab(_ c: GroundPoint, _ t: Double, pass: ToolPass) {
         let base = ground(c)
         let k = toolSize(at: c)
         let seed = actionSeed(c)
@@ -108,12 +112,15 @@ extension SceneCanvas {
         let dark = SceneColour.color(SceneColour.scaled(palette.soil, 0.4))
         let turned = SceneColour.color(SceneColour.lerp(palette.soil, RGB(0.9, 0.78, 0.6), 0.25))
 
-        // Turned soil heaps up where the fork lifted it, and the tine holes show.
-        let heap = Self.ramp(t, 0.5, 0.7) * fade
-        ellipse(base, 0.3 * k, 0.11 * k, turned.opacity(0.55 * heap))
-        let holes = Self.ramp(t, 0.28, 0.35) * fade
-        for x in Self.tineOffsets {
-            ellipse(CGPoint(x: base.x + CGFloat(x) * k, y: base.y), 0.028 * k, 0.012 * k, dark.opacity(0.75 * holes))
+        if pass == .ground {
+            // Turned soil heaps up where the fork lifted it, and the tine holes show.
+            let heap = Self.ramp(t, 0.5, 0.7) * fade
+            ellipse(base, 0.3 * k, 0.11 * k, turned.opacity(0.55 * heap))
+            let holes = Self.ramp(t, 0.28, 0.35) * fade
+            for x in Self.tineOffsets {
+                ellipse(CGPoint(x: base.x + CGFloat(x) * k, y: base.y), 0.028 * k, 0.012 * k, dark.opacity(0.75 * holes))
+            }
+            return
         }
 
         drawFork(at: base, k: k, lift: (1 - depth) * 0.7, lean: 0.05 + 0.3 * lever, opacity: 1)
@@ -152,7 +159,7 @@ extension SceneCanvas {
 
     /// The lines a dragged fork leaves: one trench per tine from where the drag was to where it is, with a lighter
     /// ridge beside each, fading out slowly. The fork itself shows at the head for a moment.
-    private func drawFurrow(_ ring: ActiveRing, _ t: Double) {
+    private func drawFurrow(_ ring: ActiveRing, _ t: Double, pass: ToolPass) {
         let b = ring.point
         let a = ring.from ?? b
         let fade = 1 - Self.ramp(t, 0.55, 1)
@@ -162,13 +169,16 @@ extension SceneCanvas {
         let s = unit * CGFloat(camera.scale(atGroundY: b.y))
         let trench = SceneColour.color(SceneColour.scaled(palette.soil, 0.42))
         let ridge = SceneColour.color(SceneColour.lerp(palette.soil, RGB(0.9, 0.78, 0.6), 0.3))
-        for o in [-0.018, -0.006, 0.006, 0.018] {
-            let pa = ground(GroundPoint(x: a.x + perp.x * o, y: a.y + perp.y * o))
-            let pb = ground(GroundPoint(x: b.x + perp.x * o, y: b.y + perp.y * o))
-            let lifted = CGFloat(0.003) * s
-            stroke([CGPoint(x: pa.x, y: pa.y - lifted), CGPoint(x: pb.x, y: pb.y - lifted)],
-                   width: max(1.2, 0.003 * s), ridge.opacity(0.45 * fade))
-            stroke([pa, pb], width: max(1, 0.0022 * s), trench.opacity(0.7 * fade))
+        if pass == .ground {
+            for o in [-0.018, -0.006, 0.006, 0.018] {
+                let pa = ground(GroundPoint(x: a.x + perp.x * o, y: a.y + perp.y * o))
+                let pb = ground(GroundPoint(x: b.x + perp.x * o, y: b.y + perp.y * o))
+                let lifted = CGFloat(0.003) * s
+                stroke([CGPoint(x: pa.x, y: pa.y - lifted), CGPoint(x: pb.x, y: pb.y - lifted)],
+                       width: max(1.2, 0.003 * s), ridge.opacity(0.45 * fade))
+                stroke([pa, pb], width: max(1, 0.0022 * s), trench.opacity(0.7 * fade))
+            }
+            return
         }
 
         // The fork at the head of the line, there for an instant.
@@ -195,7 +205,7 @@ extension SceneCanvas {
 
     /// Seasol falls as dark teal drops that splash flat; fertiliser as pellets that land and bounce. Both tint
     /// the soil, and fertiliser leaves a few sparkles rising from it.
-    private func drawFeed(_ c: GroundPoint, _ t: Double, radius: Double, liquid: Bool) {
+    private func drawFeed(_ c: GroundPoint, _ t: Double, radius: Double, liquid: Bool, pass: ToolPass) {
         let seed = actionSeed(c) &+ (liquid ? 7 : 13)
         let k = toolSize(at: c)
         let height = 0.9 * k
@@ -205,7 +215,10 @@ extension SceneCanvas {
         // The soil takes the tint.
         let tint = liquid ? drop : Color(hex: 0xB5C95A)
         let grow = Self.ramp(t, 0.3, 0.7) * (1 - Self.ramp(t, 0.8, 1))
-        fill(groundCircle(c, radius: radius * 0.8), tint.opacity(0.2 * grow))
+        if pass == .ground {
+            fill(groundCircle(c, radius: radius * 0.8), tint.opacity(0.2 * grow))
+            return
+        }
 
         for i in 0..<22 {
             let h = { unitHash(seed, UInt64(i * 4) + $0) }

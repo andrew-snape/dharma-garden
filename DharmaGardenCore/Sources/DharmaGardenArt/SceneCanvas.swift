@@ -31,6 +31,8 @@ final class SceneCanvas {
     /// How far the soil of the bed sits above the lawn, in world units (see `SceneCanvas.ground`). Zero except for
     /// planter boxes.
     var soilLift: Double = 0
+    /// True while the player carries the watering can: the one resting on the lawn is not drawn (see SceneWateringCan.swift).
+    var wateringCanCarried = false
 
     init(ctx: GraphicsContext, size: CGSize, camera: Camera, palette: ScenePalette,
          motion: SceneMotion.Frame = .still, style: SceneStyle = .firstPerson, theme: SceneTheme = .farm) {

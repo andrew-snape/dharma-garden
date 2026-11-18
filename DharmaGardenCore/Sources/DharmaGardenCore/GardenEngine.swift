@@ -28,17 +28,25 @@ public enum GardenEngine {
 
     /// Advance the garden hour by hour using the supplied weather. Hours with no sample use mild neutral
     /// weather (18 C) so the game never blocks on a failed fetch.
-    public static func advance(_ garden: Garden, weather: [WeatherSample], to now: Date) -> Garden {
+    ///
+    /// `speed` runs that many simulation steps per real hour on the same weather sample (rounded, at least 1),
+    /// so plants grow, weeds spawn and age and the soil dries or soaks that many times faster. The clock,
+    /// weather and seasons stay real. At 1 the result is identical to the plain hourly run.
+    public static func advance(_ garden: Garden, weather: [WeatherSample], to now: Date, speed: Double = 1) -> Garden {
         // Time never runs backwards: a garden already simulated past `now` is returned unchanged.
         guard now > garden.lastSimulatedAt else { return garden }
         var g = garden
         let byHour = Dictionary(weather.map { (hourStart($0.date), $0) }, uniquingKeysWith: { $1 })
         var hour = hourStart(g.lastSimulatedAt)
         let end = hourStart(now)
+        let steps = speed.isFinite ? max(1, Int(speed.rounded())) : 1
         while hour < end {
             hour = hour.addingTimeInterval(3600)
             let w = byHour[hour] ?? WeatherSample(date: hour, temperatureC: 18)
-            step(&g, w, hour)
+            for sub in 0..<steps {
+                // Each sub-step has its own tick number so weed spawns stay spread out and never repeat a spot.
+                step(&g, w, hour, tick: hourIndex(hour) * steps + sub)
+            }
         }
         g.lastSimulatedAt = now
         return g
@@ -52,8 +60,9 @@ public enum GardenEngine {
 
     /// One simulated hour, in order: weeds appear, the soil drains and rains, plants grow, then finished
     /// seed heads drop volunteers for the next hour, and weeds age.
-    static func step(_ g: inout Garden, _ w: WeatherSample, _ hour: Date) {
-        let h = hourIndex(hour)
+    /// `tick` numbers the step for weed spawning; it equals the hour index at normal speed.
+    static func step(_ g: inout Garden, _ w: WeatherSample, _ hour: Date, tick: Int? = nil) {
+        let h = tick ?? hourIndex(hour)
         if h % Tuning.weedCheckEveryHours == 0 { spawnDharmaGarden(&g, hourIndex: h) }
 
         drainSoil(&g, w)
@@ -217,7 +226,7 @@ public enum GardenEngine {
         }
     }
 
-    /// Puts a new plant in the garden with no coin or seed cost. Fails when the point is outside the plot,
+    /// Puts a new plant in the garden with no carrot or seed cost. Fails when the point is outside the plot,
     /// too close to a living plant, or the garden already holds `maxPlants` living plants. Dead plants in
     /// the way are replaced.
     static func place(_ flower: FlowerType, at p: GroundPoint, in g: inout Garden,
@@ -354,8 +363,8 @@ public enum GardenEngine {
         return nil
     }
 
-    /// Buys `count` seed packets of one type for `seedPrice` coins each. Changes nothing when the count is
-    /// not positive or the coins are short.
+    /// Buys `count` seed packets of one type for `seedPrice` carrots each. Changes nothing when the count is
+    /// not positive or the carrots are short.
     public static func buySeeds(_ flower: FlowerType, count: Int, in g: inout Garden) -> Bool {
         guard count > 0 else { return false }
         let cost = flower.seedPrice * count
@@ -380,14 +389,14 @@ public enum GardenEngine {
         return g.soil.treat(\.aeratedHours, hours: Tuning.aerateHours, at: point, radius: Tuning.treatRadius)
     }
 
-    /// Seasol: costs `Tuning.seasolCost` coins. Returns false (and charges nothing) when the point is off the bed,
-    /// the soil there is already treated or the coins are short.
+    /// Seasol: costs `Tuning.seasolCost` carrots. Returns false (and charges nothing) when the point is off the bed,
+    /// the soil there is already treated or the carrots are short.
     @discardableResult
     public static func applySeasol(at point: GroundPoint, in g: inout Garden) -> Bool {
         applyFeed(\.seasolHours, hours: Tuning.seasolHours, cost: Tuning.seasolCost, at: point, in: &g)
     }
 
-    /// Fertiliser: costs `Tuning.fertiliserCost` coins. Same rules as Seasol.
+    /// Fertiliser: costs `Tuning.fertiliserCost` carrots. Same rules as Seasol.
     @discardableResult
     public static func applyFertiliser(at point: GroundPoint, in g: inout Garden) -> Bool {
         applyFeed(\.fertiliserHours, hours: Tuning.fertiliserHours, cost: Tuning.fertiliserCost, at: point, in: &g)
@@ -418,7 +427,7 @@ public enum GardenEngine {
         return false
     }
 
-    /// Picks the blooming plant nearest to `point` if one is within `reach`. Coins go to the player and the
+    /// Picks the blooming plant nearest to `point` if one is within `reach`. Carrots go to the player and the
     /// plant is removed, so it never self-sows. Only blooming plants can be picked.
     public static func harvest(at point: GroundPoint, in g: inout Garden,
                                reach: Double = Tuning.harvestReach) -> FlowerType? {
@@ -431,7 +440,7 @@ public enum GardenEngine {
         return flower
     }
 
-    /// Spotting a visitor pays its coin reward and counts as a sighting. `isNewEntry` is true the first time
+    /// Spotting a visitor pays its carrot reward and counts as a sighting. `isNewEntry` is true the first time
     /// that species is ever spotted (the collection book's "New entry" moment).
     public static func spot(_ visitor: Visitor, in g: inout Garden) -> (coins: Int, isNewEntry: Bool) {
         let before = g.sightingCount(visitor.species)

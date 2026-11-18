@@ -21,13 +21,16 @@ final class FlowerTypeTests: XCTestCase {
         XCTAssertEqual(FlowerType.basil.sellValue, 7)
         XCTAssertEqual(FlowerType.zucchini.sellValue, 15)
         XCTAssertEqual(FlowerType.lettuce.sellValue, 10)
-        XCTAssertEqual(FlowerType.chocolateLily.seedPrice, 8)
-        XCTAssertEqual(FlowerType.commonEverlasting.seedPrice, 6)
-        XCTAssertEqual(FlowerType.calendula.seedPrice, 4)
-        XCTAssertEqual(FlowerType.cosmos.seedPrice, 5)
-        XCTAssertEqual(FlowerType.basil.seedPrice, 3, "never below 3")
-        XCTAssertEqual(FlowerType.zucchini.seedPrice, 5)
-        XCTAssertEqual(FlowerType.lettuce.seedPrice, 3)
+        XCTAssertEqual(FlowerType.chocolateLily.seedPrice, 2)
+        XCTAssertEqual(FlowerType.commonEverlasting.seedPrice, 2)
+        XCTAssertEqual(FlowerType.calendula.seedPrice, 1)
+        XCTAssertEqual(FlowerType.cosmos.seedPrice, 1, "60 days is still quick")
+        XCTAssertEqual(FlowerType.basil.seedPrice, 1)
+        XCTAssertEqual(FlowerType.zucchini.seedPrice, 2)
+        XCTAssertEqual(FlowerType.lettuce.seedPrice, 1)
+        XCTAssertTrue(FlowerType.allCases.allSatisfy { [1, 2].contains($0.seedPrice) }, "every seed costs 1 or 2 carrots")
+        XCTAssertEqual(Tuning.seasolCost, 1)
+        XCTAssertEqual(Tuning.fertiliserCost, 2)
     }
 
     func testCatalogueCategoriesAndNames() {

@@ -7,140 +7,542 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		01D30F0D19B17E74A904F334 /* ThemePreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 066DA3A9071863E5C9DD3544 /* ThemePreview.swift */; };
-		0EC15AC8677DFAF8655433A8 /* DharmaGardenCore in Frameworks */ = {isa = PBXBuildFile; productRef = D49A6544422175F6B00570EA /* DharmaGardenCore */; };
-		171B847C869394706D95B536 /* GameCenterService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D229FD3E3466E299755AB14A /* GameCenterService.swift */; };
-		1BDDC0ED75C0D297AE4259C4 /* GardenGuidance.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D3B066586663AAFB000FB7 /* GardenGuidance.swift */; };
-		1CC6BF2CC1FD97FFFF85F853 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CE8723765A8AED5B3311090 /* Theme.swift */; };
-		1DC17537450D971DC407C8AB /* PlantCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 264E400C24F1B7CEB0633E50 /* PlantCard.swift */; };
-		21FC4CF44E78A323F0EE5F93 /* WeatherService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADEE66902B8EFC18123C9C5 /* WeatherService.swift */; };
-		3A6B53DC16F81DD57CD836E2 /* GardenBookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F9E7880DD87F070FBCE442 /* GardenBookView.swift */; };
-		50DDCCABD40363F1A51AE08F /* GardenStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F46A0FC64D7B62EF318F0FD /* GardenStore.swift */; };
-		6786AAF6D1380A0D9063CAD6 /* DharmaGardenApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18F667FD0B635CF092C0A25 /* DharmaGardenApp.swift */; };
-		6F57641D02FC8B221D4BBE9E /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1D3EA5D85EEC313610E334 /* SettingsView.swift */; };
-		7E0D0205C2783073BCD03B00 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B16BFDD293B42677979B4ABD /* Assets.xcassets */; };
-		85A71BBC64395A87BEF75770 /* VisitorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4FBA78C17E7C9CC07265B9F /* VisitorController.swift */; };
-		94E2F26083D9DF8B35136CE2 /* ShopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5A44D90A300729FE68AFD5D /* ShopView.swift */; };
-		AA7C368033CAFADE1CEAFE05 /* GardenMusic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C35337C222AC4A10208B0DF /* GardenMusic.swift */; };
-		B4904A815C6E1BC2077465D7 /* GardenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67346D82DFE879085E02946 /* GardenView.swift */; };
-		B88E376F245351A337676493 /* AmbientSounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215C9799F8E464FE8DEE26A2 /* AmbientSounds.swift */; };
-		C1B9904289A5FC7345CB044D /* ReadingChairView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BF136E13AE6DDB5E5B9B7B8 /* ReadingChairView.swift */; };
-		C278C14BDF1B05A3D9441140 /* DharmaGardenArt in Frameworks */ = {isa = PBXBuildFile; productRef = 44388489CA595C3570F19D84 /* DharmaGardenArt */; };
-		DFCC72A264A411A38EF14576 /* DebugPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B1C7F5900DC59AA42B7FFD /* DebugPanel.swift */; };
-		E09F23E9ECD784704A2F928D /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC6326F6CC8D6AD5F7FBD3B /* AppSettings.swift */; };
-		E2C6719588CC6A2C90C01C8D /* ReminderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27270849A67E501401C4FF1F /* ReminderService.swift */; };
-		EE635E8F81ED9FF5A831D347 /* ToolSounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668A57F2A3F304EB8C7D9C75 /* ToolSounds.swift */; };
-		F044EF8E8E45BDAFCE3BE536 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FD60C31283DA7DA6190128E /* LocationService.swift */; };
+		01B7A1EA01FFEBB2C7354EC3 /* tines-note-2-medium.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 4F93052ADA38A88812AB0E7C /* tines-note-2-medium.m4a */; };
+		02BFD3B19AEB50F9DCC25988 /* note-4-medium.m4a in Resources */ = {isa = PBXBuildFile; fileRef = A11340CA03A9482822615DA6 /* note-4-medium.m4a */; };
+		03EEB79C35D34C44DFCF95BA /* ambient-rain.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 27BA5A8F2ED05D395C084E46 /* ambient-rain.m4a */; };
+		0559584A470A7EF760915369 /* farm-dusk-2.m4a in Resources */ = {isa = PBXBuildFile; fileRef = A05FCDD27D3F7C72335E6B85 /* farm-dusk-2.m4a */; };
+		0566FE81AC2E1950A5A6CECC /* japanese-dusk-1.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 63821FB208FC23493FF41A50 /* japanese-dusk-1.m4a */; };
+		05930FF06724A889080FA483 /* japanese-day-2.m4a in Resources */ = {isa = PBXBuildFile; fileRef = EC180BE85386B415D3889820 /* japanese-day-2.m4a */; };
+		070A5C5F7E9F24F8EC0233D7 /* kalimba-note-7-medium.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 157D7E336789B278DFF0DC44 /* kalimba-note-7-medium.m4a */; };
+		0A610C12DBC48B0CC9CE5DD7 /* farm-dusk-1.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 702918774E8D56FA6FD8E64D /* farm-dusk-1.m4a */; };
+		0A7567D185219AC7D4C6831D /* farm-rain-1.m4a in Resources */ = {isa = PBXBuildFile; fileRef = D086116FC8A29E9B0776F252 /* farm-rain-1.m4a */; };
+		0C23E5059D8621E5F70608DF /* kalimba-note-4-soft.m4a in Resources */ = {isa = PBXBuildFile; fileRef = C39CD075172CE4C2BC632123 /* kalimba-note-4-soft.m4a */; };
+		0E9474A72FED0A1C56577EDE /* tines-note-3-soft.m4a in Resources */ = {isa = PBXBuildFile; fileRef = CE19829971CFAEF6E38574AF /* tines-note-3-soft.m4a */; };
+		120A7BF392D96B15D155ECE0 /* GardenGuidance.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6845B298AE95C6C1BDE7C35 /* GardenGuidance.swift */; };
+		124BF283AA2CC17BF3D94188 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B774EA17ECEA6DF04D964B0A /* LocationService.swift */; };
+		1466DEDD4FF3978437226EA5 /* note-2-soft.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 7621F0D2B7A95D332899D2BD /* note-2-soft.m4a */; };
+		1692C4EBB38A145F1108ECF1 /* AmbientSounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06C75918CD51CC4CF6F273C /* AmbientSounds.swift */; };
+		1A4D1B8AF8C808BDEA2D9DA1 /* farm-day-2.m4a in Resources */ = {isa = PBXBuildFile; fileRef = C7625C1A4CDBF112DBB00B4C /* farm-day-2.m4a */; };
+		1B94230AB36D802B62BCD3A0 /* kalimba-note-8-medium.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 0E9CAC936D24F60934C60C90 /* kalimba-note-8-medium.m4a */; };
+		1BD6D982B22B2FFB4B9C0516 /* urban-night-1.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 000B7A71A5CC0A7107C8459D /* urban-night-1.m4a */; };
+		1EC0399B683A8CA727E25F27 /* japanese-dawn-3.m4a in Resources */ = {isa = PBXBuildFile; fileRef = AC35FC4A2DC2AD697325EBFB /* japanese-dawn-3.m4a */; };
+		201713854A174DA318D402C1 /* japanese-night-4.m4a in Resources */ = {isa = PBXBuildFile; fileRef = C75C01245697BADEF9CD713B /* japanese-night-4.m4a */; };
+		227231AF7F9E44DB37643E1E /* japanese-dusk-2.m4a in Resources */ = {isa = PBXBuildFile; fileRef = BFF626C0C7EB43D4768423EF /* japanese-dusk-2.m4a */; };
+		236F78B095B243693467F5B8 /* CREDITS.md in Resources */ = {isa = PBXBuildFile; fileRef = 2E3CFC532085D63147B654BA /* CREDITS.md */; };
+		24CA97271361820191227DB3 /* kalimba-note-8-soft.m4a in Resources */ = {isa = PBXBuildFile; fileRef = B3B783EFD5ED097B9416B2E7 /* kalimba-note-8-soft.m4a */; };
+		2772D4C5B2EF682FC35C9782 /* tines-note-7-medium.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 2432A3DB7E1F49FA77D5F2EE /* tines-note-7-medium.m4a */; };
+		2795E3CD8308F0D280045E7A /* note-0-soft.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 38C47789C9E62EC2B36F76D5 /* note-0-soft.m4a */; };
+		2A046A9F4E9FDA4E8CB7B3BF /* piano-note-8-medium.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 2F695C85C26A57B181105298 /* piano-note-8-medium.m4a */; };
+		3139E04D5D82D7F0012B58EE /* piano-note-0-soft.m4a in Resources */ = {isa = PBXBuildFile; fileRef = DAD2C0E5FEE843821ABA6FEE /* piano-note-0-soft.m4a */; };
+		32F37D9B64970EA8ECF6B488 /* ruralUK-dawn-1.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 1C887F440F4FE9D018200259 /* ruralUK-dawn-1.m4a */; };
+		333AC55030D3BCC4EAE1DD99 /* note-6-medium.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 8B2EC436427F8B28C945D22E /* note-6-medium.m4a */; };
+		335E05E67296805A1867DE38 /* ruralUK-night-2.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 4E09AA46CE1E911F9FB53F1C /* ruralUK-night-2.m4a */; };
+		338E011A1C2338B3AF18F69D /* piano-note-2-medium.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 5804CF0F30000D7A3C29B821 /* piano-note-2-medium.m4a */; };
+		34ED1BC7A2080A0A59E9CCC7 /* kalimba-note-3-soft.m4a in Resources */ = {isa = PBXBuildFile; fileRef = FB1244EACB4D99A0CE76DFE2 /* kalimba-note-3-soft.m4a */; };
+		35E6CFCDD584A82F10A17193 /* tines-note-0-medium.m4a in Resources */ = {isa = PBXBuildFile; fileRef = DCA4DEFAC37BFFDBA031D3E3 /* tines-note-0-medium.m4a */; };
+		37DA83F4F12B05FFD86F4C1B /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7FF4B1C92140E2DE75AF0E /* Theme.swift */; };
+		393EC4E4CD1417F97DB9DB9F /* kalimba-note-0-soft.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 920456D7F4D552B11D623CA6 /* kalimba-note-0-soft.m4a */; };
+		3AE895A878949C98558DE353 /* tines-note-8-soft.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 78A5334E0B91EF8C1E145923 /* tines-note-8-soft.m4a */; };
+		3BB9F896582F208E47C97730 /* japanese-dawn-4.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 9CCC64D178C6905A782417F0 /* japanese-dawn-4.m4a */; };
+		3DEC5690EA4C914EBDF1B096 /* farm-night-1.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 3F4EA5F9C447B7859F97CBCC /* farm-night-1.m4a */; };
+		411B461BDEB3FFB01F72424C /* urban-rain-1.m4a in Resources */ = {isa = PBXBuildFile; fileRef = D6F56F26965EA11E698311BA /* urban-rain-1.m4a */; };
+		411CC3100952C1FF290F6A5B /* japanese-rain-3.m4a in Resources */ = {isa = PBXBuildFile; fileRef = EE0F70AFFFC8C4C8529CF708 /* japanese-rain-3.m4a */; };
+		44EC59090542CCEC13A767CB /* note-8-medium.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 34EE639E98DC256108D5AADB /* note-8-medium.m4a */; };
+		46863F1DB040A6600C38001C /* DharmaGardenCore in Frameworks */ = {isa = PBXBuildFile; productRef = 2D85935568CD44BB6120F5F6 /* DharmaGardenCore */; };
+		46BF5FBD9DE28029D3EB3B30 /* japanese-day-4.m4a in Resources */ = {isa = PBXBuildFile; fileRef = CF8DE1FB53BA26B55F3A1201 /* japanese-day-4.m4a */; };
+		4707D7E9F3E646EF1D15D390 /* GardenBookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD72A9EEE27D2ACB68E4D9E /* GardenBookView.swift */; };
+		48A9257596009D80E31D844A /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4182632B1EE9B8B8D9FC4A /* AppSettings.swift */; };
+		48FA2A570108B7BF45060C8B /* piano-note-3-soft.m4a in Resources */ = {isa = PBXBuildFile; fileRef = DB8015CC560D8789DCD0B6D1 /* piano-note-3-soft.m4a */; };
+		49D1DE7E886E4618BE0E0543 /* DebugPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DA62AB8AAB960746682F9FA /* DebugPanel.swift */; };
+		4A9B7CDF727E94306557D599 /* japanese-night-3.m4a in Resources */ = {isa = PBXBuildFile; fileRef = C1BE92EF3E7597E7AEE044D2 /* japanese-night-3.m4a */; };
+		4B0F6BD2119B3FDCDDF00DD9 /* urban-day-1.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 6E575DFDB6AEDFF65A993930 /* urban-day-1.m4a */; };
+		4D4A20B3AA13240326EF6731 /* note-7-soft.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 318AD3C98B27FD8946A6AC87 /* note-7-soft.m4a */; };
+		51CCE1D5057FF76BBB73A906 /* farm-day-1.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 841C8E8ED92D723E260B4A44 /* farm-day-1.m4a */; };
+		521A519DDB03CF9121CBA3AA /* note-0-medium.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 8C55341E02C29A6633393BF1 /* note-0-medium.m4a */; };
+		581919EA85846434D3D9F56D /* piano-note-2-soft.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 8D2C54BAC2A0D8A3B50115D2 /* piano-note-2-soft.m4a */; };
+		594C2A2531C920F41E37025B /* kalimba-note-3-medium.m4a in Resources */ = {isa = PBXBuildFile; fileRef = E571967C6E0CE1BE43901AB7 /* kalimba-note-3-medium.m4a */; };
+		59ACB7C52B7BBFF2E0A78F6B /* note-5-medium.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 2C39FCEF6658DCC6E7FA1026 /* note-5-medium.m4a */; };
+		5C4B7A679F0C386E0B7F96D3 /* note-6-soft.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 12719D3DD2840D4129F31A49 /* note-6-soft.m4a */; };
+		604D001FE5CE3E08686AB744 /* GardenNotesPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F0767CFC1AE00A3E2C5277F /* GardenNotesPlayer.swift */; };
+		61487130FEC2233389614498 /* piano-note-3-medium.m4a in Resources */ = {isa = PBXBuildFile; fileRef = E08DCB353358269C76D6F96F /* piano-note-3-medium.m4a */; };
+		6D865081303F2A896EADDCF4 /* PrivacyPolicyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FD12EC4FB07C6E3EC33B0C2 /* PrivacyPolicyView.swift */; };
+		72E1B0F58ED0F2F3A62DEC9A /* urban-dawn-1.m4a in Resources */ = {isa = PBXBuildFile; fileRef = CBD2E047BE17DD207A7EFD0B /* urban-dawn-1.m4a */; };
+		730E466F3A7867A2E2BF5DAE /* tines-note-1-soft.m4a in Resources */ = {isa = PBXBuildFile; fileRef = DD0A2825A33D510B7B21C22E /* tines-note-1-soft.m4a */; };
+		76203B5FA36D8E94BFEC5ABF /* tines-note-6-soft.m4a in Resources */ = {isa = PBXBuildFile; fileRef = DA139D1BCB37E2ED1F6FF339 /* tines-note-6-soft.m4a */; };
+		7B50D21FFF6571BC301CB1DF /* tines-note-3-medium.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 24B797E26FE6701BA9C1400F /* tines-note-3-medium.m4a */; };
+		7C6E573E58FA3968D318E113 /* ambient-crickets.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 03BFB9B5395909F7BB3A03AE /* ambient-crickets.m4a */; };
+		7D3D50C175A8D18940B3FA68 /* kalimba-note-2-soft.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 2AA9FBB1ECA3E8A71593D6E4 /* kalimba-note-2-soft.m4a */; };
+		7DD5C6B5A38B846ED42958BD /* urban-dusk-2.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 85C9B80C2E1F29BD964A1AAB /* urban-dusk-2.m4a */; };
+		7EB99191B3A7A03DF3FB4537 /* piano-note-7-soft.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 73AEDC34070A2E5746880107 /* piano-note-7-soft.m4a */; };
+		7F12363A2C64BCE57F3A024E /* tines-note-7-soft.m4a in Resources */ = {isa = PBXBuildFile; fileRef = A73EC9E8E074AA12505DCF4B /* tines-note-7-soft.m4a */; };
+		805EEA78C37A369BF45F671C /* WeatherService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78CD3C4D6071146064A35915 /* WeatherService.swift */; };
+		81AB02DC6ECC4EB776FE6CCC /* japanese-rain-1.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 7F8A31C4A98430729C7F7758 /* japanese-rain-1.m4a */; };
+		87F176A0159BC1D74788470A /* ReadingChairView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C785BB77A4F024BC7AF4F5 /* ReadingChairView.swift */; };
+		8AE57D6874E942ADF9D03FEA /* note-4-soft.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 5E133409BCD73679F4A6697D /* note-4-soft.m4a */; };
+		8B65E90729B213B73A98C730 /* tines-note-2-soft.m4a in Resources */ = {isa = PBXBuildFile; fileRef = BEFD8B4C04D15D52B96B0B1F /* tines-note-2-soft.m4a */; };
+		8B700A3E0E5FF06577CC3E24 /* tines-note-0-soft.m4a in Resources */ = {isa = PBXBuildFile; fileRef = BE16C2CC05921D920611CC85 /* tines-note-0-soft.m4a */; };
+		8D88FEA0ECA9F5CC74314F9C /* GardenAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66376D5E823788DA1440ADAD /* GardenAudio.swift */; };
+		8E005DA66504A1A8E5A17349 /* note-1-medium.m4a in Resources */ = {isa = PBXBuildFile; fileRef = B3992CA1F4324681814A3752 /* note-1-medium.m4a */; };
+		8FFCB19B262F24498C18CBB5 /* kalimba-note-4-medium.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 4C62F4731A8F1226F7C33084 /* kalimba-note-4-medium.m4a */; };
+		918E8A77C4A1796303A05576 /* ruralUK-dusk-2.m4a in Resources */ = {isa = PBXBuildFile; fileRef = C3478403DCCABD60393011A1 /* ruralUK-dusk-2.m4a */; };
+		936AAE41F235503D65F7D876 /* piano-note-8-soft.m4a in Resources */ = {isa = PBXBuildFile; fileRef = D620695178172D49F1D62EA1 /* piano-note-8-soft.m4a */; };
+		9400C458F384528AEC0A878C /* tines-note-4-medium.m4a in Resources */ = {isa = PBXBuildFile; fileRef = C0826C3DB1EAFB1EF427D89F /* tines-note-4-medium.m4a */; };
+		9816F44146B8287C5DD7BC6F /* piano-note-1-soft.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 5AF63D513AE71602CB90FF5B /* piano-note-1-soft.m4a */; };
+		98A6F2C60900671F868469E6 /* ruralUK-dusk-1.m4a in Resources */ = {isa = PBXBuildFile; fileRef = CE1BAAB539F4CD5A0918D47E /* ruralUK-dusk-1.m4a */; };
+		9A19D74CF8129B02591B710C /* japanese-rain-2.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 7C4711E056013A86C04A5715 /* japanese-rain-2.m4a */; };
+		9C35AAAC58F95D972CB63803 /* kalimba-note-6-medium.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 3D3F11C384F202D1FA9FC3CB /* kalimba-note-6-medium.m4a */; };
+		9E170E4742B57653A78A1440 /* GardenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ED61337202CF73DB46B7390 /* GardenView.swift */; };
+		9EE1D89CB77686ED1EA6F841 /* note-1-soft.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 4AE391E2270A0A790DC59E95 /* note-1-soft.m4a */; };
+		A10953DBDB8C1D794A494C09 /* japanese-rain-4.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 0996DA7B24D956C071EE3C9E /* japanese-rain-4.m4a */; };
+		A14FF8947B1EBAE35D2E7354 /* piano-note-4-medium.m4a in Resources */ = {isa = PBXBuildFile; fileRef = BD8C2E1B7FD65E381737AB00 /* piano-note-4-medium.m4a */; };
+		A33A3B0E1EA399EFFDCF5545 /* piano-note-5-medium.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 3D04B64B0FFDFF80FDE1E1EC /* piano-note-5-medium.m4a */; };
+		A37C0F23892DDD2A3FE4296C /* japanese-day-1.m4a in Resources */ = {isa = PBXBuildFile; fileRef = C3EED5E439E0E9086C498F08 /* japanese-day-1.m4a */; };
+		A3DBCF723AFA17FEB5E01950 /* tines-note-8-medium.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 8F49F93B8E6218F0CE57EBDC /* tines-note-8-medium.m4a */; };
+		A4AD9B80F54D24CE8C31B874 /* japanese-dawn-1.m4a in Resources */ = {isa = PBXBuildFile; fileRef = FE04C886602067FAC2BFEC9E /* japanese-dawn-1.m4a */; };
+		A50928F2F7E30363C7B0BDB2 /* piano-note-1-medium.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 814B03A9960848BD93C82B9A /* piano-note-1-medium.m4a */; };
+		AE22AC093CA071ADB6E1E969 /* note-3-soft.m4a in Resources */ = {isa = PBXBuildFile; fileRef = C56AEA70FDD74EC3FE2F6FB5 /* note-3-soft.m4a */; };
+		AFF352EE3DADA15779E8D629 /* kalimba-note-2-medium.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 2ECE3B7FC97D07C00CE20E60 /* kalimba-note-2-medium.m4a */; };
+		B1C826B77274AC2AC254DC13 /* note-3-medium.m4a in Resources */ = {isa = PBXBuildFile; fileRef = A37267D980924E07F4F19E60 /* note-3-medium.m4a */; };
+		B1EE8E73640B7A0A562EC3CF /* ReminderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713CEF9A59EB1493A905659F /* ReminderService.swift */; };
+		B3E6986A2E0A2FB8CD31D465 /* japanese-night-1.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 1C4EC323EB2EE97AC289F1CA /* japanese-night-1.m4a */; };
+		B4F4D60B1FB7F9EA7125AC09 /* piano-note-4-soft.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 511D44EC475E954E2F5205BD /* piano-note-4-soft.m4a */; };
+		B5DA5216CDA3DDDD15D12FC9 /* tines-note-5-soft.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 58C514A62EE279046D23000C /* tines-note-5-soft.m4a */; };
+		B67ABC2A4CD7C4D06651863E /* urban-night-2.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 15DAACBC24C5EDC8ED4B511E /* urban-night-2.m4a */; };
+		B74E0D8452EF8EC9A533CE30 /* ruralUK-rain-1.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 92714A97291C4D9585CF05C9 /* ruralUK-rain-1.m4a */; };
+		B82C5F755859CC1DC19FC312 /* piano-note-6-medium.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 018683FA9355AE4532FB5E26 /* piano-note-6-medium.m4a */; };
+		BBEBABA76F41CB7249CD6292 /* ThemePreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5409521DAE2374B38D6A8EC /* ThemePreview.swift */; };
+		BD0A25FCBB574A66147CA821 /* ambient-birds.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 749F3636715E803FAD76B493 /* ambient-birds.m4a */; };
+		BDEAB6513BD59B44858D19EA /* ruralUK-night-1.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 2281CCF8FD70474CDAE4C4F9 /* ruralUK-night-1.m4a */; };
+		BF0CB508689D9262032A32C5 /* farm-dawn-1.m4a in Resources */ = {isa = PBXBuildFile; fileRef = EDD3ACFE34063446811ADA1F /* farm-dawn-1.m4a */; };
+		BFB6FAB8D28851D238B73643 /* kalimba-note-6-soft.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 10AF76521666AFC25E6AE999 /* kalimba-note-6-soft.m4a */; };
+		C0C78281CABC8C492C554D4D /* japanese-dusk-3.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 5F017F83E0E2F9D7769EEF3C /* japanese-dusk-3.m4a */; };
+		C237185BA5647E216E179956 /* kalimba-note-0-medium.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 641C41B7C51FC2AE1C60D993 /* kalimba-note-0-medium.m4a */; };
+		C23BE355E7F3E69BCDE1F152 /* tines-note-1-medium.m4a in Resources */ = {isa = PBXBuildFile; fileRef = D27309775E742194137D0C88 /* tines-note-1-medium.m4a */; };
+		C308C84E356DA87639E1F8A9 /* tines-note-4-soft.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 25E8CD0BC0ACF1AFA7B867A1 /* tines-note-4-soft.m4a */; };
+		C3BE33D2622DF7D9F5A42B2F /* japanese-dusk-4.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 659EF23B730C6CDDA5EA0170 /* japanese-dusk-4.m4a */; };
+		C53C4C12A6B4FC94E7B29FA3 /* GardenMusic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD93EEB2565288BA26BE4AC /* GardenMusic.swift */; };
+		C825996E62E43015D6ED8B1E /* note-5-soft.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 8F94DD8DF9859D3AD8CC8A41 /* note-5-soft.m4a */; };
+		C9773B2D61E3AACC3C6A7587 /* tines-note-5-medium.m4a in Resources */ = {isa = PBXBuildFile; fileRef = D3714ED6EAB7A6C40752692E /* tines-note-5-medium.m4a */; };
+		CAA2B3D47F75755A34AB4C15 /* DharmaGardenApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC1E628E0DB231111932F3E /* DharmaGardenApp.swift */; };
+		CB75E866579ACDFD03168C14 /* tines-note-6-medium.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 011A77F9E0C6DF5470C92144 /* tines-note-6-medium.m4a */; };
+		CD6527F1F3465800642FCE91 /* DharmaGardenArt in Frameworks */ = {isa = PBXBuildFile; productRef = 32094C6E2B25AEF7417B9CFE /* DharmaGardenArt */; };
+		CFECC78CD1507CC82E37C4AC /* GardenStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BB316E635AA8693BA09B662 /* GardenStore.swift */; };
+		D266306C3DDABD930FC32084 /* HUDIcons.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2FDA6E3E1244F7B9ADF9DAB /* HUDIcons.swift */; };
+		D2DBE679670A2796B08B2477 /* GameCenterService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C8CC90584C4650181FBE292 /* GameCenterService.swift */; };
+		D3B2DBEBD57F2CCEBC4E6D59 /* piano-note-7-medium.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 23C1E95FA3B0FDAAEB189F90 /* piano-note-7-medium.m4a */; };
+		D5DFA764F3F5CE8B293793D6 /* kalimba-note-1-soft.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 731495F94D5ED6F84D34A72A /* kalimba-note-1-soft.m4a */; };
+		D6C9824C071AE10C457C077D /* japanese-day-3.m4a in Resources */ = {isa = PBXBuildFile; fileRef = EB542EDE8F6590257057837D /* japanese-day-3.m4a */; };
+		D93854BC22C1CC98AD8DD2AB /* piano-note-0-medium.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 09FECD23A4D26D575CBA4E15 /* piano-note-0-medium.m4a */; };
+		D9DE9D4A72AF10024E8A28AC /* PlantCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C86D51DAD5C088B056CBFE67 /* PlantCard.swift */; };
+		DADC85B621DA5FA9F036FB39 /* ToolSounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BB88443B211B547D9D2FFB /* ToolSounds.swift */; };
+		DB28C68E544FEA2CA1E981B2 /* ShopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F15B1F0C61BB167FEBC1A49 /* ShopView.swift */; };
+		DB86FBDCD6F28E9CFA30E132 /* japanese-dawn-2.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 0BCF0D512F9829559D30297A /* japanese-dawn-2.m4a */; };
+		DCB0C80D7ED1BA6C61ACEF15 /* VisitorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72DDE22DA73FB8BA1D1C9763 /* VisitorController.swift */; };
+		DFA1CD7F6458F84E930D4F0E /* piano-note-5-soft.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 1FD3C954A80D2D492B93BEEE /* piano-note-5-soft.m4a */; };
+		E0DD1883694419D2D039C9F5 /* note-7-medium.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 0C616C4DC784B11A61E932F5 /* note-7-medium.m4a */; };
+		E19A1AA4335E92AD15529FDA /* kalimba-note-1-medium.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 9C62BBF4C8A94B745DBB1582 /* kalimba-note-1-medium.m4a */; };
+		E2D2231AC2051F7402B410D9 /* urban-dusk-1.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 5AF0244A6B8376B9C936076F /* urban-dusk-1.m4a */; };
+		E3A2876A89E369B1B61039AB /* kalimba-note-7-soft.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 83CE9C4E15F21A6BE1CDA1E4 /* kalimba-note-7-soft.m4a */; };
+		E462C6ADE9DD7FD10C269417 /* farm-night-2.m4a in Resources */ = {isa = PBXBuildFile; fileRef = FA5EB1F6DCAA097087131EEE /* farm-night-2.m4a */; };
+		E5633F37FA47700A29048181 /* note-2-medium.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 343CA3E693F3511C72779236 /* note-2-medium.m4a */; };
+		E64BF87269DB58B4496A443F /* ruralUK-day-2.m4a in Resources */ = {isa = PBXBuildFile; fileRef = E04A6F896A7A3FB965BEF643 /* ruralUK-day-2.m4a */; };
+		E71635F446354396D3105E20 /* LevelRamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADD32685EA75BC743C4F6E50 /* LevelRamp.swift */; };
+		EA7921263C21FA2BAB9FC91C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4496B816A85AC376160CC506 /* Assets.xcassets */; };
+		EC5E0573A788F1B445A8F462 /* urban-day-2.m4a in Resources */ = {isa = PBXBuildFile; fileRef = DEB90B8B90AC86008E021CDA /* urban-day-2.m4a */; };
+		ED107DF79C874255AB680832 /* piano-note-6-soft.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 15D160273D2BBD1A38A134D2 /* piano-note-6-soft.m4a */; };
+		F35D13ED1122D47EC70CB4BF /* japanese-night-2.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 9322624EFD2A1775FE07DA64 /* japanese-night-2.m4a */; };
+		F7D2DDF7144EEBECBAEEB782 /* kalimba-note-5-medium.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 91BD75DC83343A9C72EFAAC6 /* kalimba-note-5-medium.m4a */; };
+		F8E185A08B3E3A0084578C56 /* MenuBarGarden.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6143AB8769B39BA9D73912B /* MenuBarGarden.swift */; };
+		F9E252023EAEF856677B5BD3 /* ruralUK-day-1.m4a in Resources */ = {isa = PBXBuildFile; fileRef = D0F7B16332E05299453D7838 /* ruralUK-day-1.m4a */; };
+		FDE21B2AE7BA4AC0FFCBDE9A /* kalimba-note-5-soft.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 7D03E4F04170782B06880132 /* kalimba-note-5-soft.m4a */; };
+		FE4F9FBB1B64BDB1F2EB05A8 /* note-8-soft.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 5AF4130D7C6B46DC1085FBD2 /* note-8-soft.m4a */; };
+		FEFF2537C47973341799D787 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8668FA9C4A5B75294B46A14B /* SettingsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		066DA3A9071863E5C9DD3544 /* ThemePreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemePreview.swift; sourceTree = "<group>"; };
-		0F46A0FC64D7B62EF318F0FD /* GardenStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GardenStore.swift; sourceTree = "<group>"; };
-		215C9799F8E464FE8DEE26A2 /* AmbientSounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmbientSounds.swift; sourceTree = "<group>"; };
-		264E400C24F1B7CEB0633E50 /* PlantCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantCard.swift; sourceTree = "<group>"; };
-		27270849A67E501401C4FF1F /* ReminderService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderService.swift; sourceTree = "<group>"; };
-		353A816A49AC275D05C50C54 /* DharmaGardenCore */ = {isa = PBXFileReference; lastKnownFileType = folder; name = DharmaGardenCore; path = DharmaGardenCore; sourceTree = SOURCE_ROOT; };
-		3CE8723765A8AED5B3311090 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
-		5D1D3EA5D85EEC313610E334 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
-		5FD60C31283DA7DA6190128E /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
-		668A57F2A3F304EB8C7D9C75 /* ToolSounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolSounds.swift; sourceTree = "<group>"; };
-		7AA108AE6C6AC36575DB78F3 /* DharmaGarden.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DharmaGarden.entitlements; sourceTree = "<group>"; };
-		7BF136E13AE6DDB5E5B9B7B8 /* ReadingChairView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingChairView.swift; sourceTree = "<group>"; };
-		7C35337C222AC4A10208B0DF /* GardenMusic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GardenMusic.swift; sourceTree = "<group>"; };
-		8ADEE66902B8EFC18123C9C5 /* WeatherService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherService.swift; sourceTree = "<group>"; };
-		8FD5564BD2ED70819AC0AAA0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		A5D3B066586663AAFB000FB7 /* GardenGuidance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GardenGuidance.swift; sourceTree = "<group>"; };
-		B16BFDD293B42677979B4ABD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		B18F667FD0B635CF092C0A25 /* DharmaGardenApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DharmaGardenApp.swift; sourceTree = "<group>"; };
-		B67346D82DFE879085E02946 /* GardenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GardenView.swift; sourceTree = "<group>"; };
-		D0B1C7F5900DC59AA42B7FFD /* DebugPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugPanel.swift; sourceTree = "<group>"; };
-		D229FD3E3466E299755AB14A /* GameCenterService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCenterService.swift; sourceTree = "<group>"; };
-		E2F9E7880DD87F070FBCE442 /* GardenBookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GardenBookView.swift; sourceTree = "<group>"; };
-		E4FBA78C17E7C9CC07265B9F /* VisitorController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorController.swift; sourceTree = "<group>"; };
-		F15A3BCE746E6BA317849A77 /* "Dharma Garden.app" */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Dharma Garden.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		F5A44D90A300729FE68AFD5D /* ShopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopView.swift; sourceTree = "<group>"; };
-		FDC6326F6CC8D6AD5F7FBD3B /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
+		000B7A71A5CC0A7107C8459D /* urban-night-1.m4a */ = {isa = PBXFileReference; path = "urban-night-1.m4a"; sourceTree = "<group>"; };
+		011A77F9E0C6DF5470C92144 /* tines-note-6-medium.m4a */ = {isa = PBXFileReference; path = "tines-note-6-medium.m4a"; sourceTree = "<group>"; };
+		018683FA9355AE4532FB5E26 /* piano-note-6-medium.m4a */ = {isa = PBXFileReference; path = "piano-note-6-medium.m4a"; sourceTree = "<group>"; };
+		03BFB9B5395909F7BB3A03AE /* ambient-crickets.m4a */ = {isa = PBXFileReference; path = "ambient-crickets.m4a"; sourceTree = "<group>"; };
+		0996DA7B24D956C071EE3C9E /* japanese-rain-4.m4a */ = {isa = PBXFileReference; path = "japanese-rain-4.m4a"; sourceTree = "<group>"; };
+		09FECD23A4D26D575CBA4E15 /* piano-note-0-medium.m4a */ = {isa = PBXFileReference; path = "piano-note-0-medium.m4a"; sourceTree = "<group>"; };
+		0BCF0D512F9829559D30297A /* japanese-dawn-2.m4a */ = {isa = PBXFileReference; path = "japanese-dawn-2.m4a"; sourceTree = "<group>"; };
+		0C616C4DC784B11A61E932F5 /* note-7-medium.m4a */ = {isa = PBXFileReference; path = "note-7-medium.m4a"; sourceTree = "<group>"; };
+		0E9CAC936D24F60934C60C90 /* kalimba-note-8-medium.m4a */ = {isa = PBXFileReference; path = "kalimba-note-8-medium.m4a"; sourceTree = "<group>"; };
+		10AF76521666AFC25E6AE999 /* kalimba-note-6-soft.m4a */ = {isa = PBXFileReference; path = "kalimba-note-6-soft.m4a"; sourceTree = "<group>"; };
+		12719D3DD2840D4129F31A49 /* note-6-soft.m4a */ = {isa = PBXFileReference; path = "note-6-soft.m4a"; sourceTree = "<group>"; };
+		157D7E336789B278DFF0DC44 /* kalimba-note-7-medium.m4a */ = {isa = PBXFileReference; path = "kalimba-note-7-medium.m4a"; sourceTree = "<group>"; };
+		15D160273D2BBD1A38A134D2 /* piano-note-6-soft.m4a */ = {isa = PBXFileReference; path = "piano-note-6-soft.m4a"; sourceTree = "<group>"; };
+		15DAACBC24C5EDC8ED4B511E /* urban-night-2.m4a */ = {isa = PBXFileReference; path = "urban-night-2.m4a"; sourceTree = "<group>"; };
+		1A51ED1AB248B86EC827673E /* DharmaGardenCore */ = {isa = PBXFileReference; lastKnownFileType = folder; name = DharmaGardenCore; path = DharmaGardenCore; sourceTree = SOURCE_ROOT; };
+		1C4EC323EB2EE97AC289F1CA /* japanese-night-1.m4a */ = {isa = PBXFileReference; path = "japanese-night-1.m4a"; sourceTree = "<group>"; };
+		1C887F440F4FE9D018200259 /* ruralUK-dawn-1.m4a */ = {isa = PBXFileReference; path = "ruralUK-dawn-1.m4a"; sourceTree = "<group>"; };
+		1D4182632B1EE9B8B8D9FC4A /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
+		1FD3C954A80D2D492B93BEEE /* piano-note-5-soft.m4a */ = {isa = PBXFileReference; path = "piano-note-5-soft.m4a"; sourceTree = "<group>"; };
+		2281CCF8FD70474CDAE4C4F9 /* ruralUK-night-1.m4a */ = {isa = PBXFileReference; path = "ruralUK-night-1.m4a"; sourceTree = "<group>"; };
+		23C1E95FA3B0FDAAEB189F90 /* piano-note-7-medium.m4a */ = {isa = PBXFileReference; path = "piano-note-7-medium.m4a"; sourceTree = "<group>"; };
+		2432A3DB7E1F49FA77D5F2EE /* tines-note-7-medium.m4a */ = {isa = PBXFileReference; path = "tines-note-7-medium.m4a"; sourceTree = "<group>"; };
+		24B797E26FE6701BA9C1400F /* tines-note-3-medium.m4a */ = {isa = PBXFileReference; path = "tines-note-3-medium.m4a"; sourceTree = "<group>"; };
+		25E8CD0BC0ACF1AFA7B867A1 /* tines-note-4-soft.m4a */ = {isa = PBXFileReference; path = "tines-note-4-soft.m4a"; sourceTree = "<group>"; };
+		27BA5A8F2ED05D395C084E46 /* ambient-rain.m4a */ = {isa = PBXFileReference; path = "ambient-rain.m4a"; sourceTree = "<group>"; };
+		2AA97850FA1E28841F162304 /* DharmaGarden.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DharmaGarden.entitlements; sourceTree = "<group>"; };
+		2AA9FBB1ECA3E8A71593D6E4 /* kalimba-note-2-soft.m4a */ = {isa = PBXFileReference; path = "kalimba-note-2-soft.m4a"; sourceTree = "<group>"; };
+		2C39FCEF6658DCC6E7FA1026 /* note-5-medium.m4a */ = {isa = PBXFileReference; path = "note-5-medium.m4a"; sourceTree = "<group>"; };
+		2E3CFC532085D63147B654BA /* CREDITS.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CREDITS.md; sourceTree = "<group>"; };
+		2ECE3B7FC97D07C00CE20E60 /* kalimba-note-2-medium.m4a */ = {isa = PBXFileReference; path = "kalimba-note-2-medium.m4a"; sourceTree = "<group>"; };
+		2F695C85C26A57B181105298 /* piano-note-8-medium.m4a */ = {isa = PBXFileReference; path = "piano-note-8-medium.m4a"; sourceTree = "<group>"; };
+		318AD3C98B27FD8946A6AC87 /* note-7-soft.m4a */ = {isa = PBXFileReference; path = "note-7-soft.m4a"; sourceTree = "<group>"; };
+		3199D474B3BCC55B49CBC047 /* DharmaGarden.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DharmaGarden.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		343CA3E693F3511C72779236 /* note-2-medium.m4a */ = {isa = PBXFileReference; path = "note-2-medium.m4a"; sourceTree = "<group>"; };
+		34EE639E98DC256108D5AADB /* note-8-medium.m4a */ = {isa = PBXFileReference; path = "note-8-medium.m4a"; sourceTree = "<group>"; };
+		38C47789C9E62EC2B36F76D5 /* note-0-soft.m4a */ = {isa = PBXFileReference; path = "note-0-soft.m4a"; sourceTree = "<group>"; };
+		3BC1E628E0DB231111932F3E /* DharmaGardenApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DharmaGardenApp.swift; sourceTree = "<group>"; };
+		3D04B64B0FFDFF80FDE1E1EC /* piano-note-5-medium.m4a */ = {isa = PBXFileReference; path = "piano-note-5-medium.m4a"; sourceTree = "<group>"; };
+		3D3F11C384F202D1FA9FC3CB /* kalimba-note-6-medium.m4a */ = {isa = PBXFileReference; path = "kalimba-note-6-medium.m4a"; sourceTree = "<group>"; };
+		3F4EA5F9C447B7859F97CBCC /* farm-night-1.m4a */ = {isa = PBXFileReference; path = "farm-night-1.m4a"; sourceTree = "<group>"; };
+		3FD12EC4FB07C6E3EC33B0C2 /* PrivacyPolicyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyView.swift; sourceTree = "<group>"; };
+		43C785BB77A4F024BC7AF4F5 /* ReadingChairView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingChairView.swift; sourceTree = "<group>"; };
+		4496B816A85AC376160CC506 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		4AE391E2270A0A790DC59E95 /* note-1-soft.m4a */ = {isa = PBXFileReference; path = "note-1-soft.m4a"; sourceTree = "<group>"; };
+		4C62F4731A8F1226F7C33084 /* kalimba-note-4-medium.m4a */ = {isa = PBXFileReference; path = "kalimba-note-4-medium.m4a"; sourceTree = "<group>"; };
+		4DA62AB8AAB960746682F9FA /* DebugPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugPanel.swift; sourceTree = "<group>"; };
+		4E09AA46CE1E911F9FB53F1C /* ruralUK-night-2.m4a */ = {isa = PBXFileReference; path = "ruralUK-night-2.m4a"; sourceTree = "<group>"; };
+		4F93052ADA38A88812AB0E7C /* tines-note-2-medium.m4a */ = {isa = PBXFileReference; path = "tines-note-2-medium.m4a"; sourceTree = "<group>"; };
+		511D44EC475E954E2F5205BD /* piano-note-4-soft.m4a */ = {isa = PBXFileReference; path = "piano-note-4-soft.m4a"; sourceTree = "<group>"; };
+		5804CF0F30000D7A3C29B821 /* piano-note-2-medium.m4a */ = {isa = PBXFileReference; path = "piano-note-2-medium.m4a"; sourceTree = "<group>"; };
+		58C514A62EE279046D23000C /* tines-note-5-soft.m4a */ = {isa = PBXFileReference; path = "tines-note-5-soft.m4a"; sourceTree = "<group>"; };
+		5AD72A9EEE27D2ACB68E4D9E /* GardenBookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GardenBookView.swift; sourceTree = "<group>"; };
+		5AF0244A6B8376B9C936076F /* urban-dusk-1.m4a */ = {isa = PBXFileReference; path = "urban-dusk-1.m4a"; sourceTree = "<group>"; };
+		5AF4130D7C6B46DC1085FBD2 /* note-8-soft.m4a */ = {isa = PBXFileReference; path = "note-8-soft.m4a"; sourceTree = "<group>"; };
+		5AF63D513AE71602CB90FF5B /* piano-note-1-soft.m4a */ = {isa = PBXFileReference; path = "piano-note-1-soft.m4a"; sourceTree = "<group>"; };
+		5C8CC90584C4650181FBE292 /* GameCenterService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCenterService.swift; sourceTree = "<group>"; };
+		5E133409BCD73679F4A6697D /* note-4-soft.m4a */ = {isa = PBXFileReference; path = "note-4-soft.m4a"; sourceTree = "<group>"; };
+		5ED61337202CF73DB46B7390 /* GardenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GardenView.swift; sourceTree = "<group>"; };
+		5F017F83E0E2F9D7769EEF3C /* japanese-dusk-3.m4a */ = {isa = PBXFileReference; path = "japanese-dusk-3.m4a"; sourceTree = "<group>"; };
+		63821FB208FC23493FF41A50 /* japanese-dusk-1.m4a */ = {isa = PBXFileReference; path = "japanese-dusk-1.m4a"; sourceTree = "<group>"; };
+		641C41B7C51FC2AE1C60D993 /* kalimba-note-0-medium.m4a */ = {isa = PBXFileReference; path = "kalimba-note-0-medium.m4a"; sourceTree = "<group>"; };
+		659EF23B730C6CDDA5EA0170 /* japanese-dusk-4.m4a */ = {isa = PBXFileReference; path = "japanese-dusk-4.m4a"; sourceTree = "<group>"; };
+		66376D5E823788DA1440ADAD /* GardenAudio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GardenAudio.swift; sourceTree = "<group>"; };
+		6E575DFDB6AEDFF65A993930 /* urban-day-1.m4a */ = {isa = PBXFileReference; path = "urban-day-1.m4a"; sourceTree = "<group>"; };
+		702918774E8D56FA6FD8E64D /* farm-dusk-1.m4a */ = {isa = PBXFileReference; path = "farm-dusk-1.m4a"; sourceTree = "<group>"; };
+		713CEF9A59EB1493A905659F /* ReminderService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderService.swift; sourceTree = "<group>"; };
+		72BB88443B211B547D9D2FFB /* ToolSounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolSounds.swift; sourceTree = "<group>"; };
+		72DDE22DA73FB8BA1D1C9763 /* VisitorController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorController.swift; sourceTree = "<group>"; };
+		731495F94D5ED6F84D34A72A /* kalimba-note-1-soft.m4a */ = {isa = PBXFileReference; path = "kalimba-note-1-soft.m4a"; sourceTree = "<group>"; };
+		73AEDC34070A2E5746880107 /* piano-note-7-soft.m4a */ = {isa = PBXFileReference; path = "piano-note-7-soft.m4a"; sourceTree = "<group>"; };
+		749F3636715E803FAD76B493 /* ambient-birds.m4a */ = {isa = PBXFileReference; path = "ambient-birds.m4a"; sourceTree = "<group>"; };
+		7532CA49B106650702D19848 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		7621F0D2B7A95D332899D2BD /* note-2-soft.m4a */ = {isa = PBXFileReference; path = "note-2-soft.m4a"; sourceTree = "<group>"; };
+		78A5334E0B91EF8C1E145923 /* tines-note-8-soft.m4a */ = {isa = PBXFileReference; path = "tines-note-8-soft.m4a"; sourceTree = "<group>"; };
+		78CD3C4D6071146064A35915 /* WeatherService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherService.swift; sourceTree = "<group>"; };
+		7C4711E056013A86C04A5715 /* japanese-rain-2.m4a */ = {isa = PBXFileReference; path = "japanese-rain-2.m4a"; sourceTree = "<group>"; };
+		7D03E4F04170782B06880132 /* kalimba-note-5-soft.m4a */ = {isa = PBXFileReference; path = "kalimba-note-5-soft.m4a"; sourceTree = "<group>"; };
+		7F0767CFC1AE00A3E2C5277F /* GardenNotesPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GardenNotesPlayer.swift; sourceTree = "<group>"; };
+		7F15B1F0C61BB167FEBC1A49 /* ShopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopView.swift; sourceTree = "<group>"; };
+		7F8A31C4A98430729C7F7758 /* japanese-rain-1.m4a */ = {isa = PBXFileReference; path = "japanese-rain-1.m4a"; sourceTree = "<group>"; };
+		814B03A9960848BD93C82B9A /* piano-note-1-medium.m4a */ = {isa = PBXFileReference; path = "piano-note-1-medium.m4a"; sourceTree = "<group>"; };
+		83CE9C4E15F21A6BE1CDA1E4 /* kalimba-note-7-soft.m4a */ = {isa = PBXFileReference; path = "kalimba-note-7-soft.m4a"; sourceTree = "<group>"; };
+		841C8E8ED92D723E260B4A44 /* farm-day-1.m4a */ = {isa = PBXFileReference; path = "farm-day-1.m4a"; sourceTree = "<group>"; };
+		85C9B80C2E1F29BD964A1AAB /* urban-dusk-2.m4a */ = {isa = PBXFileReference; path = "urban-dusk-2.m4a"; sourceTree = "<group>"; };
+		8668FA9C4A5B75294B46A14B /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		8B2EC436427F8B28C945D22E /* note-6-medium.m4a */ = {isa = PBXFileReference; path = "note-6-medium.m4a"; sourceTree = "<group>"; };
+		8C55341E02C29A6633393BF1 /* note-0-medium.m4a */ = {isa = PBXFileReference; path = "note-0-medium.m4a"; sourceTree = "<group>"; };
+		8D2C54BAC2A0D8A3B50115D2 /* piano-note-2-soft.m4a */ = {isa = PBXFileReference; path = "piano-note-2-soft.m4a"; sourceTree = "<group>"; };
+		8F49F93B8E6218F0CE57EBDC /* tines-note-8-medium.m4a */ = {isa = PBXFileReference; path = "tines-note-8-medium.m4a"; sourceTree = "<group>"; };
+		8F94DD8DF9859D3AD8CC8A41 /* note-5-soft.m4a */ = {isa = PBXFileReference; path = "note-5-soft.m4a"; sourceTree = "<group>"; };
+		91BD75DC83343A9C72EFAAC6 /* kalimba-note-5-medium.m4a */ = {isa = PBXFileReference; path = "kalimba-note-5-medium.m4a"; sourceTree = "<group>"; };
+		920456D7F4D552B11D623CA6 /* kalimba-note-0-soft.m4a */ = {isa = PBXFileReference; path = "kalimba-note-0-soft.m4a"; sourceTree = "<group>"; };
+		92714A97291C4D9585CF05C9 /* ruralUK-rain-1.m4a */ = {isa = PBXFileReference; path = "ruralUK-rain-1.m4a"; sourceTree = "<group>"; };
+		9322624EFD2A1775FE07DA64 /* japanese-night-2.m4a */ = {isa = PBXFileReference; path = "japanese-night-2.m4a"; sourceTree = "<group>"; };
+		9BB316E635AA8693BA09B662 /* GardenStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GardenStore.swift; sourceTree = "<group>"; };
+		9BD93EEB2565288BA26BE4AC /* GardenMusic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GardenMusic.swift; sourceTree = "<group>"; };
+		9C62BBF4C8A94B745DBB1582 /* kalimba-note-1-medium.m4a */ = {isa = PBXFileReference; path = "kalimba-note-1-medium.m4a"; sourceTree = "<group>"; };
+		9CCC64D178C6905A782417F0 /* japanese-dawn-4.m4a */ = {isa = PBXFileReference; path = "japanese-dawn-4.m4a"; sourceTree = "<group>"; };
+		A05FCDD27D3F7C72335E6B85 /* farm-dusk-2.m4a */ = {isa = PBXFileReference; path = "farm-dusk-2.m4a"; sourceTree = "<group>"; };
+		A11340CA03A9482822615DA6 /* note-4-medium.m4a */ = {isa = PBXFileReference; path = "note-4-medium.m4a"; sourceTree = "<group>"; };
+		A37267D980924E07F4F19E60 /* note-3-medium.m4a */ = {isa = PBXFileReference; path = "note-3-medium.m4a"; sourceTree = "<group>"; };
+		A5409521DAE2374B38D6A8EC /* ThemePreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemePreview.swift; sourceTree = "<group>"; };
+		A73EC9E8E074AA12505DCF4B /* tines-note-7-soft.m4a */ = {isa = PBXFileReference; path = "tines-note-7-soft.m4a"; sourceTree = "<group>"; };
+		AC35FC4A2DC2AD697325EBFB /* japanese-dawn-3.m4a */ = {isa = PBXFileReference; path = "japanese-dawn-3.m4a"; sourceTree = "<group>"; };
+		ADD32685EA75BC743C4F6E50 /* LevelRamp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelRamp.swift; sourceTree = "<group>"; };
+		AE7FF4B1C92140E2DE75AF0E /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		B3992CA1F4324681814A3752 /* note-1-medium.m4a */ = {isa = PBXFileReference; path = "note-1-medium.m4a"; sourceTree = "<group>"; };
+		B3B783EFD5ED097B9416B2E7 /* kalimba-note-8-soft.m4a */ = {isa = PBXFileReference; path = "kalimba-note-8-soft.m4a"; sourceTree = "<group>"; };
+		B6845B298AE95C6C1BDE7C35 /* GardenGuidance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GardenGuidance.swift; sourceTree = "<group>"; };
+		B774EA17ECEA6DF04D964B0A /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
+		BD8C2E1B7FD65E381737AB00 /* piano-note-4-medium.m4a */ = {isa = PBXFileReference; path = "piano-note-4-medium.m4a"; sourceTree = "<group>"; };
+		BE16C2CC05921D920611CC85 /* tines-note-0-soft.m4a */ = {isa = PBXFileReference; path = "tines-note-0-soft.m4a"; sourceTree = "<group>"; };
+		BEFD8B4C04D15D52B96B0B1F /* tines-note-2-soft.m4a */ = {isa = PBXFileReference; path = "tines-note-2-soft.m4a"; sourceTree = "<group>"; };
+		BFF626C0C7EB43D4768423EF /* japanese-dusk-2.m4a */ = {isa = PBXFileReference; path = "japanese-dusk-2.m4a"; sourceTree = "<group>"; };
+		C0826C3DB1EAFB1EF427D89F /* tines-note-4-medium.m4a */ = {isa = PBXFileReference; path = "tines-note-4-medium.m4a"; sourceTree = "<group>"; };
+		C1BE92EF3E7597E7AEE044D2 /* japanese-night-3.m4a */ = {isa = PBXFileReference; path = "japanese-night-3.m4a"; sourceTree = "<group>"; };
+		C2FDA6E3E1244F7B9ADF9DAB /* HUDIcons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUDIcons.swift; sourceTree = "<group>"; };
+		C3478403DCCABD60393011A1 /* ruralUK-dusk-2.m4a */ = {isa = PBXFileReference; path = "ruralUK-dusk-2.m4a"; sourceTree = "<group>"; };
+		C39CD075172CE4C2BC632123 /* kalimba-note-4-soft.m4a */ = {isa = PBXFileReference; path = "kalimba-note-4-soft.m4a"; sourceTree = "<group>"; };
+		C3EED5E439E0E9086C498F08 /* japanese-day-1.m4a */ = {isa = PBXFileReference; path = "japanese-day-1.m4a"; sourceTree = "<group>"; };
+		C56AEA70FDD74EC3FE2F6FB5 /* note-3-soft.m4a */ = {isa = PBXFileReference; path = "note-3-soft.m4a"; sourceTree = "<group>"; };
+		C75C01245697BADEF9CD713B /* japanese-night-4.m4a */ = {isa = PBXFileReference; path = "japanese-night-4.m4a"; sourceTree = "<group>"; };
+		C7625C1A4CDBF112DBB00B4C /* farm-day-2.m4a */ = {isa = PBXFileReference; path = "farm-day-2.m4a"; sourceTree = "<group>"; };
+		C86D51DAD5C088B056CBFE67 /* PlantCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantCard.swift; sourceTree = "<group>"; };
+		CBD2E047BE17DD207A7EFD0B /* urban-dawn-1.m4a */ = {isa = PBXFileReference; path = "urban-dawn-1.m4a"; sourceTree = "<group>"; };
+		CE19829971CFAEF6E38574AF /* tines-note-3-soft.m4a */ = {isa = PBXFileReference; path = "tines-note-3-soft.m4a"; sourceTree = "<group>"; };
+		CE1BAAB539F4CD5A0918D47E /* ruralUK-dusk-1.m4a */ = {isa = PBXFileReference; path = "ruralUK-dusk-1.m4a"; sourceTree = "<group>"; };
+		CF8DE1FB53BA26B55F3A1201 /* japanese-day-4.m4a */ = {isa = PBXFileReference; path = "japanese-day-4.m4a"; sourceTree = "<group>"; };
+		D06C75918CD51CC4CF6F273C /* AmbientSounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmbientSounds.swift; sourceTree = "<group>"; };
+		D086116FC8A29E9B0776F252 /* farm-rain-1.m4a */ = {isa = PBXFileReference; path = "farm-rain-1.m4a"; sourceTree = "<group>"; };
+		D0F7B16332E05299453D7838 /* ruralUK-day-1.m4a */ = {isa = PBXFileReference; path = "ruralUK-day-1.m4a"; sourceTree = "<group>"; };
+		D27309775E742194137D0C88 /* tines-note-1-medium.m4a */ = {isa = PBXFileReference; path = "tines-note-1-medium.m4a"; sourceTree = "<group>"; };
+		D3714ED6EAB7A6C40752692E /* tines-note-5-medium.m4a */ = {isa = PBXFileReference; path = "tines-note-5-medium.m4a"; sourceTree = "<group>"; };
+		D6143AB8769B39BA9D73912B /* MenuBarGarden.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarGarden.swift; sourceTree = "<group>"; };
+		D620695178172D49F1D62EA1 /* piano-note-8-soft.m4a */ = {isa = PBXFileReference; path = "piano-note-8-soft.m4a"; sourceTree = "<group>"; };
+		D6F56F26965EA11E698311BA /* urban-rain-1.m4a */ = {isa = PBXFileReference; path = "urban-rain-1.m4a"; sourceTree = "<group>"; };
+		DA139D1BCB37E2ED1F6FF339 /* tines-note-6-soft.m4a */ = {isa = PBXFileReference; path = "tines-note-6-soft.m4a"; sourceTree = "<group>"; };
+		DAD2C0E5FEE843821ABA6FEE /* piano-note-0-soft.m4a */ = {isa = PBXFileReference; path = "piano-note-0-soft.m4a"; sourceTree = "<group>"; };
+		DB8015CC560D8789DCD0B6D1 /* piano-note-3-soft.m4a */ = {isa = PBXFileReference; path = "piano-note-3-soft.m4a"; sourceTree = "<group>"; };
+		DCA4DEFAC37BFFDBA031D3E3 /* tines-note-0-medium.m4a */ = {isa = PBXFileReference; path = "tines-note-0-medium.m4a"; sourceTree = "<group>"; };
+		DD0A2825A33D510B7B21C22E /* tines-note-1-soft.m4a */ = {isa = PBXFileReference; path = "tines-note-1-soft.m4a"; sourceTree = "<group>"; };
+		DEB90B8B90AC86008E021CDA /* urban-day-2.m4a */ = {isa = PBXFileReference; path = "urban-day-2.m4a"; sourceTree = "<group>"; };
+		E04A6F896A7A3FB965BEF643 /* ruralUK-day-2.m4a */ = {isa = PBXFileReference; path = "ruralUK-day-2.m4a"; sourceTree = "<group>"; };
+		E08DCB353358269C76D6F96F /* piano-note-3-medium.m4a */ = {isa = PBXFileReference; path = "piano-note-3-medium.m4a"; sourceTree = "<group>"; };
+		E571967C6E0CE1BE43901AB7 /* kalimba-note-3-medium.m4a */ = {isa = PBXFileReference; path = "kalimba-note-3-medium.m4a"; sourceTree = "<group>"; };
+		EB542EDE8F6590257057837D /* japanese-day-3.m4a */ = {isa = PBXFileReference; path = "japanese-day-3.m4a"; sourceTree = "<group>"; };
+		EC180BE85386B415D3889820 /* japanese-day-2.m4a */ = {isa = PBXFileReference; path = "japanese-day-2.m4a"; sourceTree = "<group>"; };
+		EDD3ACFE34063446811ADA1F /* farm-dawn-1.m4a */ = {isa = PBXFileReference; path = "farm-dawn-1.m4a"; sourceTree = "<group>"; };
+		EE0F70AFFFC8C4C8529CF708 /* japanese-rain-3.m4a */ = {isa = PBXFileReference; path = "japanese-rain-3.m4a"; sourceTree = "<group>"; };
+		FA5EB1F6DCAA097087131EEE /* farm-night-2.m4a */ = {isa = PBXFileReference; path = "farm-night-2.m4a"; sourceTree = "<group>"; };
+		FB1244EACB4D99A0CE76DFE2 /* kalimba-note-3-soft.m4a */ = {isa = PBXFileReference; path = "kalimba-note-3-soft.m4a"; sourceTree = "<group>"; };
+		FE04C886602067FAC2BFEC9E /* japanese-dawn-1.m4a */ = {isa = PBXFileReference; path = "japanese-dawn-1.m4a"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		B2A4BFD1DAE50B2615EAF9B3 /* Frameworks */ = {
+		24EF37EB158226580E3993B1 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0EC15AC8677DFAF8655433A8 /* DharmaGardenCore in Frameworks */,
-				C278C14BDF1B05A3D9441140 /* DharmaGardenArt in Frameworks */,
+				46863F1DB040A6600C38001C /* DharmaGardenCore in Frameworks */,
+				CD6527F1F3465800642FCE91 /* DharmaGardenArt in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		6B4DC6D8767DB04A57C61A59 /* Packages */ = {
+		0DC07BF942C8233169AC43B9 = {
 			isa = PBXGroup;
 			children = (
-				353A816A49AC275D05C50C54 /* DharmaGardenCore */,
+				387DBE14791B05B9C2D6A5E9 /* App */,
+				604970BC04BF93D39BA68BA3 /* Packages */,
+				129227C9639445731D6A6E75 /* Products */,
 			);
-			name = Packages;
 			sourceTree = "<group>";
 		};
-		6DA1B34877C4200718980176 /* Products */ = {
+		129227C9639445731D6A6E75 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F15A3BCE746E6BA317849A77 /* "Dharma Garden.app" */,
+				3199D474B3BCC55B49CBC047 /* DharmaGarden.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		91B8B79DE818B5725A99A048 = {
+		387DBE14791B05B9C2D6A5E9 /* App */ = {
 			isa = PBXGroup;
 			children = (
-				B55A37BFE34E51D43A6FCC16 /* App */,
-				6B4DC6D8767DB04A57C61A59 /* Packages */,
-				6DA1B34877C4200718980176 /* Products */,
-			);
-			sourceTree = "<group>";
-		};
-		B55A37BFE34E51D43A6FCC16 /* App */ = {
-			isa = PBXGroup;
-			children = (
-				215C9799F8E464FE8DEE26A2 /* AmbientSounds.swift */,
-				FDC6326F6CC8D6AD5F7FBD3B /* AppSettings.swift */,
-				B16BFDD293B42677979B4ABD /* Assets.xcassets */,
-				D0B1C7F5900DC59AA42B7FFD /* DebugPanel.swift */,
-				D229FD3E3466E299755AB14A /* GameCenterService.swift */,
-				E2F9E7880DD87F070FBCE442 /* GardenBookView.swift */,
-				A5D3B066586663AAFB000FB7 /* GardenGuidance.swift */,
-				7C35337C222AC4A10208B0DF /* GardenMusic.swift */,
-				0F46A0FC64D7B62EF318F0FD /* GardenStore.swift */,
-				B67346D82DFE879085E02946 /* GardenView.swift */,
-				8FD5564BD2ED70819AC0AAA0 /* Info.plist */,
-				5FD60C31283DA7DA6190128E /* LocationService.swift */,
-				264E400C24F1B7CEB0633E50 /* PlantCard.swift */,
-				7BF136E13AE6DDB5E5B9B7B8 /* ReadingChairView.swift */,
-				27270849A67E501401C4FF1F /* ReminderService.swift */,
-				5D1D3EA5D85EEC313610E334 /* SettingsView.swift */,
-				F5A44D90A300729FE68AFD5D /* ShopView.swift */,
-				3CE8723765A8AED5B3311090 /* Theme.swift */,
-				066DA3A9071863E5C9DD3544 /* ThemePreview.swift */,
-				668A57F2A3F304EB8C7D9C75 /* ToolSounds.swift */,
-				E4FBA78C17E7C9CC07265B9F /* VisitorController.swift */,
-				8ADEE66902B8EFC18123C9C5 /* WeatherService.swift */,
-				7AA108AE6C6AC36575DB78F3 /* DharmaGarden.entitlements */,
-				B18F667FD0B635CF092C0A25 /* DharmaGardenApp.swift */,
+				D06C75918CD51CC4CF6F273C /* AmbientSounds.swift */,
+				1D4182632B1EE9B8B8D9FC4A /* AppSettings.swift */,
+				4496B816A85AC376160CC506 /* Assets.xcassets */,
+				4DA62AB8AAB960746682F9FA /* DebugPanel.swift */,
+				2AA97850FA1E28841F162304 /* DharmaGarden.entitlements */,
+				3BC1E628E0DB231111932F3E /* DharmaGardenApp.swift */,
+				5C8CC90584C4650181FBE292 /* GameCenterService.swift */,
+				66376D5E823788DA1440ADAD /* GardenAudio.swift */,
+				5AD72A9EEE27D2ACB68E4D9E /* GardenBookView.swift */,
+				B6845B298AE95C6C1BDE7C35 /* GardenGuidance.swift */,
+				9BD93EEB2565288BA26BE4AC /* GardenMusic.swift */,
+				7F0767CFC1AE00A3E2C5277F /* GardenNotesPlayer.swift */,
+				9BB316E635AA8693BA09B662 /* GardenStore.swift */,
+				5ED61337202CF73DB46B7390 /* GardenView.swift */,
+				C2FDA6E3E1244F7B9ADF9DAB /* HUDIcons.swift */,
+				7532CA49B106650702D19848 /* Info.plist */,
+				ADD32685EA75BC743C4F6E50 /* LevelRamp.swift */,
+				B774EA17ECEA6DF04D964B0A /* LocationService.swift */,
+				D6143AB8769B39BA9D73912B /* MenuBarGarden.swift */,
+				C86D51DAD5C088B056CBFE67 /* PlantCard.swift */,
+				3FD12EC4FB07C6E3EC33B0C2 /* PrivacyPolicyView.swift */,
+				43C785BB77A4F024BC7AF4F5 /* ReadingChairView.swift */,
+				713CEF9A59EB1493A905659F /* ReminderService.swift */,
+				8668FA9C4A5B75294B46A14B /* SettingsView.swift */,
+				7F15B1F0C61BB167FEBC1A49 /* ShopView.swift */,
+				AE7FF4B1C92140E2DE75AF0E /* Theme.swift */,
+				A5409521DAE2374B38D6A8EC /* ThemePreview.swift */,
+				72BB88443B211B547D9D2FFB /* ToolSounds.swift */,
+				72DDE22DA73FB8BA1D1C9763 /* VisitorController.swift */,
+				78CD3C4D6071146064A35915 /* WeatherService.swift */,
+				852716F4AA1CD19F2EAA2864 /* Sounds */,
 			);
 			path = App;
+			sourceTree = "<group>";
+		};
+		40ED84F10158C237E1FDBE04 /* Music */ = {
+			isa = PBXGroup;
+			children = (
+				EDD3ACFE34063446811ADA1F /* farm-dawn-1.m4a */,
+				841C8E8ED92D723E260B4A44 /* farm-day-1.m4a */,
+				C7625C1A4CDBF112DBB00B4C /* farm-day-2.m4a */,
+				702918774E8D56FA6FD8E64D /* farm-dusk-1.m4a */,
+				A05FCDD27D3F7C72335E6B85 /* farm-dusk-2.m4a */,
+				3F4EA5F9C447B7859F97CBCC /* farm-night-1.m4a */,
+				FA5EB1F6DCAA097087131EEE /* farm-night-2.m4a */,
+				D086116FC8A29E9B0776F252 /* farm-rain-1.m4a */,
+				FE04C886602067FAC2BFEC9E /* japanese-dawn-1.m4a */,
+				0BCF0D512F9829559D30297A /* japanese-dawn-2.m4a */,
+				AC35FC4A2DC2AD697325EBFB /* japanese-dawn-3.m4a */,
+				9CCC64D178C6905A782417F0 /* japanese-dawn-4.m4a */,
+				C3EED5E439E0E9086C498F08 /* japanese-day-1.m4a */,
+				EC180BE85386B415D3889820 /* japanese-day-2.m4a */,
+				EB542EDE8F6590257057837D /* japanese-day-3.m4a */,
+				CF8DE1FB53BA26B55F3A1201 /* japanese-day-4.m4a */,
+				63821FB208FC23493FF41A50 /* japanese-dusk-1.m4a */,
+				BFF626C0C7EB43D4768423EF /* japanese-dusk-2.m4a */,
+				5F017F83E0E2F9D7769EEF3C /* japanese-dusk-3.m4a */,
+				659EF23B730C6CDDA5EA0170 /* japanese-dusk-4.m4a */,
+				1C4EC323EB2EE97AC289F1CA /* japanese-night-1.m4a */,
+				9322624EFD2A1775FE07DA64 /* japanese-night-2.m4a */,
+				C1BE92EF3E7597E7AEE044D2 /* japanese-night-3.m4a */,
+				C75C01245697BADEF9CD713B /* japanese-night-4.m4a */,
+				7F8A31C4A98430729C7F7758 /* japanese-rain-1.m4a */,
+				7C4711E056013A86C04A5715 /* japanese-rain-2.m4a */,
+				EE0F70AFFFC8C4C8529CF708 /* japanese-rain-3.m4a */,
+				0996DA7B24D956C071EE3C9E /* japanese-rain-4.m4a */,
+				1C887F440F4FE9D018200259 /* ruralUK-dawn-1.m4a */,
+				D0F7B16332E05299453D7838 /* ruralUK-day-1.m4a */,
+				E04A6F896A7A3FB965BEF643 /* ruralUK-day-2.m4a */,
+				CE1BAAB539F4CD5A0918D47E /* ruralUK-dusk-1.m4a */,
+				C3478403DCCABD60393011A1 /* ruralUK-dusk-2.m4a */,
+				2281CCF8FD70474CDAE4C4F9 /* ruralUK-night-1.m4a */,
+				4E09AA46CE1E911F9FB53F1C /* ruralUK-night-2.m4a */,
+				92714A97291C4D9585CF05C9 /* ruralUK-rain-1.m4a */,
+				CBD2E047BE17DD207A7EFD0B /* urban-dawn-1.m4a */,
+				6E575DFDB6AEDFF65A993930 /* urban-day-1.m4a */,
+				DEB90B8B90AC86008E021CDA /* urban-day-2.m4a */,
+				5AF0244A6B8376B9C936076F /* urban-dusk-1.m4a */,
+				85C9B80C2E1F29BD964A1AAB /* urban-dusk-2.m4a */,
+				000B7A71A5CC0A7107C8459D /* urban-night-1.m4a */,
+				15DAACBC24C5EDC8ED4B511E /* urban-night-2.m4a */,
+				D6F56F26965EA11E698311BA /* urban-rain-1.m4a */,
+				B66DDA884D3AFE1F826B6C8E /* notes */,
+			);
+			path = Music;
+			sourceTree = "<group>";
+		};
+		604970BC04BF93D39BA68BA3 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				1A51ED1AB248B86EC827673E /* DharmaGardenCore */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
+		852716F4AA1CD19F2EAA2864 /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				749F3636715E803FAD76B493 /* ambient-birds.m4a */,
+				03BFB9B5395909F7BB3A03AE /* ambient-crickets.m4a */,
+				27BA5A8F2ED05D395C084E46 /* ambient-rain.m4a */,
+				2E3CFC532085D63147B654BA /* CREDITS.md */,
+				40ED84F10158C237E1FDBE04 /* Music */,
+			);
+			path = Sounds;
+			sourceTree = "<group>";
+		};
+		B66DDA884D3AFE1F826B6C8E /* notes */ = {
+			isa = PBXGroup;
+			children = (
+				641C41B7C51FC2AE1C60D993 /* kalimba-note-0-medium.m4a */,
+				920456D7F4D552B11D623CA6 /* kalimba-note-0-soft.m4a */,
+				9C62BBF4C8A94B745DBB1582 /* kalimba-note-1-medium.m4a */,
+				731495F94D5ED6F84D34A72A /* kalimba-note-1-soft.m4a */,
+				2ECE3B7FC97D07C00CE20E60 /* kalimba-note-2-medium.m4a */,
+				2AA9FBB1ECA3E8A71593D6E4 /* kalimba-note-2-soft.m4a */,
+				E571967C6E0CE1BE43901AB7 /* kalimba-note-3-medium.m4a */,
+				FB1244EACB4D99A0CE76DFE2 /* kalimba-note-3-soft.m4a */,
+				4C62F4731A8F1226F7C33084 /* kalimba-note-4-medium.m4a */,
+				C39CD075172CE4C2BC632123 /* kalimba-note-4-soft.m4a */,
+				91BD75DC83343A9C72EFAAC6 /* kalimba-note-5-medium.m4a */,
+				7D03E4F04170782B06880132 /* kalimba-note-5-soft.m4a */,
+				3D3F11C384F202D1FA9FC3CB /* kalimba-note-6-medium.m4a */,
+				10AF76521666AFC25E6AE999 /* kalimba-note-6-soft.m4a */,
+				157D7E336789B278DFF0DC44 /* kalimba-note-7-medium.m4a */,
+				83CE9C4E15F21A6BE1CDA1E4 /* kalimba-note-7-soft.m4a */,
+				0E9CAC936D24F60934C60C90 /* kalimba-note-8-medium.m4a */,
+				B3B783EFD5ED097B9416B2E7 /* kalimba-note-8-soft.m4a */,
+				8C55341E02C29A6633393BF1 /* note-0-medium.m4a */,
+				38C47789C9E62EC2B36F76D5 /* note-0-soft.m4a */,
+				B3992CA1F4324681814A3752 /* note-1-medium.m4a */,
+				4AE391E2270A0A790DC59E95 /* note-1-soft.m4a */,
+				343CA3E693F3511C72779236 /* note-2-medium.m4a */,
+				7621F0D2B7A95D332899D2BD /* note-2-soft.m4a */,
+				A37267D980924E07F4F19E60 /* note-3-medium.m4a */,
+				C56AEA70FDD74EC3FE2F6FB5 /* note-3-soft.m4a */,
+				A11340CA03A9482822615DA6 /* note-4-medium.m4a */,
+				5E133409BCD73679F4A6697D /* note-4-soft.m4a */,
+				2C39FCEF6658DCC6E7FA1026 /* note-5-medium.m4a */,
+				8F94DD8DF9859D3AD8CC8A41 /* note-5-soft.m4a */,
+				8B2EC436427F8B28C945D22E /* note-6-medium.m4a */,
+				12719D3DD2840D4129F31A49 /* note-6-soft.m4a */,
+				0C616C4DC784B11A61E932F5 /* note-7-medium.m4a */,
+				318AD3C98B27FD8946A6AC87 /* note-7-soft.m4a */,
+				34EE639E98DC256108D5AADB /* note-8-medium.m4a */,
+				5AF4130D7C6B46DC1085FBD2 /* note-8-soft.m4a */,
+				09FECD23A4D26D575CBA4E15 /* piano-note-0-medium.m4a */,
+				DAD2C0E5FEE843821ABA6FEE /* piano-note-0-soft.m4a */,
+				814B03A9960848BD93C82B9A /* piano-note-1-medium.m4a */,
+				5AF63D513AE71602CB90FF5B /* piano-note-1-soft.m4a */,
+				5804CF0F30000D7A3C29B821 /* piano-note-2-medium.m4a */,
+				8D2C54BAC2A0D8A3B50115D2 /* piano-note-2-soft.m4a */,
+				E08DCB353358269C76D6F96F /* piano-note-3-medium.m4a */,
+				DB8015CC560D8789DCD0B6D1 /* piano-note-3-soft.m4a */,
+				BD8C2E1B7FD65E381737AB00 /* piano-note-4-medium.m4a */,
+				511D44EC475E954E2F5205BD /* piano-note-4-soft.m4a */,
+				3D04B64B0FFDFF80FDE1E1EC /* piano-note-5-medium.m4a */,
+				1FD3C954A80D2D492B93BEEE /* piano-note-5-soft.m4a */,
+				018683FA9355AE4532FB5E26 /* piano-note-6-medium.m4a */,
+				15D160273D2BBD1A38A134D2 /* piano-note-6-soft.m4a */,
+				23C1E95FA3B0FDAAEB189F90 /* piano-note-7-medium.m4a */,
+				73AEDC34070A2E5746880107 /* piano-note-7-soft.m4a */,
+				2F695C85C26A57B181105298 /* piano-note-8-medium.m4a */,
+				D620695178172D49F1D62EA1 /* piano-note-8-soft.m4a */,
+				DCA4DEFAC37BFFDBA031D3E3 /* tines-note-0-medium.m4a */,
+				BE16C2CC05921D920611CC85 /* tines-note-0-soft.m4a */,
+				D27309775E742194137D0C88 /* tines-note-1-medium.m4a */,
+				DD0A2825A33D510B7B21C22E /* tines-note-1-soft.m4a */,
+				4F93052ADA38A88812AB0E7C /* tines-note-2-medium.m4a */,
+				BEFD8B4C04D15D52B96B0B1F /* tines-note-2-soft.m4a */,
+				24B797E26FE6701BA9C1400F /* tines-note-3-medium.m4a */,
+				CE19829971CFAEF6E38574AF /* tines-note-3-soft.m4a */,
+				C0826C3DB1EAFB1EF427D89F /* tines-note-4-medium.m4a */,
+				25E8CD0BC0ACF1AFA7B867A1 /* tines-note-4-soft.m4a */,
+				D3714ED6EAB7A6C40752692E /* tines-note-5-medium.m4a */,
+				58C514A62EE279046D23000C /* tines-note-5-soft.m4a */,
+				011A77F9E0C6DF5470C92144 /* tines-note-6-medium.m4a */,
+				DA139D1BCB37E2ED1F6FF339 /* tines-note-6-soft.m4a */,
+				2432A3DB7E1F49FA77D5F2EE /* tines-note-7-medium.m4a */,
+				A73EC9E8E074AA12505DCF4B /* tines-note-7-soft.m4a */,
+				8F49F93B8E6218F0CE57EBDC /* tines-note-8-medium.m4a */,
+				78A5334E0B91EF8C1E145923 /* tines-note-8-soft.m4a */,
+			);
+			path = notes;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		1123670FF3A2D139D8F8D977 /* DharmaGarden */ = {
+		53602EE0D4B37B5562EFDFD6 /* DharmaGarden */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 32E3E1E0765E144B47F15115 /* Build configuration list for PBXNativeTarget "DharmaGarden" */;
+			buildConfigurationList = B458846F27839ACCAB88D6B3 /* Build configuration list for PBXNativeTarget "DharmaGarden" */;
 			buildPhases = (
-				4412932CD383A761DA012592 /* Sources */,
-				2A1B1A9DD1FD915B155BEC58 /* Resources */,
-				B2A4BFD1DAE50B2615EAF9B3 /* Frameworks */,
+				6E0755EDBC3FE7C8004FBA2B /* Sources */,
+				AA052142B2FC651A1A8983C3 /* Resources */,
+				24EF37EB158226580E3993B1 /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -148,17 +550,17 @@
 			);
 			name = DharmaGarden;
 			packageProductDependencies = (
-				D49A6544422175F6B00570EA /* DharmaGardenCore */,
-				44388489CA595C3570F19D84 /* DharmaGardenArt */,
+				2D85935568CD44BB6120F5F6 /* DharmaGardenCore */,
+				32094C6E2B25AEF7417B9CFE /* DharmaGardenArt */,
 			);
 			productName = DharmaGarden;
-			productReference = F15A3BCE746E6BA317849A77 /* "Dharma Garden.app" */;
+			productReference = 3199D474B3BCC55B49CBC047 /* DharmaGarden.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		B8218C113AEEE672B990EE97 /* Project object */ = {
+		51491D65C4F2AB3A01AE1F97 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
@@ -166,72 +568,277 @@
 				TargetAttributes = {
 				};
 			};
-			buildConfigurationList = 6C12A24DCCBC95E789F6BC3E /* Build configuration list for PBXProject "DharmaGarden" */;
+			buildConfigurationList = B7D9C51611B20F4CDE38E47B /* Build configuration list for PBXProject "DharmaGarden" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				Base,
 				en,
 			);
-			mainGroup = 91B8B79DE818B5725A99A048;
+			mainGroup = 0DC07BF942C8233169AC43B9;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				1FF4217661D4D6C6BD260348 /* XCLocalSwiftPackageReference "DharmaGardenCore" */,
+				FB610C710BADACD39C8A482A /* XCLocalSwiftPackageReference "DharmaGardenCore" */,
 			);
 			preferredProjectObjectVersion = 77;
-			productRefGroup = 6DA1B34877C4200718980176 /* Products */;
+			productRefGroup = 129227C9639445731D6A6E75 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				1123670FF3A2D139D8F8D977 /* DharmaGarden */,
+				53602EE0D4B37B5562EFDFD6 /* DharmaGarden */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		2A1B1A9DD1FD915B155BEC58 /* Resources */ = {
+		AA052142B2FC651A1A8983C3 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7E0D0205C2783073BCD03B00 /* Assets.xcassets in Resources */,
+				EA7921263C21FA2BAB9FC91C /* Assets.xcassets in Resources */,
+				236F78B095B243693467F5B8 /* CREDITS.md in Resources */,
+				BD0A25FCBB574A66147CA821 /* ambient-birds.m4a in Resources */,
+				7C6E573E58FA3968D318E113 /* ambient-crickets.m4a in Resources */,
+				03EEB79C35D34C44DFCF95BA /* ambient-rain.m4a in Resources */,
+				BF0CB508689D9262032A32C5 /* farm-dawn-1.m4a in Resources */,
+				51CCE1D5057FF76BBB73A906 /* farm-day-1.m4a in Resources */,
+				1A4D1B8AF8C808BDEA2D9DA1 /* farm-day-2.m4a in Resources */,
+				0A610C12DBC48B0CC9CE5DD7 /* farm-dusk-1.m4a in Resources */,
+				0559584A470A7EF760915369 /* farm-dusk-2.m4a in Resources */,
+				3DEC5690EA4C914EBDF1B096 /* farm-night-1.m4a in Resources */,
+				E462C6ADE9DD7FD10C269417 /* farm-night-2.m4a in Resources */,
+				0A7567D185219AC7D4C6831D /* farm-rain-1.m4a in Resources */,
+				A4AD9B80F54D24CE8C31B874 /* japanese-dawn-1.m4a in Resources */,
+				DB86FBDCD6F28E9CFA30E132 /* japanese-dawn-2.m4a in Resources */,
+				1EC0399B683A8CA727E25F27 /* japanese-dawn-3.m4a in Resources */,
+				3BB9F896582F208E47C97730 /* japanese-dawn-4.m4a in Resources */,
+				A37C0F23892DDD2A3FE4296C /* japanese-day-1.m4a in Resources */,
+				05930FF06724A889080FA483 /* japanese-day-2.m4a in Resources */,
+				D6C9824C071AE10C457C077D /* japanese-day-3.m4a in Resources */,
+				46BF5FBD9DE28029D3EB3B30 /* japanese-day-4.m4a in Resources */,
+				0566FE81AC2E1950A5A6CECC /* japanese-dusk-1.m4a in Resources */,
+				227231AF7F9E44DB37643E1E /* japanese-dusk-2.m4a in Resources */,
+				C0C78281CABC8C492C554D4D /* japanese-dusk-3.m4a in Resources */,
+				C3BE33D2622DF7D9F5A42B2F /* japanese-dusk-4.m4a in Resources */,
+				B3E6986A2E0A2FB8CD31D465 /* japanese-night-1.m4a in Resources */,
+				F35D13ED1122D47EC70CB4BF /* japanese-night-2.m4a in Resources */,
+				4A9B7CDF727E94306557D599 /* japanese-night-3.m4a in Resources */,
+				201713854A174DA318D402C1 /* japanese-night-4.m4a in Resources */,
+				81AB02DC6ECC4EB776FE6CCC /* japanese-rain-1.m4a in Resources */,
+				9A19D74CF8129B02591B710C /* japanese-rain-2.m4a in Resources */,
+				411CC3100952C1FF290F6A5B /* japanese-rain-3.m4a in Resources */,
+				A10953DBDB8C1D794A494C09 /* japanese-rain-4.m4a in Resources */,
+				C237185BA5647E216E179956 /* kalimba-note-0-medium.m4a in Resources */,
+				393EC4E4CD1417F97DB9DB9F /* kalimba-note-0-soft.m4a in Resources */,
+				E19A1AA4335E92AD15529FDA /* kalimba-note-1-medium.m4a in Resources */,
+				D5DFA764F3F5CE8B293793D6 /* kalimba-note-1-soft.m4a in Resources */,
+				AFF352EE3DADA15779E8D629 /* kalimba-note-2-medium.m4a in Resources */,
+				7D3D50C175A8D18940B3FA68 /* kalimba-note-2-soft.m4a in Resources */,
+				594C2A2531C920F41E37025B /* kalimba-note-3-medium.m4a in Resources */,
+				34ED1BC7A2080A0A59E9CCC7 /* kalimba-note-3-soft.m4a in Resources */,
+				8FFCB19B262F24498C18CBB5 /* kalimba-note-4-medium.m4a in Resources */,
+				0C23E5059D8621E5F70608DF /* kalimba-note-4-soft.m4a in Resources */,
+				F7D2DDF7144EEBECBAEEB782 /* kalimba-note-5-medium.m4a in Resources */,
+				FDE21B2AE7BA4AC0FFCBDE9A /* kalimba-note-5-soft.m4a in Resources */,
+				9C35AAAC58F95D972CB63803 /* kalimba-note-6-medium.m4a in Resources */,
+				BFB6FAB8D28851D238B73643 /* kalimba-note-6-soft.m4a in Resources */,
+				070A5C5F7E9F24F8EC0233D7 /* kalimba-note-7-medium.m4a in Resources */,
+				E3A2876A89E369B1B61039AB /* kalimba-note-7-soft.m4a in Resources */,
+				1B94230AB36D802B62BCD3A0 /* kalimba-note-8-medium.m4a in Resources */,
+				24CA97271361820191227DB3 /* kalimba-note-8-soft.m4a in Resources */,
+				521A519DDB03CF9121CBA3AA /* note-0-medium.m4a in Resources */,
+				2795E3CD8308F0D280045E7A /* note-0-soft.m4a in Resources */,
+				8E005DA66504A1A8E5A17349 /* note-1-medium.m4a in Resources */,
+				9EE1D89CB77686ED1EA6F841 /* note-1-soft.m4a in Resources */,
+				E5633F37FA47700A29048181 /* note-2-medium.m4a in Resources */,
+				1466DEDD4FF3978437226EA5 /* note-2-soft.m4a in Resources */,
+				B1C826B77274AC2AC254DC13 /* note-3-medium.m4a in Resources */,
+				AE22AC093CA071ADB6E1E969 /* note-3-soft.m4a in Resources */,
+				02BFD3B19AEB50F9DCC25988 /* note-4-medium.m4a in Resources */,
+				8AE57D6874E942ADF9D03FEA /* note-4-soft.m4a in Resources */,
+				59ACB7C52B7BBFF2E0A78F6B /* note-5-medium.m4a in Resources */,
+				C825996E62E43015D6ED8B1E /* note-5-soft.m4a in Resources */,
+				333AC55030D3BCC4EAE1DD99 /* note-6-medium.m4a in Resources */,
+				5C4B7A679F0C386E0B7F96D3 /* note-6-soft.m4a in Resources */,
+				E0DD1883694419D2D039C9F5 /* note-7-medium.m4a in Resources */,
+				4D4A20B3AA13240326EF6731 /* note-7-soft.m4a in Resources */,
+				44EC59090542CCEC13A767CB /* note-8-medium.m4a in Resources */,
+				FE4F9FBB1B64BDB1F2EB05A8 /* note-8-soft.m4a in Resources */,
+				D93854BC22C1CC98AD8DD2AB /* piano-note-0-medium.m4a in Resources */,
+				3139E04D5D82D7F0012B58EE /* piano-note-0-soft.m4a in Resources */,
+				A50928F2F7E30363C7B0BDB2 /* piano-note-1-medium.m4a in Resources */,
+				9816F44146B8287C5DD7BC6F /* piano-note-1-soft.m4a in Resources */,
+				338E011A1C2338B3AF18F69D /* piano-note-2-medium.m4a in Resources */,
+				581919EA85846434D3D9F56D /* piano-note-2-soft.m4a in Resources */,
+				61487130FEC2233389614498 /* piano-note-3-medium.m4a in Resources */,
+				48FA2A570108B7BF45060C8B /* piano-note-3-soft.m4a in Resources */,
+				A14FF8947B1EBAE35D2E7354 /* piano-note-4-medium.m4a in Resources */,
+				B4F4D60B1FB7F9EA7125AC09 /* piano-note-4-soft.m4a in Resources */,
+				A33A3B0E1EA399EFFDCF5545 /* piano-note-5-medium.m4a in Resources */,
+				DFA1CD7F6458F84E930D4F0E /* piano-note-5-soft.m4a in Resources */,
+				B82C5F755859CC1DC19FC312 /* piano-note-6-medium.m4a in Resources */,
+				ED107DF79C874255AB680832 /* piano-note-6-soft.m4a in Resources */,
+				D3B2DBEBD57F2CCEBC4E6D59 /* piano-note-7-medium.m4a in Resources */,
+				7EB99191B3A7A03DF3FB4537 /* piano-note-7-soft.m4a in Resources */,
+				2A046A9F4E9FDA4E8CB7B3BF /* piano-note-8-medium.m4a in Resources */,
+				936AAE41F235503D65F7D876 /* piano-note-8-soft.m4a in Resources */,
+				32F37D9B64970EA8ECF6B488 /* ruralUK-dawn-1.m4a in Resources */,
+				F9E252023EAEF856677B5BD3 /* ruralUK-day-1.m4a in Resources */,
+				E64BF87269DB58B4496A443F /* ruralUK-day-2.m4a in Resources */,
+				98A6F2C60900671F868469E6 /* ruralUK-dusk-1.m4a in Resources */,
+				918E8A77C4A1796303A05576 /* ruralUK-dusk-2.m4a in Resources */,
+				BDEAB6513BD59B44858D19EA /* ruralUK-night-1.m4a in Resources */,
+				335E05E67296805A1867DE38 /* ruralUK-night-2.m4a in Resources */,
+				B74E0D8452EF8EC9A533CE30 /* ruralUK-rain-1.m4a in Resources */,
+				35E6CFCDD584A82F10A17193 /* tines-note-0-medium.m4a in Resources */,
+				8B700A3E0E5FF06577CC3E24 /* tines-note-0-soft.m4a in Resources */,
+				C23BE355E7F3E69BCDE1F152 /* tines-note-1-medium.m4a in Resources */,
+				730E466F3A7867A2E2BF5DAE /* tines-note-1-soft.m4a in Resources */,
+				01B7A1EA01FFEBB2C7354EC3 /* tines-note-2-medium.m4a in Resources */,
+				8B65E90729B213B73A98C730 /* tines-note-2-soft.m4a in Resources */,
+				7B50D21FFF6571BC301CB1DF /* tines-note-3-medium.m4a in Resources */,
+				0E9474A72FED0A1C56577EDE /* tines-note-3-soft.m4a in Resources */,
+				9400C458F384528AEC0A878C /* tines-note-4-medium.m4a in Resources */,
+				C308C84E356DA87639E1F8A9 /* tines-note-4-soft.m4a in Resources */,
+				C9773B2D61E3AACC3C6A7587 /* tines-note-5-medium.m4a in Resources */,
+				B5DA5216CDA3DDDD15D12FC9 /* tines-note-5-soft.m4a in Resources */,
+				CB75E866579ACDFD03168C14 /* tines-note-6-medium.m4a in Resources */,
+				76203B5FA36D8E94BFEC5ABF /* tines-note-6-soft.m4a in Resources */,
+				2772D4C5B2EF682FC35C9782 /* tines-note-7-medium.m4a in Resources */,
+				7F12363A2C64BCE57F3A024E /* tines-note-7-soft.m4a in Resources */,
+				A3DBCF723AFA17FEB5E01950 /* tines-note-8-medium.m4a in Resources */,
+				3AE895A878949C98558DE353 /* tines-note-8-soft.m4a in Resources */,
+				72E1B0F58ED0F2F3A62DEC9A /* urban-dawn-1.m4a in Resources */,
+				4B0F6BD2119B3FDCDDF00DD9 /* urban-day-1.m4a in Resources */,
+				EC5E0573A788F1B445A8F462 /* urban-day-2.m4a in Resources */,
+				E2D2231AC2051F7402B410D9 /* urban-dusk-1.m4a in Resources */,
+				7DD5C6B5A38B846ED42958BD /* urban-dusk-2.m4a in Resources */,
+				1BD6D982B22B2FFB4B9C0516 /* urban-night-1.m4a in Resources */,
+				B67ABC2A4CD7C4D06651863E /* urban-night-2.m4a in Resources */,
+				411B461BDEB3FFB01F72424C /* urban-rain-1.m4a in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		4412932CD383A761DA012592 /* Sources */ = {
+		6E0755EDBC3FE7C8004FBA2B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B88E376F245351A337676493 /* AmbientSounds.swift in Sources */,
-				E09F23E9ECD784704A2F928D /* AppSettings.swift in Sources */,
-				DFCC72A264A411A38EF14576 /* DebugPanel.swift in Sources */,
-				171B847C869394706D95B536 /* GameCenterService.swift in Sources */,
-				3A6B53DC16F81DD57CD836E2 /* GardenBookView.swift in Sources */,
-				1BDDC0ED75C0D297AE4259C4 /* GardenGuidance.swift in Sources */,
-				AA7C368033CAFADE1CEAFE05 /* GardenMusic.swift in Sources */,
-				50DDCCABD40363F1A51AE08F /* GardenStore.swift in Sources */,
-				B4904A815C6E1BC2077465D7 /* GardenView.swift in Sources */,
-				F044EF8E8E45BDAFCE3BE536 /* LocationService.swift in Sources */,
-				1DC17537450D971DC407C8AB /* PlantCard.swift in Sources */,
-				C1B9904289A5FC7345CB044D /* ReadingChairView.swift in Sources */,
-				E2C6719588CC6A2C90C01C8D /* ReminderService.swift in Sources */,
-				6F57641D02FC8B221D4BBE9E /* SettingsView.swift in Sources */,
-				94E2F26083D9DF8B35136CE2 /* ShopView.swift in Sources */,
-				1CC6BF2CC1FD97FFFF85F853 /* Theme.swift in Sources */,
-				01D30F0D19B17E74A904F334 /* ThemePreview.swift in Sources */,
-				EE635E8F81ED9FF5A831D347 /* ToolSounds.swift in Sources */,
-				85A71BBC64395A87BEF75770 /* VisitorController.swift in Sources */,
-				21FC4CF44E78A323F0EE5F93 /* WeatherService.swift in Sources */,
-				6786AAF6D1380A0D9063CAD6 /* DharmaGardenApp.swift in Sources */,
+				1692C4EBB38A145F1108ECF1 /* AmbientSounds.swift in Sources */,
+				48A9257596009D80E31D844A /* AppSettings.swift in Sources */,
+				49D1DE7E886E4618BE0E0543 /* DebugPanel.swift in Sources */,
+				CAA2B3D47F75755A34AB4C15 /* DharmaGardenApp.swift in Sources */,
+				D2DBE679670A2796B08B2477 /* GameCenterService.swift in Sources */,
+				8D88FEA0ECA9F5CC74314F9C /* GardenAudio.swift in Sources */,
+				4707D7E9F3E646EF1D15D390 /* GardenBookView.swift in Sources */,
+				120A7BF392D96B15D155ECE0 /* GardenGuidance.swift in Sources */,
+				C53C4C12A6B4FC94E7B29FA3 /* GardenMusic.swift in Sources */,
+				604D001FE5CE3E08686AB744 /* GardenNotesPlayer.swift in Sources */,
+				CFECC78CD1507CC82E37C4AC /* GardenStore.swift in Sources */,
+				9E170E4742B57653A78A1440 /* GardenView.swift in Sources */,
+				D266306C3DDABD930FC32084 /* HUDIcons.swift in Sources */,
+				E71635F446354396D3105E20 /* LevelRamp.swift in Sources */,
+				124BF283AA2CC17BF3D94188 /* LocationService.swift in Sources */,
+				F8E185A08B3E3A0084578C56 /* MenuBarGarden.swift in Sources */,
+				D9DE9D4A72AF10024E8A28AC /* PlantCard.swift in Sources */,
+				6D865081303F2A896EADDCF4 /* PrivacyPolicyView.swift in Sources */,
+				87F176A0159BC1D74788470A /* ReadingChairView.swift in Sources */,
+				B1EE8E73640B7A0A562EC3CF /* ReminderService.swift in Sources */,
+				FEFF2537C47973341799D787 /* SettingsView.swift in Sources */,
+				DB28C68E544FEA2CA1E981B2 /* ShopView.swift in Sources */,
+				37DA83F4F12B05FFD86F4C1B /* Theme.swift in Sources */,
+				BBEBABA76F41CB7249CD6292 /* ThemePreview.swift in Sources */,
+				DADC85B621DA5FA9F036FB39 /* ToolSounds.swift in Sources */,
+				DCB0C80D7ED1BA6C61ACEF15 /* VisitorController.swift in Sources */,
+				805EEA78C37A369BF45F671C /* WeatherService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		964EDCC3CB40BB58CC550315 /* Debug */ = {
+		21BA94A6A28BDBBE462C0C4C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		65699749C170AAC607124605 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = App/DharmaGarden.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 2;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = App/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.snape.dharmagarden;
+				PRODUCT_NAME = "Dharma Garden";
+				SDKROOT = macosx;
+				SWIFT_STRICT_CONCURRENCY = minimal;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+		D9A498EF1B142F1965CA2B56 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -294,13 +901,13 @@
 			};
 			name = Debug;
 		};
-		9E89078AAE98E9C45C99960D /* Debug */ = {
+		EF9E8C6090AFDAFC2FDC9E1F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = App/DharmaGarden.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = App/Info.plist;
@@ -308,7 +915,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.snape.dharmagarden;
 				PRODUCT_NAME = "Dharma Garden";
 				SDKROOT = macosx;
@@ -317,102 +924,23 @@
 			};
 			name = Debug;
 		};
-		C451DA9C04DAED5A1B0350B6 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				MTL_FAST_MATH = YES;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
-				SWIFT_VERSION = 5.0;
-			};
-			name = Release;
-		};
-		D85A304C0F902DCC14052E10 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = App/DharmaGarden.entitlements;
-				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
-				ENABLE_HARDENED_RUNTIME = YES;
-				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = App/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.snape.dharmagarden;
-				PRODUCT_NAME = "Dharma Garden";
-				SDKROOT = macosx;
-				SWIFT_STRICT_CONCURRENCY = minimal;
-				SWIFT_VERSION = 6.0;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		32E3E1E0765E144B47F15115 /* Build configuration list for PBXNativeTarget "DharmaGarden" */ = {
+		B458846F27839ACCAB88D6B3 /* Build configuration list for PBXNativeTarget "DharmaGarden" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				9E89078AAE98E9C45C99960D /* Debug */,
-				D85A304C0F902DCC14052E10 /* Release */,
+				EF9E8C6090AFDAFC2FDC9E1F /* Debug */,
+				65699749C170AAC607124605 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		6C12A24DCCBC95E789F6BC3E /* Build configuration list for PBXProject "DharmaGarden" */ = {
+		B7D9C51611B20F4CDE38E47B /* Build configuration list for PBXProject "DharmaGarden" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				964EDCC3CB40BB58CC550315 /* Debug */,
-				C451DA9C04DAED5A1B0350B6 /* Release */,
+				D9A498EF1B142F1965CA2B56 /* Debug */,
+				21BA94A6A28BDBBE462C0C4C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
@@ -420,22 +948,22 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		1FF4217661D4D6C6BD260348 /* XCLocalSwiftPackageReference "DharmaGardenCore" */ = {
+		FB610C710BADACD39C8A482A /* XCLocalSwiftPackageReference "DharmaGardenCore" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = DharmaGardenCore;
 		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		44388489CA595C3570F19D84 /* DharmaGardenArt */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = DharmaGardenArt;
-		};
-		D49A6544422175F6B00570EA /* DharmaGardenCore */ = {
+		2D85935568CD44BB6120F5F6 /* DharmaGardenCore */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = DharmaGardenCore;
 		};
+		32094C6E2B25AEF7417B9CFE /* DharmaGardenArt */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DharmaGardenArt;
+		};
 /* End XCSwiftPackageProductDependency section */
 	};
-	rootObject = B8218C113AEEE672B990EE97 /* Project object */;
+	rootObject = 51491D65C4F2AB3A01AE1F97 /* Project object */;
 }

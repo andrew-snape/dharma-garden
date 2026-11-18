@@ -99,7 +99,7 @@ extension SceneCanvas {
         let x0 = UKCottage.x0, x1 = UKCottage.x1, eave = UKCottage.eave, ridge = UKCottage.ridge
 
         // Ground shadow where the cottage meets the bank.
-        ellipse(P((x0 + x1) / 2, 0), (x1 - x0 + 0.5) * s, 0.2 * s, Color(hex: 0x1B2A14).opacity(0.18))
+        propShadow(foot: P((x0 + x1) / 2, 0), height: CGFloat(eave) * s, width: (x1 - x0 + 0.5) * s, depth: 0.2 * s, opacity: 0.2, tint: Color(hex: 0x1B2A14))
 
         // Walls, with rough course lines and a plinth.
         rect(x0, 0, x1, eave, wall)

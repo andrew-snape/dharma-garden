@@ -1,7 +1,7 @@
 import Foundation
 import os
 
-/// Pure Swift synthesis of the garden's ambience, made live like `GardenSynth` (no AVFoundation, no allocation
+/// Pure Swift synthesis of the garden's ambience, made live (no AVFoundation, no allocation
 /// while rendering): soft filtered-noise rain, a few crickets chirping in bursts, and bird calls (short gliding
 /// whistles at random times). The levels follow a target set from any thread, smoothed over a couple of seconds
 /// so weather and the time of day change without a cut. Output is stereo interleaved, soft-clipped, never NaN.

@@ -267,8 +267,7 @@ extension SceneCanvas {
     func ukDrawForeground() {
         ukDrawTufts()
         ukDrawWellies(at: p(0.92, 0.955), size: 0.1 * unit)
-        // Set in from the edge so the lawn-parallax drift stays inside the frame.
-        ukDrawWateringCan(at: p(0.79, 0.94), size: 0.1 * unit)
+        drawRestingWateringCan()
     }
 
     /// Clover leaves and a few daisies at the bottom left, in place of the farm's grass tufts.
@@ -306,7 +305,7 @@ extension SceneCanvas {
 
     /// A galvanised watering can: a tapered zinc body with ribs and a highlight, a big arch handle, a back handle
     /// and a long spout with a rose. `at` is the base centre.
-    private func ukDrawWateringCan(at base: CGPoint, size u: CGFloat) {
+    func ukDrawWateringCan(at base: CGPoint, size u: CGFloat) {
         let zinc = Color(hex: 0xB9C4CB), zincShade = Color(hex: 0x8794A0), rib = Color(hex: 0xA0ACB6), shine = Color(hex: 0xDDE5E9)
         func P(_ dx: CGFloat, _ dy: CGFloat) -> CGPoint { CGPoint(x: base.x + dx * u, y: base.y + dy * u) }
         let body = [P(-0.36, 0), P(0.36, 0), P(0.31, -0.58), P(-0.31, -0.58)]
@@ -362,7 +361,6 @@ extension SceneCanvas {
             stroke([P(-0.05, -0.65), P(-0.05, -0.3)], width: 0.03 * u, shine)
         }
         // A contact shadow under the pair.
-        ctx.fill(Path(ellipseIn: CGRect(x: base.x - 0.35 * u, y: base.y + 0.01 * u, width: 0.9 * u, height: 0.07 * u)),
-                 with: .color(Color(hex: 0x000000).opacity(0.1)))
+        propShadow(foot: CGPoint(x: base.x + 0.1 * u, y: base.y + 0.04 * u), height: 0.8 * u, width: 0.9 * u, depth: 0.07 * u, opacity: 0.12)
     }
 }

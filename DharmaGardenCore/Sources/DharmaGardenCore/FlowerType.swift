@@ -129,10 +129,10 @@ public enum FlowerType: String, CaseIterable, Codable, Sendable {
     /// Drains soil moisture faster than other plants.
     public var thirsty: Bool { self == .zucchini || self == .corn }
 
-    /// Coins paid for a harvested flower: a quarter of its days to bloom.
+    /// Carrots paid for a harvested flower: a quarter of its days to bloom.
     public var sellValue: Int { Int(daysToBloom / 4) }
-    /// Seed price: a third of the sell value, never below 3.
-    public var seedPrice: Int { max(3, sellValue / 3) }
+    /// Seed price in carrots: 1 for quick crops (up to 60 days to bloom), 2 for slow ones.
+    public var seedPrice: Int { daysToBloom <= 60 ? 1 : 2 }
 }
 
 public enum GrowthStage: Int, Codable, Sendable { case seed, sprout, bud, bloom }

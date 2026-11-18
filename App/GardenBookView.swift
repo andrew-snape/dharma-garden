@@ -104,9 +104,9 @@ struct GardenBookView: View {
         .padding(.vertical, 8)
     }
 
-    /// "15 coins · 2 lavender seeds", with the seed types in name order.
+    /// "15 carrots · 2 lavender seeds", with the seed types in name order.
     private func rewardText(_ m: VisitorMilestone) -> String {
-        var parts = ["\(m.coins) coins"]
+        var parts = ["\(m.coins) \(m.coins == 1 ? "carrot" : "carrots")"]
         for (flower, count) in m.seeds.sorted(by: { $0.key.displayName < $1.key.displayName }) {
             parts.append("\(count) \(flower.displayName.lowercased()) seeds")
         }
@@ -180,7 +180,7 @@ struct GardenBookView: View {
                         Text("Spotted \(count) \(count == 1 ? "time" : "times")")
                             .font(.caption)
                             .foregroundStyle(.secondary)
-                        Text("Pays \(species.coinReward) coins a spot")
+                        Text("Pays \(species.coinReward) \(species.coinReward == 1 ? "carrot" : "carrots") a spot")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     } else {
@@ -266,7 +266,7 @@ struct GardenBookView: View {
         }
     }
 
-    /// "+10" coin float beside the coin counter. Same behaviour as the seed shop.
+    /// "+10" carrot float beside the carrot counter. Same behaviour as the seed shop.
     private func flashCoins(_ amount: Int) {
         noteID += 1
         let id = noteID

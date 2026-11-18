@@ -50,6 +50,14 @@ public enum ReadingLibrary {
                     blurb: "Short tales you can dip into anywhere."),
         ReadingBook(id: 205, title: "Walden", author: "Henry David Thoreau",
                     blurb: "Two years of quiet living by a pond, and a bean field."),
+        ReadingBook(id: 2680, title: "Meditations", author: "Marcus Aurelius",
+                    blurb: "An emperor's private notes to himself on living well."),
+        ReadingBook(id: 2017, title: "Dhammapada", author: "F. Max M\u{FC}ller",
+                    blurb: "Short verses from the Buddha on the mind, kindness and letting go."),
+        ReadingBook(id: 45109, title: "The Enchiridion", author: "Epictetus",
+                    blurb: "A small Stoic handbook on what is and isn't within our control."),
+        ReadingBook(id: 2388, title: "The Song Celestial", author: "Edwin Arnold",
+                    blurb: "A warrior's crisis on the battlefield, and the god who guides him."),
     ]
 
     /// The reading text of a Project Gutenberg plain-text file as paragraphs: the licence header and footer are cut
