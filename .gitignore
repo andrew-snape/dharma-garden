@@ -9,3 +9,6 @@ DharmaGarden.xcodeproj/-Xcc/
 # Local audio renders and downloaded reference samples (large; regenerate with GardenRender)
 music-previews/
 Sounds/
+
+# Local seed collection data (not for the repo)
+seed-collection-data/
